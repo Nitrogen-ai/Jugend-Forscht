@@ -559,7 +559,7 @@
 
   <!-- ERGEBNIS PER E-MAIL -->
   <h2 class="section-title bar-yellow" id="ergebnis-mail">📧 Ergebnis per E-Mail sichern</h2>
-  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – sie kann daher kein Video automatisch verschicken oder anhängen. Was sie aber kann: euch eine fertig formulierte, gratulierende E-Mail an euer eigenes Postfach vorbereiten. Ihr müsst euer Video nur noch manuell anhängen, bevor ihr sendet.</p>
+  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – ein Video lässt sich also nicht automatisch hochladen oder verschicken. Unterstützt euer Gerät die native „Teilen"-Funktion mit Dateien (z. B. Safari/Chrome auf dem Mac, iPhone oder Android), wählt der Button unten direkt „Mail" mit Video im Anhang vor. Sonst bereitet er die Nachricht ohne Anhang vor, und ihr hängt das Video manuell an.</p>
 
   <div class="mail-box">
     <div class="field">
@@ -578,14 +578,14 @@
       </div>
     </div>
     <div class="field">
-      <label for="mailVideo">Video auswählen <em>(nur zur Erinnerung an den Dateinamen – wird nicht hochgeladen oder automatisch angehängt!)</em></label>
+      <label for="mailVideo">Video auswählen</label>
       <div class="file-row">
         <input type="file" id="mailVideo" accept="video/*">
-        <div class="file-status" id="fileStatus"></div>
+        <div class="file-status" id="fileStatus">Noch kein Video ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.</div>
       </div>
     </div>
     <button class="btn" id="prepareMail" type="button">✉️ Bestätigungs-E-Mail vorbereiten</button>
-    <div class="mail-hint">
+    <div class="mail-hint" id="mailHint">
       Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt euer Video manuell an – haltet es dafür bewusst „datenklein" (wenige Sekunden, ggf. komprimiert), damit der Versand reibungslos klappt.
     </div>
   </div>
@@ -750,34 +750,46 @@
     shuffle();
   })();
 
-  // ── Ergebnis-E-Mail vorbereiten ──
+  // ── Ergebnis-E-Mail vorbereiten (mit Datei-Teilen, wenn verfügbar) ──
   (function () {
     var fileInput = document.getElementById('mailVideo');
     var fileStatus = document.getElementById('fileStatus');
+    var mailBtn = document.getElementById('prepareMail');
+    var mailHint = document.getElementById('mailHint');
 
-    fileInput.addEventListener('change', function () {
+    function canShareFiles(file) {
+      return !!(navigator.canShare && file && navigator.canShare({ files: [file] }));
+    }
+
+    function updateUiForFile() {
       var f = fileInput.files[0];
-      if (!f) { fileStatus.textContent = ''; return; }
-      var mb = f.size / (1024 * 1024);
-      if (mb > 15) {
-        fileStatus.className = 'file-status warn';
-        fileStatus.textContent = '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Video auf wenige Sekunden kürzen oder stärker komprimieren.';
-      } else {
-        fileStatus.className = 'file-status ok';
-        fileStatus.textContent = '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB) – daran denken, es gleich manuell anzuhängen!';
-      }
-    });
-
-    document.getElementById('prepareMail').addEventListener('click', function () {
-      var addressField = document.getElementById('mailAddress');
-      var address = addressField.value.trim();
-      if (!address || address.indexOf('@') === -1) {
-        addressField.focus();
-        addressField.style.borderColor = 'var(--red)';
+      if (!f) {
+        fileStatus.className = 'file-status';
+        fileStatus.textContent = 'Noch kein Video ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Wählt danach oben ein Video aus und hängt es manuell an.';
         return;
       }
-      addressField.style.borderColor = '';
+      var mb = f.size / (1024 * 1024);
+      var sizeNote = mb > 15
+        ? '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Video auf wenige Sekunden kürzen oder stärker komprimieren.'
+        : '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB)';
+      if (canShareFiles(f)) {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + (mb > 15 ? '' : ' – wird beim Klick direkt mit angehängt!');
+        mailBtn.textContent = '🎥 E-Mail mit Video-Anhang vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich die Teilen-Funktion eures Systems. Wählt dort „Mail" – Video, Betreff und Text sind dann schon eingefügt, ihr müsst nur noch eure Adresse eintragen und senden.';
+      } else {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + ' – dieser Browser kann Dateien nicht automatisch teilen, also gleich manuell anhängen!';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt euer Video manuell an – haltet es dafür bewusst „datenklein" (wenige Sekunden, ggf. komprimiert).';
+      }
+    }
 
+    fileInput.addEventListener('change', updateUiForFile);
+
+    function buildMessage(address, videoAttachedAutomatically) {
       var name = document.getElementById('mailName').value.trim() || 'Ampel-Hacker:in';
       var didExperiment = document.getElementById('mailExperiment').checked;
       var didVertiefung = document.getElementById('mailVertiefung').checked;
@@ -793,18 +805,46 @@
       if (didVertiefung) lines.push('✅ Vertiefung: Gefährliche Kreuzung mit objektorientierter Programmierung durchdacht');
       if (!didExperiment && !didVertiefung) lines.push('(Noch nichts angehakt – trag oben ein, was du geschafft hast, bevor du sendest.)');
       lines.push('');
-      lines.push('📎 WICHTIG: Häng jetzt dein kurzes Video an diese E-Mail an' + (videoFile ? ' (' + videoFile.name + ')' : '') + ' – wenige Sekunden, klein komprimiert – bevor du sie an dich selbst sendest. So hast du dein Ergebnis später griffbereit, z. B. für Präsentationen oder weitere Experimente.');
+      if (videoAttachedAutomatically) {
+        lines.push('🎥 Dein Video ist dieser Nachricht direkt beigefügt.');
+      } else {
+        lines.push('📎 WICHTIG: Häng jetzt dein kurzes Video an diese E-Mail an' + (videoFile ? ' (' + videoFile.name + ')' : '') + ' – wenige Sekunden, klein komprimiert – bevor du sie an dich selbst sendest.');
+      }
+      lines.push('So hast du dein Ergebnis später griffbereit, z. B. für Präsentationen oder weitere Experimente.');
       lines.push('');
       lines.push('Weiter geht’s: Fußgängerampel mit Taster und Countdown? Miniatur-Verkehrssystem mit mehreren Fahrzeugen? Deiner Kreativität sind keine Grenzen gesetzt!');
       lines.push('');
       lines.push('Lernpfad: Hacker der Straße – Knacke den Ampelcode!');
       lines.push('Jugend forscht · Rosa-Luxemburg-Gymnasium');
+      return lines.join('\n');
+    }
+
+    mailBtn.addEventListener('click', function () {
+      var addressField = document.getElementById('mailAddress');
+      var address = addressField.value.trim();
+      if (!address || address.indexOf('@') === -1) {
+        addressField.focus();
+        addressField.style.borderColor = 'var(--red)';
+        return;
+      }
+      addressField.style.borderColor = '';
 
       var subject = '🚦 Ampelcode geknackt! Mein Ergebnis – Hacker der Straße';
-      var body = lines.join('\n');
+      var videoFile = fileInput.files[0];
+
+      // Bevorzugt: natives Teilen mit Datei-Anhang, wenn der Browser das unterstützt.
+      if (canShareFiles(videoFile)) {
+        var body = buildMessage(address, true);
+        navigator.share({ files: [videoFile], title: subject, text: body })
+          .catch(function () { /* Nutzer:in hat abgebrochen – nichts weiter tun */ });
+        return;
+      }
+
+      // Fallback: mailto: ohne Anhang, Video muss manuell angehängt werden.
+      var bodyFallback = buildMessage(address, false);
       var mailtoUrl = 'mailto:' + encodeURIComponent(address) +
         '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
+        '&body=' + encodeURIComponent(bodyFallback);
       window.location.href = mailtoUrl;
     });
   })();
