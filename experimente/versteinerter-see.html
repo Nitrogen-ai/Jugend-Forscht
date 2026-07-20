@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: Versteinert im See des Schreckens – Naturwunder oder Fluch?</title>
+<style>
+  :root {
+    --ash: #c9b896;
+    --teal: #4a9a8a;
+    --bg: #14120f;
+    --card: #201d18;
+    --card2: #262220;
+    --border: #3a342c;
+    --text: #f2ece0;
+    --muted: #a89a82;
+    --dim: #6e6252;
+    --green: #6ab97a;
+    --red: #d9695a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header { padding: 3.4rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, #241d12, #4a3a1f 45%, #4a9a8a 120%); border-bottom: 1px solid var(--border); }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #f2ece0; opacity: 0.85; margin-bottom: 0.8rem; }
+  header h1 { font-size: 1.95rem; margin-bottom: 0.7rem; }
+  header p { max-width: 660px; margin: 0 auto; color: #f2ece0; opacity: 0.92; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--teal); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .intro-box { background: #221d14; border-left: 5px solid var(--ash); padding: 1.4rem 1.6rem; border-radius: 6px; margin-bottom: 1.4rem; font-size: 0.95rem; color: var(--muted); }
+  .intro-box strong { color: var(--text); }
+
+  h2.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; margin: 2.8rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h2.section-title:first-of-type { margin-top: 0; }
+  .sec-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+
+  .step { display: flex; gap: 1.1rem; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 0.9rem; align-items: flex-start; flex-wrap: wrap; }
+  .step-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; color: #14120f; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; background: var(--teal); }
+  .step-body { flex: 1; min-width: 220px; }
+  .step-body h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+  .step-body p { font-size: 0.9rem; color: var(--muted); }
+
+  .step-media { margin: 1.2rem 0; }
+  .step-media svg { width: 100%; max-width: 460px; height: auto; border-radius: 8px; border: 1px solid var(--border); display: block; margin: 0 auto; }
+
+  .callout { display: flex; gap: 12px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
+  .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout strong { color: var(--text); }
+  .callout a { color: var(--teal); }
+
+  .formula-box { background: #0e0d0a; border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; font-family: 'Courier New', Courier, monospace; font-size: 0.95rem; color: var(--ash); margin: 0.8rem 0; }
+
+  .quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.8rem; overflow: hidden; }
+  .quiz-card summary { cursor: pointer; padding: 0.9rem 1.2rem; font-weight: 600; font-size: 0.92rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .quiz-card summary::-webkit-details-marker { display: none; }
+  .quiz-card summary::after { content: '+'; font-size: 1.2rem; color: var(--teal); flex-shrink: 0; transition: transform 0.2s; }
+  .quiz-card[open] summary::after { transform: rotate(45deg); }
+  .quiz-card .quiz-answer { padding: 0 1.2rem 1rem; color: var(--muted); font-size: 0.88rem; }
+  .quiz-answer strong { color: var(--green); }
+  .quiz-answer .tip { margin-top: 6px; color: var(--dim); font-style: italic; }
+
+  .mail-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.7rem; margin-bottom: 1rem; }
+  .mail-box .field { margin-bottom: 0.9rem; }
+  .mail-box label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .mail-box input[type="text"], .mail-box input[type="email"], .mail-box textarea { width: 100%; background: #0e0d0a; border: 1px solid var(--border); border-radius: 6px; padding: 0.55rem 0.7rem; color: var(--text); font-size: 0.9rem; font-family: inherit; }
+  .mail-box textarea { min-height: 90px; resize: vertical; }
+  .mail-box .file-row { border: 1px dashed var(--border); border-radius: 8px; padding: 0.9rem 1rem; font-size: 0.85rem; color: var(--muted); }
+  .mail-box .file-status { margin-top: 6px; font-size: 0.82rem; }
+  .mail-box .file-status.ok { color: var(--green); }
+  .mail-box .file-status.warn { color: var(--ash); }
+  .mail-hint { font-size: 0.8rem; color: var(--dim); margin-top: 0.8rem; line-height: 1.5; }
+  .btn { background: var(--teal); color: #0c1a17; border: none; border-radius: 8px; padding: 0.65rem 1.2rem; font-weight: 700; font-size: 0.88rem; cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+
+  .finish { margin-top: 2.4rem; background: linear-gradient(135deg, #241d12, #4a3a1f, #4a9a8a); border-radius: 12px; padding: 2rem; text-align: center; }
+  .finish h3 { margin-bottom: 0.6rem; }
+  .finish p { color: #f2ece0; margin-bottom: 0.6rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; font-size: 0.88rem; }
+  footer a { color: var(--teal); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Experiment · Chemie (ab Klasse 8)</div>
+  <h1>🦴 Versteinert im See des Schreckens – Naturwunder oder Fluch?</h1>
+  <p>Habt ihr schon von den mysteriösen „Mumien" im tansanischen Natronsee gehört? Wie kann es sein, dass Tiere, die dort verenden, zu steinernen Gestalten werden? Wir simulieren das Phänomen im Miniaturformat – mit einer Petrischale und zwei Salzen.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Wie unterschiedlich lösen sich Salze in Wasser?</strong> Manche Salze lösen sich so schlecht, dass sie fast als unlöslich gelten – dabei handelt es sich oft um Steine und Mineralien. Der Natronsee in Tansania liegt am Fuß des Vulkans Ol Doinyo Lengai im Ostafrikanischen Grabenbruch (Great Rift Valley) und verdankt seinen Namen dem hohen Gehalt an Natriumcarbonat (Soda) im Wasser.
+  </div>
+
+  <div class="callout">
+    <span class="ic">🎬</span>
+    <div>Schaut euch zum Einstieg diese kurze Simulation an: <a href="https://www.youtube.com/watch?v=1RHpW9V2Btg" target="_blank">Versteinerung im tansanischen Natronsee</a></div>
+  </div>
+
+  <!-- EXPERIMENT -->
+  <h2 class="section-title">🧪 Experiment zur Versteinerung</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Hypothese formulieren</h3>
+      <p>Bevor es losgeht: Formuliert eine Hypothese zur mysteriösen Versteinerung. Was, glaubt ihr, passiert chemisch, wenn Tiere im Natronsee „versteinern"?</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Petrischalen-Experiment durchführen</h3>
+      <p>1) Füllt eine Petrischale etwa zur Hälfte mit Wasser.<br>
+      2) Fügt vorsichtig eine Spatelspitze des Salzes Natriumcarbonat an einem Rand hinzu.<br>
+      3) Fügt vorsichtig eine Spatelspitze des Salzes Calciumchlorid am gegenüberliegenden Rand der Petrischale hinzu.<br>
+      Beobachtet genau, was passiert – ihr werdet eine überraschende Reaktion sehen! Haltet diesen faszinierenden Moment mit einem Foto fest.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="460" height="200" fill="#0e0d0a" rx="8"/>
+          <ellipse cx="230" cy="110" rx="170" ry="65" fill="#1c2a28" stroke="#4a9a8a" stroke-width="2"/>
+          <ellipse cx="230" cy="110" rx="170" ry="65" fill="none" stroke="#4a9a8a" stroke-width="1" opacity="0.4"/>
+          <circle cx="90" cy="95" r="10" fill="#f2ece0"/>
+          <text x="90" y="75" text-anchor="middle" font-size="8" fill="#a89a82">Na₂CO₃</text>
+          <circle cx="370" cy="95" r="10" fill="#e0954a"/>
+          <text x="370" y="75" text-anchor="middle" font-size="8" fill="#a89a82">CaCl₂</text>
+          <g fill="#f2ece0" opacity="0.8">
+            <circle cx="180" cy="115" r="3"/><circle cx="200" cy="130" r="2.5"/><circle cx="220" cy="105" r="3"/>
+            <circle cx="240" cy="125" r="2.5"/><circle cx="260" cy="110" r="3"/><circle cx="280" cy="130" r="2.5"/>
+            <circle cx="230" cy="140" r="3"/><circle cx="210" cy="150" r="2"/>
+          </g>
+          <text x="230" y="170" text-anchor="middle" font-size="8" fill="#c9b896">weißer Niederschlag (CaCO₃) in der Mitte</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">📷</span>
+    <div><strong>Dokumentiert eure Beobachtung!</strong> <a href="#ergebnis-mail">→ Jetzt Bestätigungs-E-Mail vorbereiten</a></div>
+  </div>
+
+  <!-- SACHKOMPETENZ -->
+  <h2 class="section-title">📚 Sachkompetenz (ab Klasse 8)</h2>
+
+  <details class="quiz-card">
+    <summary>Vervollständigt den Satz: „Die Tierkörper versteinern (calcifizieren) durch …"</summary>
+    <div class="quiz-answer"><strong>Bildung schwerlöslicher Salze (Fällung).</strong> Nicht durch Anhäufung von Sandkörnern (Sedimentierung) und nicht durch das Auflösen (Dissoziation) schwerlöslicher Salze – im Gegenteil: Es ist gerade die Fällung, also das Entstehen eines schwerlöslichen Feststoffs aus gelösten Ionen, die für die „Versteinerung" sorgt.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Stellt die Dissoziationsgleichungen für das Auflösen von Natriumcarbonat und Calciumchlorid auf.</summary>
+    <div class="quiz-answer">
+      <div class="formula-box">Na₂CO₃ (s) → 2 Na⁺ (aq) + CO₃²⁻ (aq)</div>
+      <div class="formula-box">CaCl₂ (s) → Ca²⁺ (aq) + 2 Cl⁻ (aq)</div>
+      Die frei werdenden Ca²⁺- und CO₃²⁻-Ionen reagieren anschließend zum schwerlöslichen Calciumcarbonat: <strong>Ca²⁺ (aq) + CO₃²⁻ (aq) → CaCO₃ (s)</strong> – der weiße Niederschlag, der in der Petrischale zwischen euren beiden Salzhäufchen entsteht. Genau dieser Fällungsprozess lässt im Natronsee organisches Gewebe „versteinern".
+    </div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Rechenaufgabe (ab Ende Klasse 8): Wie viel Natriumcarbonat wird für 500 g eines versteinerten „Tieres" (reines CaCO₃) rechnerisch benötigt?</summary>
+    <div class="quiz-answer">Über die molaren Massen von CaCO₃ (M ≈ 100 g/mol) und Na₂CO₃ (M ≈ 106 g/mol) und die Stöchiometrie der Fällungsreaktion (1:1) lässt sich die benötigte Stoffmenge und daraus die Masse an Natriumcarbonat berechnen. Rechnet es selbst durch und haltet euer Ergebnis mit einem Foto fest!</div>
+  </details>
+
+  <!-- FUN FACTS -->
+  <h2 class="section-title">✨ Fun Facts</h2>
+
+  <details class="quiz-card">
+    <summary>Der Natronsee in Tansania ist nicht nur chemisch spannend, sondern auch kulturell wichtig. Welche Aussagen stimmen?</summary>
+    <div class="quiz-answer">
+      <strong>Richtig:</strong> Für die Massai gilt der See als heiliger Ort mit Geistern. Er ist weltweit der einzige große Brutplatz der Zwergflamingos. Ein berühmter Fotograf (Nick Brandt) machte die „versteinerten Tiere" international bekannt.<br>
+      <span class="tip">Falsch: In Massai-Ritualen wird das Wasser des Sees nicht als Heilgetränk verwendet – dafür ist es viel zu ätzend-alkalisch.</span>
+    </div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Schätzfrage: Wie heiß kann das Wasser im Natronsee werden?</summary>
+    <div class="quiz-answer"><strong>Bis zu etwa 50 °C.</strong> Die vulkanische Umgebung am Fuß des Ol Doinyo Lengai heizt den flachen See stark auf.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Schätzfrage: Wie stark alkalisch ist der See – welchen pH-Wert hat er etwa?</summary>
+    <div class="quiz-answer"><strong>Etwa pH 10,5.</strong> Das macht den See ähnlich ätzend wie Ammoniak – zu ätzend für die meisten Lebewesen, aber ideal für die Fällungsreaktionen, die für die Versteinerungen verantwortlich sind.</div>
+  </details>
+
+  <!-- ERGEBNIS PER E-MAIL -->
+  <h2 class="section-title" id="ergebnis-mail">📧 Ergebnis per E-Mail sichern</h2>
+  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – ein Foto lässt sich also nicht automatisch hochladen. Unterstützt euer Gerät die native „Teilen"-Funktion mit Dateien, wählt der Button unten direkt „Mail" mit Anhang vor. Sonst bereitet er die Nachricht ohne Anhang vor, und ihr hängt euer Foto manuell an.</p>
+
+  <div class="mail-box">
+    <div class="field">
+      <label for="mailName">Spitzname (optional)</label>
+      <input type="text" id="mailName" placeholder="z. B. Rosa">
+    </div>
+    <div class="field">
+      <label for="mailAddress">Eure E-Mail-Adresse (dorthin geht die Bestätigung)</label>
+      <input type="email" id="mailAddress" placeholder="deine.adresse@beispiel.de" required>
+    </div>
+    <div class="field">
+      <label for="mailNotes">Eure Hypothese &amp; Beobachtung</label>
+      <textarea id="mailNotes" placeholder="Was habt ihr in der Petrischale beobachtet?"></textarea>
+    </div>
+    <div class="field">
+      <label for="mailVideo">Foto eurer Petrischale auswählen</label>
+      <div class="file-row">
+        <input type="file" id="mailVideo" accept="image/*,video/*">
+        <div class="file-status" id="fileStatus">Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.</div>
+      </div>
+    </div>
+    <button class="btn" id="prepareMail" type="button">✉️ Bestätigungs-E-Mail vorbereiten</button>
+    <div class="mail-hint" id="mailHint">
+      Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt euer Foto manuell an.
+    </div>
+  </div>
+
+  <div class="finish">
+    <h3>🎉 Geschafft!</h3>
+    <p>Ihr habt es geschafft – Gratulation zur Beendigung des Versteinerungsbounds! Stempelt euch nun eine kleine Erinnerung in euer Forschungsheft.</p>
+  </div>
+
+</main>
+
+<footer>
+  Versteinert im See des Schreckens – Naturwunder oder Fluch? · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+<script>
+  (function () {
+    var fileInput = document.getElementById('mailVideo');
+    var fileStatus = document.getElementById('fileStatus');
+    var mailBtn = document.getElementById('prepareMail');
+    var mailHint = document.getElementById('mailHint');
+
+    function canShareFiles(file) {
+      return !!(navigator.canShare && file && navigator.canShare({ files: [file] }));
+    }
+
+    function updateUiForFile() {
+      var f = fileInput.files[0];
+      if (!f) {
+        fileStatus.className = 'file-status';
+        fileStatus.textContent = 'Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht.';
+        return;
+      }
+      var mb = f.size / (1024 * 1024);
+      var sizeNote = mb > 15
+        ? '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Datei stärker komprimieren.'
+        : '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB)';
+      if (canShareFiles(f)) {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + (mb > 15 ? '' : ' – wird beim Klick direkt mit angehängt!');
+        mailBtn.textContent = '📷 E-Mail mit Anhang vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich die Teilen-Funktion eures Systems. Wählt dort „Mail" – Datei, Betreff und Text sind dann schon eingefügt.';
+      } else {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + ' – dieser Browser kann Dateien nicht automatisch teilen, also gleich manuell anhängen!';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt euer Foto manuell an.';
+      }
+    }
+
+    fileInput.addEventListener('change', updateUiForFile);
+
+    function buildMessage(attachedAutomatically) {
+      var name = document.getElementById('mailName').value.trim() || 'Versteinerungs-Forscher:in';
+      var notes = document.getElementById('mailNotes').value.trim();
+      var f = fileInput.files[0];
+
+      var lines = [];
+      lines.push('Hallo ' + name + ',');
+      lines.push('');
+      lines.push('🎉 Glückwunsch – du hast das Versteinerungs-Experiment geschafft!');
+      lines.push('');
+      lines.push('✅ Fällungsreaktion (Natriumcarbonat + Calciumchlorid) durchgeführt und beobachtet');
+      if (notes) {
+        lines.push('');
+        lines.push('Deine Hypothese & Beobachtung:');
+        lines.push(notes);
+      }
+      lines.push('');
+      if (attachedAutomatically) {
+        lines.push('📷 Dein Foto ist dieser Nachricht direkt beigefügt.');
+      } else if (f) {
+        lines.push('📎 WICHTIG: Häng jetzt deine Datei (' + f.name + ') an diese E-Mail an, bevor du sie an dich selbst sendest.');
+      }
+      lines.push('');
+      lines.push('Lernpfad: Versteinert im See des Schreckens – Naturwunder oder Fluch?');
+      lines.push('Jugend forscht · Rosa-Luxemburg-Gymnasium');
+      return lines.join('\n');
+    }
+
+    mailBtn.addEventListener('click', function () {
+      var addressField = document.getElementById('mailAddress');
+      var address = addressField.value.trim();
+      if (!address || address.indexOf('@') === -1) {
+        addressField.focus();
+        addressField.style.borderColor = 'var(--red)';
+        return;
+      }
+      addressField.style.borderColor = '';
+
+      var subject = '🦴 Mein Ergebnis – Versteinert im See des Schreckens';
+      var f = fileInput.files[0];
+
+      if (canShareFiles(f)) {
+        var body = buildMessage(true);
+        navigator.share({ files: [f], title: subject, text: body }).catch(function () {});
+        return;
+      }
+
+      var bodyFallback = buildMessage(false);
+      var mailtoUrl = 'mailto:' + encodeURIComponent(address) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(bodyFallback);
+      window.location.href = mailtoUrl;
+    });
+  })();
+</script>
+
+</body>
+</html>
