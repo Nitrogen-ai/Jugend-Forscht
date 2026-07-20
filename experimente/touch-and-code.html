@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: Touch &amp; Code – Deine Welt wird zum Controller</title>
+<style>
+  :root {
+    --lime: #a3d94a;
+    --violet: #8a6fd0;
+    --bg: #12141c;
+    --card: #1c1f2b;
+    --card2: #232838;
+    --border: #2e3444;
+    --text: #ecefF7;
+    --muted: #9aa2b8;
+    --dim: #5c6478;
+    --green: #6ab97a;
+    --red: #d9695a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header { padding: 3.4rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, #241a45, #4a3a7a 45%, #a3d94a 120%); border-bottom: 1px solid var(--border); }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #ecefF7; opacity: 0.85; margin-bottom: 0.8rem; }
+  header h1 { font-size: 2.05rem; margin-bottom: 0.7rem; }
+  header p { max-width: 660px; margin: 0 auto; color: #ecefF7; opacity: 0.92; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--lime); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .intro-box { background: #1c1830; border-left: 5px solid var(--violet); padding: 1.4rem 1.6rem; border-radius: 6px; margin-bottom: 1.4rem; font-size: 0.95rem; color: var(--muted); }
+  .intro-box strong { color: var(--text); }
+
+  h2.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; margin: 2.8rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h2.section-title:first-of-type { margin-top: 0; }
+  .sec-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+
+  .idea-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 1rem; }
+  .idea-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.3rem; }
+  .idea-card .ic { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .idea-card h3 { font-size: 0.96rem; margin-bottom: 0.4rem; }
+  .idea-card p { font-size: 0.85rem; color: var(--muted); }
+
+  .callout { display: flex; gap: 12px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
+  .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout strong { color: var(--text); }
+  .callout a { color: var(--lime); }
+
+  .step-media { margin: 1.2rem 0; }
+  .step-media svg { width: 100%; max-width: 500px; height: auto; border-radius: 8px; border: 1px solid var(--border); display: block; margin: 0 auto; }
+
+  .quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.8rem; overflow: hidden; }
+  .quiz-card summary { cursor: pointer; padding: 0.9rem 1.2rem; font-weight: 600; font-size: 0.92rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .quiz-card summary::-webkit-details-marker { display: none; }
+  .quiz-card summary::after { content: '+'; font-size: 1.2rem; color: var(--lime); flex-shrink: 0; transition: transform 0.2s; }
+  .quiz-card[open] summary::after { transform: rotate(45deg); }
+  .quiz-card .quiz-answer { padding: 0 1.2rem 1rem; color: var(--muted); font-size: 0.88rem; }
+  .quiz-answer strong { color: var(--green); }
+  .quiz-answer .tip { margin-top: 6px; color: var(--dim); font-style: italic; }
+
+  .mail-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.7rem; margin-bottom: 1rem; }
+  .mail-box .field { margin-bottom: 0.9rem; }
+  .mail-box label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .mail-box input[type="text"], .mail-box input[type="email"], .mail-box textarea { width: 100%; background: #0c0e15; border: 1px solid var(--border); border-radius: 6px; padding: 0.55rem 0.7rem; color: var(--text); font-size: 0.9rem; font-family: inherit; }
+  .mail-box textarea { min-height: 90px; resize: vertical; }
+  .mail-box .file-row { border: 1px dashed var(--border); border-radius: 8px; padding: 0.9rem 1rem; font-size: 0.85rem; color: var(--muted); }
+  .mail-box .file-status { margin-top: 6px; font-size: 0.82rem; }
+  .mail-box .file-status.ok { color: var(--green); }
+  .mail-box .file-status.warn { color: var(--lime); }
+  .mail-hint { font-size: 0.8rem; color: var(--dim); margin-top: 0.8rem; line-height: 1.5; }
+  .btn { background: var(--lime); color: #142013; border: none; border-radius: 8px; padding: 0.65rem 1.2rem; font-weight: 700; font-size: 0.88rem; cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+
+  .finish { margin-top: 2.4rem; background: linear-gradient(135deg, #241a45, #4a3a7a, #a3d94a); border-radius: 12px; padding: 2rem; text-align: center; }
+  .finish h3 { margin-bottom: 0.6rem; }
+  .finish p { color: #ecefF7; margin-bottom: 0.6rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; font-size: 0.88rem; }
+  footer a { color: var(--lime); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Experiment · Informatik &amp; Elektronik</div>
+  <h1>👆💻 Touch &amp; Code – Deine Welt wird zum Controller</h1>
+  <p>Elektrizität ist nicht nur essenziell für unser tägliches Leben, sondern auch eine Quelle aufregender Entdeckungen. Mit dem Makey Makey verwandelst du Alltagsgegenstände – Bananen, Alufolie, sogar Bleistiftzeichnungen – in echte Controller-Tasten.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Elektrische Leitfähigkeit als Werkzeug.</strong> Wir erkunden die Lernmöglichkeiten anhand von elektrischer Leitfähigkeit und sich bewegenden Ladungsträgern in Stromkreisen. Vom Leuchten einer LED-Lampe bis zur Erschaffung komplexer Schaltkreise – mit dem Makey Makey lassen sich sogar Alltagsgegenstände in Technik verwandeln.
+  </div>
+
+  <div class="step-media">
+    <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg">
+      <rect width="460" height="220" fill="#0c0e15" rx="8"/>
+      <rect x="170" y="70" width="120" height="80" rx="10" fill="#232838" stroke="#a3d94a" stroke-width="1.5"/>
+      <text x="230" y="115" text-anchor="middle" font-size="10" fill="#a3d94a" font-weight="700">Makey Makey</text>
+      <circle cx="200" cy="130" r="4" fill="#8a6fd0"/>
+      <circle cx="230" cy="130" r="4" fill="#8a6fd0"/>
+      <circle cx="260" cy="130" r="4" fill="#8a6fd0"/>
+      <path d="M200,130 C130,150 80,120 60,60" stroke="#e0954a" stroke-width="2" fill="none"/>
+      <ellipse cx="55" cy="45" rx="18" ry="10" fill="#e0c34a" transform="rotate(-20 55 45)"/>
+      <text x="55" y="80" text-anchor="middle" font-size="7" fill="#9aa2b8">Banane</text>
+      <path d="M230,130 C260,160 330,160 360,110" stroke="#5fb8d9" stroke-width="2" fill="none"/>
+      <rect x="345" y="90" width="30" height="22" rx="3" fill="#c7c7c7"/>
+      <text x="360" y="128" text-anchor="middle" font-size="7" fill="#9aa2b8">Alufolie</text>
+      <path d="M260,130 C300,170 320,190 300,200" stroke="#d9695a" stroke-width="2" fill="none"/>
+      <circle cx="290" cy="200" r="10" fill="#d9695a" opacity="0.8"/>
+      <text x="290" y="215" text-anchor="middle" font-size="7" fill="#9aa2b8">Knete</text>
+      <line x1="120" y1="180" x2="170" y2="150" stroke="#6ab97a" stroke-width="2"/>
+      <rect x="90" y="170" width="40" height="30" rx="4" fill="none" stroke="#6ab97a" stroke-width="1.5"/>
+      <text x="110" y="210" text-anchor="middle" font-size="7" fill="#9aa2b8">Laptop / USB</text>
+    </svg>
+  </div>
+
+  <details class="quiz-card">
+    <summary>Welche dieser Makey-Makey-Projekte sind realistisch und schnell durchführbar?</summary>
+    <div class="quiz-answer"><strong>Das Bananenklavier, der heiße Draht und das sprechende Poster.</strong> Ein „Gedankenleser", der Gedanken direkt in Text umwandelt, ist reine Science-Fiction – das kann der Makey Makey nicht.</div>
+  </details>
+
+  <!-- SPRECHENDE POSTER -->
+  <h2 class="section-title">🗣️ Sprechende und interaktive Plakate</h2>
+  <div class="sec-sub">Stell dir vor: Du berührst ein Bild oder Symbol auf dem Plakat – und plötzlich spricht es mit dir oder spielt ein Geräusch ab. So wird aus einem normalen Poster ein sprechendes, lebendiges Poster.</div>
+
+  <div class="idea-grid">
+    <div class="idea-card">
+      <div class="ic">🍎⚡</div>
+      <h3>Objekte zum Leben erwecken</h3>
+      <p>Ein echter Apfel erklärt dir die Photosynthese, wenn du ihn anfasst.</p>
+    </div>
+    <div class="idea-card">
+      <div class="ic">🔬🔊</div>
+      <h3>Experimente interaktiv zeigen</h3>
+      <p>Tippe auf das Foto deines Versuchs – das Poster spielt den passenden Sound oder eine Erklärung ab.</p>
+    </div>
+    <div class="idea-card">
+      <div class="ic">🎉❌</div>
+      <h3>Quizspiele einbauen</h3>
+      <p>Berührst du die richtige Antwort, ertönt Jubel – bei der falschen ein lustiges „Buzzer"-Geräusch.</p>
+    </div>
+    <div class="idea-card">
+      <div class="ic">🥁🎹</div>
+      <h3>Musik machen</h3>
+      <p>Baue dir dein eigenes Schlagzeug oder Klavier einfach aus Bildern oder Gegenständen auf dem Poster.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">🎬</span>
+    <div>So baust du ein interaktives Poster: <a href="https://www.youtube.com/watch?v=nlZSPs6mHFw" target="_blank">Makey-Makey-Anleitungsvideo</a></div>
+  </div>
+
+  <!-- KREATIVE PROJEKTE -->
+  <h2 class="section-title">🎨 Kreative Projekte</h2>
+  <div class="sec-sub">Mit Makey Makey kannst du Dinge zum Sprechen, Musizieren oder Spielen bringen, die zunächst scheinbar gar nichts mit Technik zu tun haben. Deine Fantasie ist das einzige Limit!</div>
+
+  <div class="idea-grid">
+    <div class="idea-card">
+      <div class="ic">🐱📸</div>
+      <h3>Katzenselfie</h3>
+      <p>Deine Katze berührt den Kontakt – klick, schon ist das Foto gemacht.</p>
+    </div>
+    <div class="idea-card">
+      <div class="ic">💧🎵</div>
+      <h3>Wasserinstrument</h3>
+      <p>Tauch den Finger in eine Schale mit Wasser und spiel damit Musik.</p>
+    </div>
+    <div class="idea-card">
+      <div class="ic">✏️🎮</div>
+      <h3>Spielekonsole aus Bleistiftzeichnungen</h3>
+      <p>Male dir einfach dein Gamepad auf Papier – die Graphit-Linien leiten Strom und werden zu echten Tasten.</p>
+    </div>
+    <div class="idea-card">
+      <div class="ic">🍌🎹</div>
+      <h3>Obstklavier</h3>
+      <p>Schließ Bananen, Äpfel oder anderes Obst an – und schon wird jede Frucht zu einer Klaviertaste.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">🎬</span>
+    <div>Was mit Makey Makey alles möglich ist, zeigt dieses <a href="https://vimeo.com/279920496" target="_blank">Inspirations-Video</a>.</div>
+  </div>
+
+  <!-- FUN FACTS -->
+  <h2 class="section-title">✨ Fun Facts</h2>
+
+  <details class="quiz-card">
+    <summary>In welchen Kontexten kann Actionbound (wie diese Lernpfad-Idee) realistisch eingesetzt werden?</summary>
+    <div class="quiz-answer">
+      <strong>Realistisch:</strong> Schullabor-Experimente mit gescannten Schritten und Sicherheitshinweisen, ein Bergtouren-Guide mit GPS-Koordinaten, Onboarding-Touren für neue Mitarbeitende und eine Street-Art-Safari, bei der Graffiti-Entstehungsgeschichten erkundet werden.<br>
+      <span class="tip">Nicht realistisch: eine „Unterwasser-Entdeckungstour", bei der ein Actionbound Taucher automatisch durch ein Korallenriff führt und in Echtzeit Fischarten erkennt – das kann ein Smartphone unter Wasser schlicht nicht leisten.</span>
+    </div>
+  </details>
+
+  <div class="callout">
+    <span class="ic">💭</span>
+    <div><strong>Zum Nachdenken:</strong> Ist dir noch eine weitere spannende Anwendung der heute kennengelernten Werkzeuge (Makey Makey, Actionbound) in den Sinn gekommen? Notiere sie unten in deiner Ergebnis-E-Mail!</div>
+  </div>
+
+  <!-- ERGEBNIS PER E-MAIL -->
+  <h2 class="section-title" id="ergebnis-mail">📧 Ergebnis per E-Mail sichern</h2>
+  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – ein Foto oder Video eures Projekts lässt sich also nicht automatisch hochladen. Unterstützt euer Gerät die native „Teilen"-Funktion mit Dateien, wählt der Button unten direkt „Mail" mit Anhang vor. Sonst bereitet er die Nachricht ohne Anhang vor, und ihr hängt eure Datei manuell an.</p>
+
+  <div class="mail-box">
+    <div class="field">
+      <label for="mailName">Spitzname (optional)</label>
+      <input type="text" id="mailName" placeholder="z. B. Rosa">
+    </div>
+    <div class="field">
+      <label for="mailAddress">Eure E-Mail-Adresse (dorthin geht die Bestätigung)</label>
+      <input type="email" id="mailAddress" placeholder="deine.adresse@beispiel.de" required>
+    </div>
+    <div class="field">
+      <label for="mailNotes">Eure eigene Idee für eine Anwendung mit Makey Makey oder Actionbound</label>
+      <textarea id="mailNotes" placeholder="Was fällt euch noch ein?"></textarea>
+    </div>
+    <div class="field">
+      <label for="mailVideo">Foto oder Video eures Projekts auswählen</label>
+      <div class="file-row">
+        <input type="file" id="mailVideo" accept="image/*,video/*">
+        <div class="file-status" id="fileStatus">Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.</div>
+      </div>
+    </div>
+    <button class="btn" id="prepareMail" type="button">✉️ Bestätigungs-E-Mail vorbereiten</button>
+    <div class="mail-hint" id="mailHint">
+      Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt eure Datei manuell an.
+    </div>
+  </div>
+
+  <div class="finish">
+    <h3>🎉 Geschafft!</h3>
+    <p>Ihr habt es geschafft – Gratulation zur Beendigung des Touch&amp;Code-Bounds! Stempelt euch nun eine kleine Erinnerung in euer Forschungsheft.</p>
+  </div>
+
+</main>
+
+<footer>
+  Touch &amp; Code – Deine Welt wird zum Controller · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+<script>
+  (function () {
+    var fileInput = document.getElementById('mailVideo');
+    var fileStatus = document.getElementById('fileStatus');
+    var mailBtn = document.getElementById('prepareMail');
+    var mailHint = document.getElementById('mailHint');
+
+    function canShareFiles(file) {
+      return !!(navigator.canShare && file && navigator.canShare({ files: [file] }));
+    }
+
+    function updateUiForFile() {
+      var f = fileInput.files[0];
+      if (!f) {
+        fileStatus.className = 'file-status';
+        fileStatus.textContent = 'Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht.';
+        return;
+      }
+      var mb = f.size / (1024 * 1024);
+      var sizeNote = mb > 15
+        ? '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Video kürzen oder stärker komprimieren.'
+        : '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB)';
+      if (canShareFiles(f)) {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + (mb > 15 ? '' : ' – wird beim Klick direkt mit angehängt!');
+        mailBtn.textContent = '🎥 E-Mail mit Anhang vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich die Teilen-Funktion eures Systems. Wählt dort „Mail" – Datei, Betreff und Text sind dann schon eingefügt.';
+      } else {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + ' – dieser Browser kann Dateien nicht automatisch teilen, also gleich manuell anhängen!';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt eure Datei manuell an.';
+      }
+    }
+
+    fileInput.addEventListener('change', updateUiForFile);
+
+    function buildMessage(attachedAutomatically) {
+      var name = document.getElementById('mailName').value.trim() || 'Touch-&-Code-Forscher:in';
+      var notes = document.getElementById('mailNotes').value.trim();
+      var f = fileInput.files[0];
+
+      var lines = [];
+      lines.push('Hallo ' + name + ',');
+      lines.push('');
+      lines.push('🎉 Glückwunsch – du hast den Touch&Code-Bound geschafft!');
+      lines.push('');
+      lines.push('✅ Eigenes Makey-Makey-Projekt gebaut und ausprobiert');
+      if (notes) {
+        lines.push('');
+        lines.push('Deine eigene Idee für eine Anwendung:');
+        lines.push(notes);
+      }
+      lines.push('');
+      if (attachedAutomatically) {
+        lines.push('🎥 Deine Datei ist dieser Nachricht direkt beigefügt.');
+      } else if (f) {
+        lines.push('📎 WICHTIG: Häng jetzt deine Datei (' + f.name + ') an diese E-Mail an, bevor du sie an dich selbst sendest.');
+      }
+      lines.push('');
+      lines.push('Lernpfad: Touch & Code – Deine Welt wird zum Controller');
+      lines.push('Jugend forscht · Rosa-Luxemburg-Gymnasium');
+      return lines.join('\n');
+    }
+
+    mailBtn.addEventListener('click', function () {
+      var addressField = document.getElementById('mailAddress');
+      var address = addressField.value.trim();
+      if (!address || address.indexOf('@') === -1) {
+        addressField.focus();
+        addressField.style.borderColor = 'var(--red)';
+        return;
+      }
+      addressField.style.borderColor = '';
+
+      var subject = '👆💻 Mein Touch & Code Ergebnis';
+      var f = fileInput.files[0];
+
+      if (canShareFiles(f)) {
+        var body = buildMessage(true);
+        navigator.share({ files: [f], title: subject, text: body }).catch(function () {});
+        return;
+      }
+
+      var bodyFallback = buildMessage(false);
+      var mailtoUrl = 'mailto:' + encodeURIComponent(address) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(bodyFallback);
+      window.location.href = mailtoUrl;
+    });
+  })();
+</script>
+
+</body>
+</html>
