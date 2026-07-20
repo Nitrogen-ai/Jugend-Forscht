@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lernpfad: Dein eigener DIY-Lichtwecker</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #f39c12;
+            --accent: #e67e22;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-muted: #666666;
+            --border: #e2e8f0;
+            --code-bg: #2d3748;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 0;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin: 1rem 0 0 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        a.back-link:hover { color: var(--accent); }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), #1a252f);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .intro-box {
+            background-color: #e8f4fd;
+            border-left: 5px solid #3182ce;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .step {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--secondary);
+            color: white;
+            font-weight: bold;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #2c3e50;
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.2rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            color: #f7fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            white-space: pre;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .image-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .image-container svg {
+            width: 100%;
+            height: 220px;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            background: #fcfcfc;
+            border-top: 1px solid var(--border);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #edf2f7;
+            color: #4a5568;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .tip {
+            background-color: #fffaf0;
+            border-left: 5px solid var(--secondary);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+            font-size: 0.9rem;
+        }
+
+        footer a { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Projekt-Lernpfad: Dein eigener Lichtwecker</h1>
+        <p>Schritt-für-Schritt von der Simulation bis zur gedruckten Box. Perfekt für Einsteigerinnen und Einsteiger ohne Vorkenntnisse.</p>
+    </header>
+
+    <a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+    <div class="container">
+
+        <div class="intro-box">
+            <strong>Was ist ein Lichtwecker?</strong> Ein Lichtwecker simuliert einen natürlichen Sonnenaufgang. Statt von einem lauten Ton wirst du sanft durch schrittweise heller werdende LEDs geweckt. In diesem Lernpfad bauen wir ein Modell mit einem Arduino Uno, LEDs, einem Taster zum Ausschalten und einer maßgeschneiderten 3D-gedruckten Hülle!
+        </div>
+
+        <div class="timeline">
+
+            <!-- SCHRITT 1 -->
+            <div class="step">
+                <span class="step-number">Schritt 1</span>
+                <h2>Virtuelles Testen mit Tinkercad Circuits</h2>
+                <p>Bevor wir echte Bauteile anfassen, simulieren wir die gesamte Schaltung kostenlos im Browser. Das verhindert Hardware-Fehler und lässt uns den Code sicher testen.</p>
+
+                <h3>Ablauf in Tinkercad:</h3>
+                <ol>
+                    <li>Gehe auf <a href="https://www.tinkercad.com" target="_blank">tinkercad.com</a>, erstelle ein kostenloses Konto und klicke im linken Menü auf <strong>"Designs"</strong> und dann auf <strong>"Circuits"</strong> (Schaltungen).</li>
+                    <li>Klicke auf "Neu erstellen" &rarr; "Schaltung".</li>
+                    <li>Ziehe folgende Komponenten aus der rechten Leiste per Drag-and-Drop auf die Arbeitsfläche:
+                        <ul>
+                            <li><strong>Arduino Uno R3</strong></li>
+                            <li><strong>Breadboard Small</strong> (Steckplatine)</li>
+                            <li><strong>Mehrere LEDs</strong> (z. B. weiß oder gelb)</li>
+                            <li><strong>Widerstände</strong> (330 Ohm für die LEDs, um sie vor dem Durchbrennen zu schützen)</li>
+                            <li><strong>1x Drucktaster (Pushbutton)</strong> & 1x 10k Ohm Widerstand (als Pull-Down-Widerstand)</li>
+                        </ul>
+                    </li>
+                    <li>Verdrahte die Bauteile: Verbinde die Kathoden (kurzes Bein) der LEDs mit der Minus-Schiene (GND) und die Anoden über einen Widerstand mit den digitalen Pins des Arduinos (z.B. Pin 9, 10, 11).</li>
+                </ol>
+                <div class="tip">
+                    <strong>Tipp für Einsteiger:</strong> Tinkercad zeigt dir direkt an, wenn eine LED zu viel Strom bekommt. Achte darauf, dass die Widerstände richtig auf "Ohm" (&Omega;) eingestellt sind, nicht auf "Kilo-Ohm" (k&Omega;) für die LEDs!
+                </div>
+            </div>
+
+            <!-- SCHRITT 2 -->
+            <div class="step">
+                <span class="step-number">Schritt 2</span>
+                <h2>Das Gehäuse designen in Tinkercad 3D</h2>
+                <p>Damit der Wecker auf dem Nachttisch gut aussieht, entwerfen wir eine passgenaue Box mit abnehmbarem Deckel.</p>
+
+                <h3>Ablauf im 3D-Editor:</h3>
+                <ol>
+                    <li>Wechsle in Tinkercad zu <strong>"3D-Designs"</strong> und erstelle ein neues Design.</li>
+                    <li>Ziehe einen <strong>Quader</strong> auf die Arbeitsfläche und skaliere ihn auf die gewünschte Größe (z. B. Breite 120mm, Tiefe 80mm, Höhe 70mm).</li>
+                    <li>Nutze die Form <strong>"Hohlkörper"</strong> (ein leicht kleinerer Quader), um die Box von oben auszuhöhlen, sodass eine Wandstärke von ca. 2 bis 3mm stehen bleibt.</li>
+                    <li>Vergiss die Aussparungen nicht! Platziere kleine Hohlkörper-Zylinder oder -Quader an den Seiten, um Löcher für das Stromkabel (USB oder Strombuchse) und den Wecker-Ausschaltknopf zu schneiden.</li>
+                    <li><strong>Der Deckel:</strong> Erstelle eine flache Platte, die exakt auf die Box passt. Du kannst Text-Formen (wie "Lichtwecker" oder ein Power-Symbol) hinzufügen, die entweder erhaben herausstehen oder als Hohlkörper hineingeschnitten werden, damit das Licht durchscheint.</li>
+                    <li>Exportiere deine fertigen Formen separat als <strong>.STL-Datei</strong> für den 3D-Drucker.</li>
+                </ol>
+            </div>
+
+            <!-- SCHRITT 3 -->
+            <div class="step">
+                <span class="step-number">Schritt 3</span>
+                <h2>Die Arduino IDE vorbereiten</h2>
+                <p>Um dem echten Arduino Leben einzuhauchen, nutzen wir die offizielle Programmierumgebung (IDE).</p>
+
+                <h3>Software einrichten:</h3>
+                <ol>
+                    <li>Lade die kostenlose <strong>Arduino IDE</strong> von der offiziellen Website (arduino.cc) herunter und installiere sie.</li>
+                    <li>Verbinde deinen echten Arduino Uno über das blaue USB-Kabel mit deinem Computer.</li>
+                    <li>Öffne die Arduino IDE und stelle die Verbindung her:
+                        <ul>
+                            <li>Gehe auf <strong>Werkzeuge &rarr; Board</strong> und wähle <strong>"Arduino Uno"</strong> aus.</li>
+                            <li>Gehe auf <strong>Werkzeuge &rarr; Port</strong> und wähle den COM-Port aus, an dem dein Arduino erkannt wurde (z.B. COM3 oder COM4).</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- SCHRITT 4 -->
+            <div class="step">
+                <span class="step-number">Schritt 4</span>
+                <h2>Der Programmcode (Sketch)</h2>
+                <p>Kopiere diesen Einsteiger-Code in deine Arduino-IDE. Er lässt die LEDs langsam nacheinander hochdimmen (Sonnenaufgang) und wartet darauf, dass der Taster gedrückt wird, um das Licht wieder auszuschalten.</p>
+
+                <div class="code-block">// DIY Lichtwecker - Basiscode für Einsteiger
+const int ledPins[] = {9, 10, 11}; // Die Pins, an denen die LEDs hängen
+const int anzLeds = 3;
+const int buttonPin = 2;             // Pin für den Ausschalter
+
+void setup() {
+  for(int i = 0; i < anzLeds; i++) {
+    pinMode(ledPins[i], OUTPUT);     // LEDs als Ausgang definieren
+  }
+  pinMode(buttonPin, INPUT);         // Taster als Eingang definieren
+}
+
+void loop() {
+  // 1. Der "Sonnenaufgang" startet: LEDs nacheinander hochdimmen
+  for(int i = 0; i < anzLeds; i++) {
+    for(int helligkeit = 0; helligkeit <= 255; helligkeit++) {
+      analogWrite(ledPins[i], helligkeit); // PWM-Signal zur Helligkeitssteuerung
+      delay(20); // Geschwindigkeit des Dimmens (für echten Wecker stark erhöhen!)
+
+      // Zwischendurch prüfen, ob der Taster gedrückt wurde
+      if(digitalRead(buttonPin) == HIGH) {
+        ausschalten();
+        return;
+      }
+    }
+  }
+
+  // 2. Warten, bis der Wecker durch Tastendruck beendet wird
+  while(true) {
+    if(digitalRead(buttonPin) == HIGH) {
+      ausschalten();
+      break;
+    }
+    delay(50);
+  }
+}
+
+void ausschalten() {
+  for(int i = 0; i < anzLeds; i++) {
+    digitalWrite(ledPins[i], LOW); // Alle LEDs aus
+  }
+  delay(5000); // 5 Sekunden Pause, bevor der Loop von vorn starten könnte
+}</div>
+                <p>Klicke in der Arduino IDE oben links auf das <strong>Häkchen (Überprüfen)</strong>, um den Code zu testen, und danach auf den <strong>Pfeil nach rechts (Hochladen)</strong>, um ihn auf das Board zu spielen.</p>
+            </div>
+
+            <!-- SCHRITT 5 -->
+            <div class="step">
+                <span class="step-number">Schritt 5</span>
+                <h2>Zusammenbau & Echttest</h2>
+                <p>Sobald der Code aufgespielt ist, kannst du den Arduino vom PC trennen. Im finalen Gehäuse kann der Wecker autark über ein USB-Netzteil oder eine 9V-Blockbatterie betrieben werden.</p>
+
+                <h3>Projekt-Illustrationen:</h3>
+                <p>Diese Vektorgrafiken fassen den realen Aufbau aus dem Elektroniklabor zusammen:</p>
+
+                <div class="image-gallery">
+                    <div class="image-container">
+                        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schaltungsaufbau">
+                            <defs>
+                                <radialGradient id="ledGlowY" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#fff4cc" stop-opacity="0.95"/>
+                                    <stop offset="100%" stop-color="#fff4cc" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="400" height="220" fill="#eef2f7"/>
+                            <!-- Breadboard -->
+                            <rect x="30" y="90" width="220" height="100" rx="6" fill="#ffffff" stroke="#cbd5e0" stroke-width="2"/>
+                            <line x1="30" y1="112" x2="250" y2="112" stroke="#e2e8f0" stroke-width="10"/>
+                            <line x1="30" y1="168" x2="250" y2="168" stroke="#e2e8f0" stroke-width="10"/>
+                            <!-- Arduino -->
+                            <rect x="270" y="70" width="110" height="80" rx="6" fill="#2c3e50"/>
+                            <rect x="270" y="70" width="110" height="16" rx="6" fill="#3d5166"/>
+                            <text x="325" y="115" text-anchor="middle" font-family="Courier New, monospace" font-size="11" fill="#f39c12">UNO</text>
+                            <rect x="352" y="122" width="18" height="10" fill="#7a8ba0"/>
+                            <!-- LEDs mit Glow -->
+                            <circle cx="80" cy="130" r="20" fill="url(#ledGlowY)"/>
+                            <circle cx="80" cy="130" r="7" fill="#ffd75e" stroke="#e6b400" stroke-width="1.5"/>
+                            <circle cx="120" cy="130" r="20" fill="url(#ledGlowY)"/>
+                            <circle cx="120" cy="130" r="7" fill="#ffe9a8" stroke="#e6b400" stroke-width="1.5"/>
+                            <circle cx="160" cy="130" r="20" fill="url(#ledGlowY)"/>
+                            <circle cx="160" cy="130" r="7" fill="#ffffff" stroke="#cbd5e0" stroke-width="1.5"/>
+                            <!-- Widerstände -->
+                            <rect x="74" y="150" width="12" height="5" fill="#d69e2e"/>
+                            <rect x="114" y="150" width="12" height="5" fill="#d69e2e"/>
+                            <rect x="154" y="150" width="12" height="5" fill="#d69e2e"/>
+                            <!-- Wires -->
+                            <path d="M80,113 C90,60 250,60 280,90" stroke="#e53e3e" stroke-width="2.5" fill="none"/>
+                            <path d="M120,113 C130,55 260,55 285,95" stroke="#3182ce" stroke-width="2.5" fill="none"/>
+                            <path d="M160,113 C170,50 270,50 290,100" stroke="#e67e22" stroke-width="2.5" fill="none"/>
+                            <!-- 9V Batterie -->
+                            <rect x="30" y="30" width="46" height="28" rx="3" fill="#3182ce"/>
+                            <text x="53" y="48" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="10" fill="#fff">9V</text>
+                            <path d="M53,58 C53,75 30,80 30,90" stroke="#4a5568" stroke-width="2" fill="none"/>
+                            <!-- USB-Netzteil -->
+                            <rect x="330" y="25" width="34" height="34" rx="4" fill="#ffffff" stroke="#a0aec0" stroke-width="2"/>
+                            <rect x="341" y="16" width="4" height="10" fill="#718096"/>
+                            <rect x="353" y="16" width="4" height="10" fill="#718096"/>
+                            <path d="M347,59 C347,70 340,72 335,80" stroke="#718096" stroke-width="2" fill="none"/>
+                        </svg>
+                        <div class="image-caption"><strong>Bild 1: Schaltungsaufbau</strong><br>Arduino Uno verbunden mit Breadboard, LEDs, Vorwiderständen und Test-Stromquellen (USB-Adapter & 9V-Batterie).</div>
+                    </div>
+                    <div class="image-container">
+                        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Einbau in die Box">
+                            <rect width="400" height="220" fill="#eef2f7"/>
+                            <!-- Offene gelbe Box -->
+                            <rect x="30" y="60" width="230" height="140" rx="10" fill="#f5b323"/>
+                            <rect x="44" y="74" width="202" height="112" rx="6" fill="#fcd980"/>
+                            <!-- Mini-Schaltung im Inneren -->
+                            <rect x="58" y="100" width="110" height="60" rx="4" fill="#ffffff" stroke="#e0b34d" stroke-width="1.5"/>
+                            <rect x="176" y="95" width="60" height="50" rx="4" fill="#2c3e50"/>
+                            <circle cx="80" cy="130" r="5" fill="#ffd75e"/>
+                            <circle cx="100" cy="130" r="5" fill="#ffe9a8"/>
+                            <circle cx="120" cy="130" r="5" fill="#ffffff"/>
+                            <path d="M80,125 C90,110 170,110 180,115" stroke="#e53e3e" stroke-width="2" fill="none"/>
+                            <path d="M100,125 C110,105 175,105 185,118" stroke="#3182ce" stroke-width="2" fill="none"/>
+                            <!-- Deckel separat daneben -->
+                            <g transform="translate(300,150) rotate(-8)">
+                                <rect x="-45" y="-22" width="90" height="44" rx="6" fill="#f5b323" stroke="#d69422" stroke-width="1.5"/>
+                                <text x="0" y="-2" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="12" fill="#a9660f">Lichtwecker</text>
+                                <circle cx="0" cy="12" r="6" fill="none" stroke="#a9660f" stroke-width="2"/>
+                                <line x1="0" y1="6" x2="0" y2="12" stroke="#a9660f" stroke-width="2"/>
+                            </g>
+                            <!-- 9V Batterie daneben -->
+                            <rect x="290" y="55" width="44" height="26" rx="3" fill="#3182ce"/>
+                            <text x="312" y="72" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="9" fill="#fff">9V</text>
+                            <path d="M290,68 C270,75 262,90 262,100" stroke="#4a5568" stroke-width="2" fill="none"/>
+                        </svg>
+                        <div class="image-caption"><strong>Bild 2: Integration ins Gehäuse</strong><br>Die fertige Schaltung wird passgenau in die gelbe, 3D-gedruckte Weckerbox eingesetzt.</div>
+                    </div>
+                    <div class="image-container">
+                        <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Geschlossener Lichtwecker">
+                            <defs>
+                                <radialGradient id="warmGlow" cx="50%" cy="45%" r="60%">
+                                    <stop offset="0%" stop-color="#ffe9a8" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#ffe9a8" stop-opacity="0"/>
+                                </radialGradient>
+                                <linearGradient id="boxTop" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#f8c545"/>
+                                    <stop offset="100%" stop-color="#f0a916"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="220" fill="#eef2f7"/>
+                            <circle cx="200" cy="105" r="105" fill="url(#warmGlow)"/>
+                            <rect x="90" y="45" width="220" height="130" rx="14" fill="url(#boxTop)" stroke="#d69422" stroke-width="2"/>
+                            <text x="200" y="100" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="30" fill="#a9660f">Lichtwecker</text>
+                            <circle cx="200" cy="135" r="16" fill="none" stroke="#a9660f" stroke-width="3.5"/>
+                            <line x1="200" y1="120" x2="200" y2="135" stroke="#a9660f" stroke-width="3.5"/>
+                        </svg>
+                        <div class="image-caption"><strong>Bild 3: Das fertige Produkt</strong><br>Die geschlossene Box mit dem beschrifteten Deckel "Lichtwecker" und dem integrierten Power-Symbol.</div>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    <strong>Glückwunsch!</strong> Du hast erfolgreich die Brücke von der virtuellen Simulation in Tinkercad bis hin zur echten, funktionierenden Hardware und dem eigenen Gehäusedesign geschlagen!
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        Projekt-Lernpfad Lichtwecker &copy; 2026 - Erstellt für Maker und Einsteiger. ·
+        <a href="../index.html">Zurück zur Übersicht</a>
+    </footer>
+
+</body>
+</html>

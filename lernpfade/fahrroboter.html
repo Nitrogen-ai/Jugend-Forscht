@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fahrroboter – Lernpfad</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2336;
+    --border: #2a3050;
+    --accent: #3a7dff;
+    --accent2: #ff6b35;
+    --accent3: #00d4aa;
+    --text: #e8ecf5;
+    --text-muted: #7a85a3;
+    --text-dim: #4a5270;
+    --green: #00d4aa;
+    --orange: #ff6b35;
+    --blue: #3a7dff;
+    --yellow: #f5c842;
+
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    overflow: hidden;
+    padding: 80px 40px 60px;
+    text-align: center;
+    background: linear-gradient(180deg, #0a0d18 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -120px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(58,125,255,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(58,125,255,0.4);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 24px;
+  }
+
+  header h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  header h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  header p.subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin: 0 auto 36px;
+  }
+
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+  }
+
+  .meta-pill .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-blue { background: var(--blue); }
+  .dot-orange { background: var(--orange); }
+  .dot-green { background: var(--green); }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+    margin-top: 64px;
+  }
+
+  .section-label:first-of-type { margin-top: 0; }
+
+  .section-label .track {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .section-label hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── PHASE CARD ── */
+  .phase {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .phase:hover { border-color: rgba(58,125,255,0.5); }
+
+  .phase-accent-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+  }
+
+  .bar-blue { background: var(--blue); }
+  .bar-orange { background: var(--orange); }
+  .bar-green { background: var(--green); }
+  .bar-yellow { background: var(--yellow); }
+
+  .phase-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 28px 24px 32px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .phase-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .phase-meta { flex: 1; }
+
+  .phase-meta h2 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .phase-meta .phase-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .phase-badge {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(58,125,255,0.12);
+    border: 1px solid rgba(58,125,255,0.25);
+    color: var(--accent);
+    white-space: nowrap;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  .phase-badge.orange { background: rgba(255,107,53,0.12); border-color: rgba(255,107,53,0.25); color: var(--orange); }
+  .phase-badge.green  { background: rgba(0,212,170,0.12);  border-color: rgba(0,212,170,0.25);  color: var(--green); }
+  .phase-badge.yellow { background: rgba(245,200,66,0.12); border-color: rgba(245,200,66,0.25); color: var(--yellow); }
+
+  .toggle-btn {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: transform 0.25s, border-color 0.2s;
+    align-self: center;
+  }
+
+  .phase.open .toggle-btn { transform: rotate(180deg); border-color: var(--accent); color: var(--accent); }
+
+  .phase-body {
+    display: none;
+    padding: 0 28px 28px 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .phase.open .phase-body { display: block; }
+
+  /* ── STEPS ── */
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 24px;
+  }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(42,48,80,0.6);
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    padding-top: 3px;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  .step-content h4 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step-content p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .step-content p code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    background: rgba(58,125,255,0.1);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 1px 6px;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    margin-top: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .code-block .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .code-block pre {
+    padding: 16px 18px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #c8d3f0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .kw { color: #82aaff; }
+  .fn { color: #82aaff; }
+  .num { color: #f78c6c; }
+  .str { color: #c3e88d; }
+  .cmt { color: #4a5270; font-style: italic; }
+  .var { color: var(--accent3); }
+
+  /* ── BAUTEIL-TABELLE ── */
+  .parts-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 0.875rem;
+  }
+
+  .pg-head {
+    display: contents;
+  }
+
+  .pg-head > div {
+    background: var(--surface2);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pg-row {
+    display: contents;
+  }
+
+  .pg-row > div {
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(42,48,80,0.5);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pg-row:last-child > div { border-bottom: none; }
+
+  .pg-row:nth-child(odd) > div { background: rgba(30,35,54,0.4); }
+
+  .badge-ok {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(0,212,170,0.12);
+    border: 1px solid rgba(0,212,170,0.3);
+    color: var(--green);
+    white-space: nowrap;
+  }
+
+  .badge-buy {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255,107,53,0.12);
+    border: 1px solid rgba(255,107,53,0.3);
+    color: var(--orange);
+    white-space: nowrap;
+  }
+
+  .badge-partial {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(245,200,66,0.12);
+    border: 1px solid rgba(245,200,66,0.3);
+    color: var(--yellow);
+    white-space: nowrap;
+  }
+
+  /* ── HINWEIS BOX ── */
+  .hint {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-top: 16px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .hint-info {
+    background: rgba(58,125,255,0.08);
+    border: 1px solid rgba(58,125,255,0.2);
+    color: #a8bfff;
+  }
+
+  .hint-warn {
+    background: rgba(255,107,53,0.08);
+    border: 1px solid rgba(255,107,53,0.2);
+    color: #ffb899;
+  }
+
+  .hint-tip {
+    background: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.2);
+    color: #80ffe8;
+  }
+
+  .hint-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── WIRING DIAGRAM ASCII ── */
+  .wiring {
+    margin-top: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: #7a85a3;
+    overflow-x: auto;
+  }
+
+  .wiring .hl { color: var(--accent3); }
+  .wiring .hl2 { color: var(--orange); }
+  .wiring .hl3 { color: var(--accent); }
+
+  /* ── CHECKPOINT ── */
+  .checkpoint {
+    margin-top: 24px;
+    padding: 20px 22px;
+    background: rgba(0,212,170,0.05);
+    border: 1px solid rgba(0,212,170,0.2);
+    border-radius: 12px;
+  }
+
+  .checkpoint h4 {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .checkpoint ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .checkpoint ul li {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .checkpoint ul li::before {
+    content: '□';
+    color: rgba(0,212,170,0.4);
+    font-family: var(--font-mono);
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline-bar {
+    display: flex;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 40px;
+    height: 48px;
+  }
+
+  .timeline-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 0 12px;
+    text-align: center;
+    letter-spacing: 0.04em;
+    transition: filter 0.2s;
+    cursor: default;
+  }
+
+  .timeline-seg:hover { filter: brightness(1.2); }
+
+  .ts-1 { background: rgba(58,125,255,0.35); color: #a8c8ff; flex: 2; }
+  .ts-2 { background: rgba(58,125,255,0.55); color: #c0d8ff; flex: 3; }
+  .ts-3 { background: rgba(0,212,170,0.35); color: #80ffe8; flex: 2; }
+  .ts-4 { background: rgba(255,107,53,0.45); color: #ffcab0; flex: 2; }
+  .ts-5 { background: rgba(245,200,66,0.4); color: #fce8a0; flex: 3; }
+
+  .timeline-labels {
+    display: flex;
+    gap: 0;
+    margin-top: 4px;
+  }
+
+  .timeline-label {
+    font-size: 10px;
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    padding: 0 4px;
+    text-align: center;
+  }
+
+  .tl-1 { flex: 2; }
+  .tl-2 { flex: 3; }
+  .tl-3 { flex: 2; }
+  .tl-4 { flex: 2; }
+  .tl-5 { flex: 3; }
+
+  /* ── LINK ── */
+  a.ext-link {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(58,125,255,0.3);
+    transition: border-color 0.15s, color 0.15s;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  a.ext-link:hover { color: var(--accent3); border-color: var(--accent3); }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    header { padding: 60px 20px 40px; }
+    main { padding: 40px 16px 80px; }
+    .phase-header { padding: 18px 16px 18px 22px; gap: 12px; }
+    .phase-body { padding: 0 16px 22px 22px; }
+    .parts-grid { grid-template-columns: 1fr 1fr; font-size: 0.82rem; }
+    .pg-head > div:nth-child(3),
+    .pg-head > div:nth-child(4),
+    .pg-row > div:nth-child(3),
+    .pg-row > div:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Jahrgang 8 · Arduino · Tinkercad · 3D-Druck</div>
+  <h1>Fahrroboter<br><span>konstruieren &amp; programmieren</span></h1>
+  <p class="subtitle">Ein Lernpfad für kompetente Schüler:innen — vom virtuellen Schaltkreis bis zum ausgedruckten Chassis.</p>
+  <div class="header-meta">
+    <div class="meta-pill"><span class="dot dot-blue"></span> Phase 1–2: Tinkercad Circuit</div>
+    <div class="meta-pill"><span class="dot dot-green"></span> Phase 3: Blockcode</div>
+    <div class="meta-pill"><span class="dot dot-orange"></span> Phase 4–5: 3D &amp; Aufbau</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- MATERIALCHECK -->
+  <div class="section-label">
+    <span class="track">Vorbereitung</span><hr>
+  </div>
+
+  <div class="phase open">
+    <div class="phase-accent-bar bar-blue"></div>
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon">📦</div>
+      <div class="phase-meta">
+        <h2>Materialcheck — Was ist im Koffer?</h2>
+        <div class="phase-desc">Überblick über verwendete Bauteile aus dem ELEGOO UNO R3 Most Complete Starter Kit</div>
+      </div>
+      <span class="phase-badge">Vor dem Start</span>
+      <div class="toggle-btn">▾</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="parts-grid">
+        <div class="pg-head">
+          <div>Bauteil</div><div>Funktion im Roboter</div><div>Im Koffer</div><div>Menge</div>
+        </div>
+        <div class="pg-row">
+          <div>Arduino UNO R3</div><div>Steuerung / Mikrocontroller</div><div><span class="badge-ok">✓ Vorhanden</span></div><div>1×</div>
+        </div>
+        <div class="pg-row">
+          <div>IC L293D</div><div>Motor-Treiber-Chip</div><div><span class="badge-ok">✓ Vorhanden</span></div><div>1×</div>
+        </div>
+        <div class="pg-row">
+          <div>Servo SG90</div><div>Lenkung (Vorderachse)</div><div><span class="badge-ok">✓ Vorhanden</span></div><div>1×</div>
+        </div>
+        <div class="pg-row">
+          <div>Schrittmotor + ULN2003</div><div>Alternativer Antrieb (langsam)</div><div><span class="badge-ok">✓ Vorhanden</span></div><div>1×</div>
+        </div>
+        <div class="pg-row">
+          <div>Breadboard</div><div>Schaltungsaufbau</div><div><span class="badge-ok">✓ Vorhanden</span></div><div>1×</div>
+        </div>
+        <div class="pg-row">
+          <div>Jumperkabel (M-M, M-F)</div><div>Verbindungen</div><div><span class="badge-ok">✓ Vorhanden</span></div><div>je Set</div>
+        </div>
+        <div class="pg-row">
+          <div>Kleiner DC-Motor (130er)</div><div>Hauptantrieb Hinterachse</div><div><span class="badge-buy">✗ Nicht im Kit</span></div><div>1× (≈ 1–2 €)</div>
+        </div>
+        <div class="pg-row">
+          <div>Räder (ø ca. 65 mm)</div><div>Antrieb</div><div><span class="badge-buy">✗ / 3D-Druck</span></div><div>2×</div>
+        </div>
+        <div class="pg-row">
+          <div>9V-Batterie + Clip</div><div>Motorversorgung</div><div><span class="badge-partial">~ Im Kit</span></div><div>1×</div>
+        </div>
+      </div>
+
+      <div class="hint hint-warn">
+        <span class="hint-icon">⚠️</span>
+        <div>Das Kit enthält <strong>keinen kleinen DC-Motor</strong> für die Hinterachse. Ein „130er Gleichstrommotor" ist für ~1–2 € erhältlich (z.B. per Arduino-Zubehör-Set) und passt direkt zum L293D-Chip. Alternativ kann der Schrittmotor mit ULN2003 genutzt werden — dann jedoch erheblich langsamer.</div>
+      </div>
+
+      <div class="hint hint-tip">
+        <span class="hint-icon">💡</span>
+        <div>Räder und Chassis werden selbst entworfen und <strong>3D-gedruckt</strong> — das ist ein Kernbestandteil dieses Lernpfads. Eine Radnabe mit 2-mm-Achsloch für den DC-Motor ist einfach modellierbar.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="section-label">
+    <span class="track">Phase 1</span><hr>
+  </div>
+
+  <div class="phase">
+    <div class="phase-accent-bar bar-blue"></div>
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon">🔌</div>
+      <div class="phase-meta">
+        <h2>Tinkercad Circuit: Schaltung aufbauen</h2>
+        <div class="phase-desc">Den L293D-Motortreiber virtuell verdrahten — ohne echte Bauteile zu riskieren</div>
+      </div>
+      <span class="phase-badge">~60 min</span>
+      <div class="toggle-btn">▾</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="hint hint-info">
+        <span class="hint-icon">ℹ️</span>
+        <div>Öffne <a class="ext-link" href="https://www.tinkercad.com" target="_blank">tinkercad.com</a> → <strong>Schaltkreise</strong> → <strong>Neuen Schaltkreis erstellen</strong>. Alle Bauteile sind im rechten Panel per Suche auffindbar.</div>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Arduino UNO platzieren</h4>
+            <p>Suche nach <code>Arduino UNO R3</code> und ziehe ihn auf die Arbeitsfläche. Er ist das Herzstück — alle anderen Bauteile werden an ihn angeschlossen.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>L293D IC platzieren</h4>
+            <p>Suche nach <code>L293D</code> (Motorbrücken-IC). Platziere ihn mittig auf dem Breadboard, sodass er die Mittelrinne überspannt. Pins 1–8 links, Pins 9–16 rechts.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Stromversorgung des L293D</h4>
+            <p>Verbinde <strong>Pin 8 (VS)</strong> des L293D mit <code>+5V</code> des Arduino (Motorversorgung). Verbinde <strong>Pin 16 (VSS)</strong> mit ebenfalls <code>+5V</code>. Alle <strong>GND-Pins</strong> (4, 5, 12, 13) mit <code>GND</code> des Arduino verbinden.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Enable-Pin und Steuerung</h4>
+            <p><strong>Pin 1 (EN1)</strong> → Arduino <code>D3</code> (PWM~). Damit lässt sich die Motorgeschwindigkeit per PWM regeln. <strong>Pin 2 (IN1)</strong> → <code>D4</code>, <strong>Pin 7 (IN2)</strong> → <code>D5</code>. Diese beiden Pins bestimmen die Drehrichtung.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-content">
+            <h4>DC-Motor anschließen</h4>
+            <p>Suche nach <code>Motor DC</code> in Tinkercad. Verbinde einen Motorkontakt mit <strong>Pin 3 (OUT1)</strong> und den anderen mit <strong>Pin 6 (OUT2)</strong> des L293D. Im echten Aufbau: DC-130-Motor.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">06</div>
+          <div class="step-content">
+            <h4>Servo SG90 für Lenkung</h4>
+            <p>Suche nach <code>Servo</code>. Verbinde <strong>Signal</strong> (orange) → <code>D9</code> (PWM~), <strong>VCC</strong> (rot) → <code>5V</code>, <strong>GND</strong> (braun) → <code>GND</code>. Der Servo dreht die Vorderachse für die Lenkung.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Schaltplan ASCII -->
+      <div class="wiring">
+<span class="hl">Arduino UNO</span>                    <span class="hl2">L293D</span>
+────────────                    ──────
+D3  (PWM) ──────────────────→  Pin 1  EN1
+D4        ──────────────────→  Pin 2  IN1
+D5        ──────────────────→  Pin 7  IN2
+5V  ──────────────────┬──────→ Pin 8  VS
+                      └──────→ Pin 16 VSS
+GND ──────────────────────────→ Pin 4,5,12,13
+
+                <span class="hl2">L293D</span>                 <span class="hl3">DC-Motor</span>
+                Pin 3  OUT1 ──────── Motor A+
+                Pin 6  OUT2 ──────── Motor A−
+
+<span class="hl">Arduino UNO</span>              <span class="hl3">Servo SG90</span>
+D9  (PWM) ──────────────── Signal (orange)
+5V        ──────────────── VCC    (rot)
+GND       ──────────────── GND    (braun)
+      </div>
+
+      <div class="checkpoint">
+        <h4>✓ Checkpoint Phase 1</h4>
+        <ul>
+          <li>L293D sitzt korrekt auf dem Breadboard (Mittelrinne überbrückt)</li>
+          <li>Alle GND-Pins des L293D sind verbunden (Pin 4, 5, 12, 13)</li>
+          <li>Motor ist an OUT1 und OUT2 angeschlossen</li>
+          <li>Servo ist an Pin D9 angeschlossen</li>
+          <li>Tinkercad zeigt keine Warnungen im Schaltkreis</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="section-label">
+    <span class="track">Phase 2</span><hr>
+  </div>
+
+  <div class="phase">
+    <div class="phase-accent-bar bar-blue"></div>
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon">🧩</div>
+      <div class="phase-meta">
+        <h2>Tinkercad Codeblocks: Motor steuern</h2>
+        <div class="phase-desc">Blockbasierte Programmierung — den Motor vorwärts, rückwärts und mit Lenkung steuern</div>
+      </div>
+      <span class="phase-badge">~45 min</span>
+      <div class="toggle-btn">▾</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="hint hint-info">
+        <span class="hint-icon">ℹ️</span>
+        <div>Im gleichen Tinkercad-Schaltkreis: Klicke oben rechts auf <strong>„Code"</strong> → wähle <strong>Blöcke</strong>. Die Blocksprache erzeugt im Hintergrund echten Arduino-C-Code, der rechts eingeblendet werden kann.</div>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Grundstruktur: Setup &amp; Schleife</h4>
+            <p>Tinkercad beginnt automatisch mit <code>Beim Start</code> (setup) und <code>Für immer</code> (loop). Diese Struktur beibehalten. Im Setup: Pinmodi setzen.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>Pin-Ausgabe konfigurieren</h4>
+            <p>Aus der Kategorie <strong>Ausgang</strong>: „Setze Pin [3] als Ausgang" × 3 für Pins 3, 4, 5. Diese entsprechen EN1, IN1, IN2 des L293D.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Vorwärts-Funktion bauen</h4>
+            <p>Erstelle eine Funktion namens <code>vorwaerts</code>. Inhalt: „Schreibe digitalen Wert HIGH an Pin 4", „Schreibe digitalen Wert LOW an Pin 5", „Schreibe analogen Wert [200] an Pin 3" (entspricht ~78% Geschwindigkeit, Wert 0–255).</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Stopp-Funktion</h4>
+            <p>Funktion <code>stopp</code>: „Schreibe analogen Wert [0] an Pin 3" — setzt PWM auf 0, Motor stoppt ohne Richtungsumkehr.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-content">
+            <h4>Servo-Lenkung einbauen</h4>
+            <p>Aus der Kategorie <strong>Servo</strong>: „Drehe Servo an Pin [9] um [90] Grad" = geradeaus. Wert 60° = Linkskurve, 120° = Rechtskurve. Baue Lenkbefehle in die Hauptschleife ein.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">06</div>
+          <div class="step-content">
+            <h4>Testsequenz in der Schleife</h4>
+            <p>Hauptschleife: vorwaerts() → 2 Sek warten → Servo 60° → 1 Sek warten → Servo 90° → stopp() → 1 Sek warten → wiederholen.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">07</div>
+          <div class="step-content">
+            <h4>Simulation starten</h4>
+            <p>Klicke auf <strong>„Simulation starten"</strong>. Der virtuelle DC-Motor sollte sich drehen, die Servoposition wechselt sichtbar. Im Code-Fenster rechts ist der generierte Arduino-Code lesbar.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pseudocode -->
+      <div class="code-block">
+        <div class="code-header"><span>Blockcode → Arduino C (automatisch generiert)</span><span>Preview</span></div>
+        <pre><span class="cmt">// Auto-generiert von Tinkercad Codeblocks</span>
+<span class="kw">#include</span> &lt;<span class="var">Servo</span>.h&gt;
+
+<span class="var">Servo</span> lenkServo;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  pinMode(<span class="num">3</span>, OUTPUT);  <span class="cmt">// EN1 – Geschwindigkeit</span>
+  pinMode(<span class="num">4</span>, OUTPUT);  <span class="cmt">// IN1 – Richtung A</span>
+  pinMode(<span class="num">5</span>, OUTPUT);  <span class="cmt">// IN2 – Richtung B</span>
+  lenkServo.<span class="fn">attach</span>(<span class="num">9</span>);
+}
+
+<span class="kw">void</span> <span class="fn">vorwaerts</span>() {
+  digitalWrite(<span class="num">4</span>, HIGH);
+  digitalWrite(<span class="num">5</span>, LOW);
+  analogWrite(<span class="num">3</span>, <span class="num">200</span>);   <span class="cmt">// ~78% Leistung</span>
+}
+
+<span class="kw">void</span> <span class="fn">stopp</span>() {
+  analogWrite(<span class="num">3</span>, <span class="num">0</span>);
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  lenkServo.<span class="fn">write</span>(<span class="num">90</span>);  <span class="cmt">// geradeaus</span>
+  <span class="fn">vorwaerts</span>();
+  delay(<span class="num">2000</span>);
+  lenkServo.<span class="fn">write</span>(<span class="num">60</span>);  <span class="cmt">// Linkskurve</span>
+  delay(<span class="num">1000</span>);
+  lenkServo.<span class="fn">write</span>(<span class="num">90</span>);
+  <span class="fn">stopp</span>();
+  delay(<span class="num">1000</span>);
+}</pre>
+      </div>
+
+      <div class="checkpoint">
+        <h4>✓ Checkpoint Phase 2</h4>
+        <ul>
+          <li>Simulation läuft ohne Fehler in Tinkercad</li>
+          <li>Virtueller Motor dreht sich bei vorwaerts()</li>
+          <li>Servo wechselt sichtbar zwischen 60°, 90°, 120°</li>
+          <li>Generierter C-Code ist lesbar und nachvollziehbar</li>
+          <li>Code-Export als .ino gespeichert (Datei → Herunterladen)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="section-label">
+    <span class="track">Phase 3</span><hr>
+  </div>
+
+  <div class="phase">
+    <div class="phase-accent-bar bar-green"></div>
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon">🖨️</div>
+      <div class="phase-meta">
+        <h2>Tinkercad 3D: Chassis &amp; Räder entwerfen</h2>
+        <div class="phase-desc">Ein einfaches Roboter-Chassis und Räder mit Radnabe für den DC-Motor modellieren</div>
+      </div>
+      <span class="phase-badge green">~90 min</span>
+      <div class="toggle-btn">▾</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="hint hint-info">
+        <span class="hint-icon">ℹ️</span>
+        <div>Wechsle in Tinkercad zu <strong>3D-Design</strong> → Neues Design. Das 3D-Modul und das Schaltkreis-Modul sind getrennte Projekte — hier geht es ausschließlich ums Modell.</div>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Chassis-Grundplatte</h4>
+            <p>Box-Form: <strong>180 × 120 × 4 mm</strong> (Länge × Breite × Höhe). Farbe: Beliebig. Diese Platte trägt Arduino, Breadboard und Motoren. Bohrungen für Schrauben (ø 3 mm) an den Ecken mit Zylinder-Aussparungen einfügen.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>Motorhalterung hinten</h4>
+            <p>Zwei L-förmige Halter aus Box-Formen für den DC-Motor an der Hinterseite. Abstand zum Chassis: ~20 mm (für Rad-Freigängigkeit). Der DC-130-Motor hat ca. <strong>ø 20 mm × 15 mm</strong> Körpergröße.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Hinterrad entwerfen</h4>
+            <p>Neues Design öffnen. Zylinder: <strong>ø 65 mm, Breite 12 mm</strong>. In der Mitte: Loch-Zylinder ø 2 mm für Motorachse einsetzen (als Lochform / Aussparung). Optional: Reifenprofil durch kleinere Boxen auf dem Außenrand.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Vorderrad &amp; Stützrolle</h4>
+            <p>Für einfache Variante: eine einzelne <strong>Stützrolle vorne</strong> (Kugelrolle / Caster) aus dem Internet oder selbst gedruckt. Alternativ zwei kleinere Räder an einer Stützachse. Kugel-Caster-STL gibt es auf Thingiverse.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-content">
+            <h4>Servo-Halterung vorne</h4>
+            <p>Wenn Lenkung realisiert wird: Servo-Halterung nach SG90-Maßen (<strong>23 × 12 × 29 mm</strong>) modellieren. Alternativ: Servo mit Kabelbinder befestigen (pragmatisch, funktioniert).</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">06</div>
+          <div class="step-content">
+            <h4>STL exportieren</h4>
+            <p>In Tinkercad: <strong>Exportieren → .STL</strong>. Getrennte STL-Dateien für: Chassis, Hinterrad (2×), ggf. Servo-Halter. Im Slicer (z.B. Cura, PrusaSlicer): 0,2 mm Schichthöhe, 20% Infill, kein Support für Chassis nötig.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hint hint-tip">
+        <span class="hint-icon">💡</span>
+        <div><strong>Druckzeit-Schätzung:</strong> Chassis ca. 2–3 Stunden, Räder je ~30 min (bei 0,2 mm / 20% Infill). Gesamtdruck: ca. 3–4 Stunden. Plant den Druck über Nacht oder in der Freistunde.</div>
+      </div>
+
+      <div class="hint hint-warn">
+        <span class="hint-icon">⚠️</span>
+        <div><strong>Toleranzen beachten:</strong> Tinkercad-Maße sind exakt. Für Passungen (z.B. Motorachse ins Rad) +0,2 mm Toleranz im Durchmesser einplanen, da Drucker leicht schrumpfen.</div>
+      </div>
+
+      <div class="checkpoint">
+        <h4>✓ Checkpoint Phase 3</h4>
+        <ul>
+          <li>Chassis-Modell vollständig und ohne überlappende Formen</li>
+          <li>Radnaben-Bohrung passt zur DC-Motor-Achse (ø 2 mm)</li>
+          <li>STL-Dateien fehlerfrei exportiert</li>
+          <li>Slicer-Vorschau geprüft — kein unerwünschter Support</li>
+          <li>Druckauftrag gestartet oder geplant</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="section-label">
+    <span class="track">Phase 4</span><hr>
+  </div>
+
+  <div class="phase">
+    <div class="phase-accent-bar bar-orange"></div>
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon">🔧</div>
+      <div class="phase-meta">
+        <h2>Realer Aufbau: Schaltung auf Chassis</h2>
+        <div class="phase-desc">Den echten Schaltkreis nach dem virtuellen Vorbild aufbauen und erste Tests durchführen</div>
+      </div>
+      <span class="phase-badge orange">~45 min</span>
+      <div class="toggle-btn">▾</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Gedruckte Teile prüfen</h4>
+            <p>Druckteile auf Maßhaltigkeit prüfen: Motorachse ins Rad stecken — leicht fest, aber nicht unbeweglich. Chassis-Oberfläche prüfen. Ggf. Bohrungen mit 2-mm-Bohrer nacharbeiten.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>Komponenten auf Chassis befestigen</h4>
+            <p>Arduino und Breadboard mit doppelseitigem Klebeband auf Chassis fixieren. DC-Motor in Halterung. Servo vorne mit Halter oder Kabelbinder. Kabelmanagement mit kleinen Klemmen oder Kabelbinder-Kanälen.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Schaltung nach Tinkercad aufbauen</h4>
+            <p>Genau die Verbindungen aus Phase 1 real aufbauen. Tinkercad-Screenshot als Referenz nutzen. Zuerst alle GND-Verbindungen, dann VCC, dann Signale. DC-Motor über L293D, Servo direkt an Arduino.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Code hochladen</h4>
+            <p>Arduino IDE öffnen. .ino aus Tinkercad einfügen oder Code abtippen. Board: <code>Arduino UNO</code>, Port auswählen. Upload-Taste (→). Bei Fehler: Seriellen Monitor öffnen für Debugging.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">05</div>
+          <div class="step-content">
+            <h4>Ersten Fahrtest</h4>
+            <p>Roboter auf flachem Untergrund aufstellen. USB trennen, Batterie anschließen. Testsequenz aus Phase 2 beobachten: Motor dreht, Servo lenkt. Ist der Roboter zu schnell: <code>analogWrite(3, 150)</code> verringern.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hint hint-warn">
+        <span class="hint-icon">⚠️</span>
+        <div><strong>Polung beachten:</strong> DC-Motor dreht je nach Anschluss vorwärts oder rückwärts. Wenn der Roboter rückwärts fährt: einfach IN1/IN2 tauschen (Pins 4 und 5 im Code), <em>nicht</em> die Kabel.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="section-label">
+    <span class="track">Phase 5</span><hr>
+  </div>
+
+  <div class="phase">
+    <div class="phase-accent-bar bar-yellow"></div>
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-icon">🚀</div>
+      <div class="phase-meta">
+        <h2>Erweiterungen &amp; Verbesserungen</h2>
+        <div class="phase-desc">Für Teams, die früher fertig sind — optionale Erweiterungen für mehr Autonomie</div>
+      </div>
+      <span class="phase-badge yellow">Optional</span>
+      <div class="toggle-btn">▾</div>
+    </div>
+    <div class="phase-body">
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">A</div>
+          <div class="step-content">
+            <h4>Ultraschall-Hindernisvermeidung</h4>
+            <p>HC-SR04 Sensor (im Kit!) an Vorderseite befestigen. Pins: <code>Trig → D7</code>, <code>Echo → D6</code>. Code: Wenn Abstand &lt; 20 cm → stopp → rückwärts → Lenkung ändern. Perfekte Erweiterung des bestehenden Codes.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">B</div>
+          <div class="step-content">
+            <h4>IR-Fernsteuerung</h4>
+            <p>IR-Empfänger (im Kit!) an <code>D11</code>. Mit der Bibliothek <code>IRremote</code> Tasten auslesen. Jede Taste einer Funktion zuweisen: vorwärts, stopp, links, rechts. Kein Zubehör nötig, Fernbedienung im Kit enthalten.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">C</div>
+          <div class="step-content">
+            <h4>LED-Statusanzeige</h4>
+            <p>LEDs aus dem Kit als Fahrtlicht oder Blinker. Vorwärts: weiße LEDs an, Bremse: rote LEDs, Rückwärts: gelbe. Simpel, aber das Ergebnis wirkt deutlich professioneller.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">D</div>
+          <div class="step-content">
+            <h4>Zweiter Motor für Differentialantrieb</h4>
+            <p>Einen zweiten DC-Motor beschaffen. L293D hat 2 Motorkanäle (Pins 9–15 für Kanal 2). Differentialantrieb ermöglicht Kurvenfahrt ohne Servo — elegantere Lösung für fortgeschrittene Teams.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section-label" style="margin-top: 60px;">
+    <span class="track">Zeitplanung</span><hr>
+  </div>
+
+  <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; font-family: var(--font-mono);">Empfohlene Aufteilung über 4–5 Unterrichtsstunden à 45 min</div>
+
+  <div class="timeline-bar">
+    <div class="timeline-seg ts-1">Vorbereitung<br>Material</div>
+    <div class="timeline-seg ts-2">Phase 1+2<br>Tinkercad</div>
+    <div class="timeline-seg ts-3">Phase 3<br>3D-Design</div>
+    <div class="timeline-seg ts-4">Druck</div>
+    <div class="timeline-seg ts-5">Phase 4+5<br>Aufbau & Test</div>
+  </div>
+  <div class="timeline-labels">
+    <div class="timeline-label tl-1">UE 1</div>
+    <div class="timeline-label tl-2">UE 1–2</div>
+    <div class="timeline-label tl-3">UE 2–3</div>
+    <div class="timeline-label tl-4">Hausaufgabe /<br>Freistunde</div>
+    <div class="timeline-label tl-5">UE 4–5</div>
+  </div>
+
+  <div class="hint hint-tip" style="margin-top: 28px;">
+    <span class="hint-icon">🎯</span>
+    <div><strong>Minimalziel:</strong> Ein Roboter, der eine Testsequenz (vorwärts, Kurve, stopp) autonom abfährt — ohne Fernsteuerung. Alle Erweiterungen sind optional und für besonders zügige Gruppen gedacht.</div>
+  </div>
+
+</main>
+
+<footer>
+  Fahrroboter-Lernpfad · ELEGOO UNO R3 Most Complete Starter Kit · Jahrgang 8 · <a href="../index.html" style="color:var(--accent);">Zurück zur Übersicht</a>
+</footer>
+
+<script>
+  function togglePhase(header) {
+    const phase = header.closest('.phase');
+    phase.classList.toggle('open');
+  }
+
+  // Alle Phasen geschlossen öffnen bei erstem Klick
+  document.querySelectorAll('.phase:not(.open) .phase-header').forEach(h => {
+    h.addEventListener('click', () => {}, { once: true });
+  });
+</script>
+
+</body>
+</html>

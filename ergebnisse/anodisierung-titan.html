@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ergebnis: Anodisierung von Titan</title>
+<style>
+  :root {
+    --bg: #10151c;
+    --card: #1a212b;
+    --border: #2a3441;
+    --text: #e7edf3;
+    --muted: #94a3b3;
+    --blue: #3aa0e0;
+    --gold: #e0b23a;
+    --purple: #9b6ee0;
+    --green: #4fbf8f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+  header {
+    padding: 3.4rem 2rem 3rem;
+    text-align: center;
+    background: linear-gradient(120deg, #14324a, #3a2a52 45%, #4a3a14 75%, #123a30);
+    border-bottom: 1px solid var(--border);
+  }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #cfe0f0; opacity: 0.85; margin-bottom: 0.7rem; }
+  header h1 { font-size: 2.3rem; margin-bottom: 0.7rem; }
+  header p { max-width: 620px; margin: 0 auto; color: #d8e2ec; opacity: 0.9; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--gold); }
+
+  main { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
+
+  h2.section-title {
+    font-size: 1.35rem;
+    margin: 2.6rem 0 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    color: #f2f6fa;
+  }
+  h2.section-title:first-of-type { margin-top: 0; }
+
+  .color-bar {
+    display: flex;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 54px;
+    margin: 1.2rem 0 0.6rem;
+    border: 1px solid var(--border);
+  }
+  .color-bar div { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 600; color: rgba(0,0,0,0.55); }
+  .color-bar .c1 { background: #f2d98a; }
+  .color-bar .c2 { background: #e0b23a; }
+  .color-bar .c3 { background: #9b6ee0; }
+  .color-bar .c4 { background: #3aa0e0; }
+  .color-bar .c5 { background: #4fbf8f; }
+  .color-bar-labels { display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--muted); margin-bottom: 1.6rem; }
+
+  .qa-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+  }
+  .qa-card h3 { font-size: 1rem; color: var(--gold); margin-bottom: 0.4rem; }
+  .qa-card p { font-size: 0.92rem; color: var(--muted); }
+
+  .materials {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.4rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .materials strong { color: var(--text); }
+  .materials ul { list-style: none; margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .materials li::before { content: '•'; color: var(--blue); margin-right: 8px; }
+
+  .step {
+    display: flex;
+    gap: 1.1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+  }
+  .step .step-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .step p { font-size: 0.92rem; color: var(--muted); }
+
+  .observation {
+    margin-top: 2.2rem;
+    background: linear-gradient(120deg, rgba(58,160,224,0.15), rgba(155,110,224,0.15), rgba(79,191,143,0.15));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.7rem;
+  }
+  .observation h3 { margin-bottom: 0.5rem; color: #f2f6fa; }
+  .observation p { color: var(--muted); font-size: 0.94rem; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Ergebnis · Chemie</div>
+  <h1>Anodisierung von Titan</h1>
+  <p>Wie aus blankem Titan durch Strom und eine einfache Elektrolytlösung leuchtende Farben ganz ohne Farbstoffe entstehen.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <h2 class="section-title">Was passiert bei einer Anodisierung?</h2>
+  <div class="qa-card">
+    <p>Bei der Anodisierung von Titan wird durch Strom eine dünne Oxidschicht erzeugt, die sowohl schützt als auch durch Lichtinterferenz farbig erscheint. Diese Oxidschicht schützt vor Korrosion und erzeugt durch Lichtinterferenz Farben — ganz ohne Farbstoffe.</p>
+  </div>
+
+  <div class="color-bar">
+    <div class="c1">dünn</div><div class="c2">Gelb/Gold</div><div class="c3">Violett</div><div class="c4">Blau</div><div class="c5">Grün</div>
+  </div>
+  <div class="color-bar-labels"><span>niedrigere Spannung</span><span>höhere Spannung, dickere Oxidschicht</span></div>
+
+  <h2 class="section-title">Fragen &amp; Antworten</h2>
+
+  <div class="qa-card">
+    <h3>Woher kommt das Wort „Anodisierung"?</h3>
+    <p>Der Begriff geht auf das Griechische zurück: „anodos" = „Weg nach oben". Anodisieren bedeutet also wörtlich: ein Material an der Anode behandeln, sodass dort gezielt eine Oxidation abläuft.</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Funktioniert diese Reaktion auch bei anderen Materialien, oder nur bei Titan?</h3>
+    <p>Anodisierung funktioniert nur bei Metallen, die eine Oxidschicht bilden können. Titan ist also nur ein Beispiel — aber ein besonders interessantes wegen der Farbeffekte.</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Wie entstehen die verschiedenen Farben?</h3>
+    <p>Welche Farbe man sieht, hängt von der Dicke der Oxidschicht ab, und die wird durch die angelegte Spannung bestimmt. Niedrigere Spannungen erzeugen dünne Oxidschichten → wärmere Farben (Gelb/Gold). Höhere Spannungen → dickere Oxidschichten → kühlere Farben (Blau/Grün).</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Kann man eine übersprungene Farbe wieder zurückbekommen?</h3>
+    <p>Farben lassen sich nicht zurückdrehen, nur resetten und neu erzeugen — indem man die vorhandene Oxidschicht aus Titandioxid komplett entfernt, sodass wieder blankes Titan vorliegt.</p>
+  </div>
+
+  <h2 class="section-title">Materialien &amp; Chemikalien</h2>
+  <div class="materials">
+    <ul>
+      <li><strong>Tri-Natriumphosphat (Na₃PO₄)</strong> — für neutrale bis leicht basische Anodisierung; erzeugt farbige Oxidschichten.</li>
+      <li><strong>Destilliertes Wasser</strong> — für die Zubereitung der Elektrolytlösung.</li>
+      <li>Ein Gefäß aus Glas oder Hartplastik, ca. 1 Liter Fassungsvermögen.</li>
+    </ul>
+  </div>
+
+  <h2 class="section-title">Durchführung</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <p>Den Titan-Gegenstand gründlich reinigen, um Fett, Schmutz oder Oxid-Reste zu entfernen. Bei Bedarf die Oberfläche vorher leicht schleifen oder polieren, sodass sie glatt und frei von Unebenheiten ist.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <p>Die Elektrolytlösung aus 1 l destilliertem Wasser und 10–50 g tri-Natriumphosphat in einem Glasbehälter vorbereiten. Häufig wird eine 0,5–1 %ige Lösung von Schwefelsäure, Natriumbicarbonat oder Tri-Natriumphosphat bei Raumtemperatur verwendet.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <p>Den Titan-Gegenstand an den Pluspol einer Stromquelle anschließen, während die tri-Natriumphosphat-Lösung mit dem Minuspol an dieselbe Stromquelle angeschlossen wird.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <p>Beim Anodisieren die Spannung langsam auf den gewünschten Wert einstellen. Niedrigere Spannungen erzeugen eher bläuliche Töne, höhere Spannungen erzeugen gelbe, violette oder grüne Farbtöne. Die Dauer richtet sich nach der gewünschten Farbtiefe und kann von wenigen Sekunden bis zu mehreren Minuten variieren.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <p>Während des Prozesses bildet sich auf der Oberfläche eine dünne Oxidschicht, deren Farbe durch das Reflektieren des Lichts sichtbar wird.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <p>Nach Abschluss des Anodisierens das Titan sorgfältig mit destilliertem Wasser abspülen, um alle Rückstände des Elektrolyten zu entfernen, und anschließend trocknen.</p>
+  </div>
+
+  <div class="observation">
+    <h3>🔬 Beobachtung</h3>
+    <p>Je mehr Volt angelegt wurden, desto mehr veränderte sich die Farbe des Titan-Gegenstands — von warmen Farben hin zu kühlen Farben.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anodisierung von Titan · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>

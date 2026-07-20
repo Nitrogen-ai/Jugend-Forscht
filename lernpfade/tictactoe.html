@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TicTacToe-KI · Code-Lernpfad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --bg: #06080f;
+  --bg-elevated: #0b0f1c;
+  --panel: #0e1424;
+  --panel-border: #1d2740;
+  --grid-line: rgba(120,150,255,0.06);
+  --cyan: #5ee7ff;
+  --violet: #9b6dff;
+  --magenta: #ff5ec0;
+  --text-hi: #eef1ff;
+  --text-mid: #9aa6c8;
+  --text-low: #5c6688;
+  --code-bg: #080b14;
+  --success: #5cffb0;
+  --error: #ff6b81;
+  --warn: #ffd166;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --radius: 14px;
+  --transition: 0.35s cubic-bezier(.2,.8,.2,1);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--text-hi);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Ambient background grid */
+body::before{
+  content:"";
+  position: fixed;
+  inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index:0;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+}
+
+body::after{
+  content:"";
+  position: fixed;
+  top:-20%; left:50%;
+  width:140%; height:60%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(94,231,255,0.10), transparent 60%);
+  pointer-events:none;
+  z-index:0;
+}
+
+a{ color: var(--cyan); }
+
+h1,h2,h3,h4{
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 .5em 0;
+  letter-spacing: -0.01em;
+}
+
+code, pre, .mono{ font-family: var(--font-mono); }
+
+.wrap{
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============ Scroll progress bar ============ */
+#progress-bar{
+  position: fixed;
+  top:0; left:0;
+  height: 3px;
+  width:0%;
+  background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
+  z-index: 999;
+  transition: width .1s linear;
+  box-shadow: 0 0 12px rgba(94,231,255,.6);
+}
+
+/* ============ Nav ============ */
+nav{
+  position: fixed;
+  top: 0; right: 0;
+  z-index: 900;
+  padding: 18px 24px;
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+.nav-pill{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-mid);
+  background: rgba(14,20,36,0.7);
+  border: 1px solid var(--panel-border);
+  backdrop-filter: blur(8px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  display:flex; align-items:center; gap:8px;
+}
+.nav-dot{
+  width:7px;height:7px;border-radius:50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot{ 0%,100%{opacity:1;} 50%{opacity:.4;} }
+
+/* ============ Hero ============ */
+.hero{
+  min-height: 92vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  position: relative;
+  padding-top: 60px;
+}
+.eyebrow{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-bottom: 18px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.eyebrow .bracket{ color: var(--text-low); }
+
+.hero h1{
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  color: var(--text-hi);
+  max-width: 760px;
+}
+.hero h1 .grad{
+  background: linear-gradient(100deg, var(--cyan), var(--violet) 55%, var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero p.lead{
+  font-size: 1.15rem;
+  color: var(--text-mid);
+  max-width: 620px;
+  margin-top: 18px;
+}
+
+.hero-board-stage{
+  margin-top: 48px;
+  display:flex;
+  gap: 40px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+/* Decorative circuit board signature element */
+.circuit-board{
+  width: 220px;
+  height: 220px;
+  position: relative;
+  flex-shrink:0;
+}
+.circuit-board svg{ width:100%; height:100%; }
+.circuit-cell-line{ stroke: var(--panel-border); stroke-width: 1.5; }
+.circuit-node{
+  fill: var(--bg-elevated);
+  stroke: var(--text-low);
+  stroke-width: 1.2;
+}
+.circuit-trace{
+  fill:none;
+  stroke: var(--cyan);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 4px var(--cyan));
+  stroke-dasharray: 6 4;
+  animation: trace-flow 3s linear infinite;
+  opacity: 0.85;
+}
+.circuit-trace.v{ stroke: var(--magenta); filter: drop-shadow(0 0 4px var(--magenta)); animation-delay: -1.2s;}
+@keyframes trace-flow{ to{ stroke-dashoffset: -100; } }
+
+.hero-meta{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mid);
+  max-width: 320px;
+}
+.hero-meta strong{ color: var(--text-hi); font-weight: 500; }
+.hero-meta .tag{
+  display:inline-block;
+  background: rgba(94,231,255,0.08);
+  border: 1px solid rgba(94,231,255,0.25);
+  color: var(--cyan);
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  margin: 3px 4px 3px 0;
+}
+
+.scroll-cue{
+  position:absolute;
+  bottom: 28px; left: 24px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-low);
+  display:flex; align-items:center; gap:8px;
+}
+.scroll-cue .arrow{ animation: bob 1.8s ease-in-out infinite; }
+@keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);} }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+/* ============ Section scaffolding ============ */
+section.module{
+  padding: 90px 0;
+  border-top: 1px solid var(--panel-border);
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+section.module.in-view{ opacity: 1; transform: translateY(0); }
+
+.module-head{
+  display:flex;
+  align-items:baseline;
+  gap: 18px;
+  margin-bottom: 14px;
+}
+.module-index{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--violet);
+  border: 1px solid rgba(155,109,255,0.35);
+  background: rgba(155,109,255,0.07);
+  padding: 4px 10px;
+  border-radius: 7px;
+  flex-shrink:0;
+}
+.module-head h2{ font-size: 1.7rem; color: var(--text-hi); }
+.module-sub{
+  color: var(--text-mid);
+  max-width: 680px;
+  margin-bottom: 28px;
+}
+.module-sub strong{ color: var(--text-hi); }
+
+/* Think-first prompt box */
+.think-box{
+  border: 1px dashed rgba(255,209,102,0.4);
+  background: rgba(255,209,102,0.04);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 22px;
+  color: var(--text-mid);
+}
+.think-box .lbl{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--warn);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  margin-bottom: 8px;
+  display:block;
+}
+
+/* Code reveal card */
+.code-card{
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  background: var(--panel);
+  overflow:hidden;
+  margin-bottom: 26px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.01), 0 20px 50px -30px rgba(0,0,0,0.6);
+}
+.code-card-header{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(255,255,255,0.015);
+  border-bottom: 1px solid var(--panel-border);
+}
+.code-card-title{
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mid);
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.dot-row{ display:flex; gap:6px; }
+.dot-row span{ width:9px; height:9px; border-radius:50%; }
+.dot-row span:nth-child(1){ background:#ff6b6b44; }
+.dot-row span:nth-child(2){ background:#ffd16644; }
+.dot-row span:nth-child(3){ background:#5cffb044; }
+
+.reveal-btn{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cyan);
+  background: rgba(94,231,255,0.08);
+  border: 1px solid rgba(94,231,255,0.3);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: .04em;
+}
+.reveal-btn:hover{ background: rgba(94,231,255,0.18); box-shadow: 0 0 16px rgba(94,231,255,0.25); }
+.reveal-btn:focus-visible{ outline: 2px solid var(--cyan); outline-offset: 2px; }
+.reveal-btn.revealed{ color: var(--text-low); border-color: var(--panel-border); background: transparent; }
+
+.code-body-wrap{
+  position: relative;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s cubic-bezier(.2,.8,.2,1);
+}
+.code-body-wrap.open{ max-height: 2200px; }
+
+.code-veil{
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, var(--code-bg) 0%, var(--code-bg) 60%, transparent 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 5;
+  transition: opacity .4s ease;
+  cursor:pointer;
+}
+.code-veil.hidden-veil{ opacity:0; pointer-events:none; }
+.code-veil-content{
+  text-align:center;
+  font-family: var(--font-mono);
+  color: var(--text-low);
+  font-size: 13px;
+}
+.code-veil-content .icon{ font-size: 22px; margin-bottom: 8px; display:block; }
+
+pre.code-body{
+  margin:0;
+  padding: 20px 22px;
+  background: var(--code-bg);
+  color: #d6deff;
+  font-size: 13.5px;
+  line-height: 1.65;
+  overflow-x: auto;
+  white-space: pre;
+}
+.tok-kw{ color: #ff79c6; }
+.tok-fn{ color: #5ee7ff; }
+.tok-str{ color: #ffd166; }
+.tok-num{ color: #9b6dff; }
+.tok-com{ color: #5c6688; font-style: italic; }
+.tok-builtin{ color: #5cffb0; }
+
+/* Explanation accordion-ish block, appears after reveal */
+.explain{
+  border-top: 1px solid var(--panel-border);
+  padding: 20px 22px 22px;
+  background: rgba(255,255,255,0.012);
+  display:none;
+}
+.explain.show{ display:block; animation: fade-up .5s ease; }
+@keyframes fade-up{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+.explain h4{
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 10px;
+}
+.explain p{ color: var(--text-mid); margin: 0 0 12px 0; }
+.explain ul{ margin: 0 0 12px 0; padding-left: 20px; color: var(--text-mid); }
+.explain li{ margin-bottom: 6px; }
+.explain code{
+  background: rgba(94,231,255,0.08);
+  color: var(--cyan);
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 0.92em;
+}
+
+.callout{
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: .94rem;
+  margin: 14px 0;
+  border-left: 3px solid;
+}
+.callout.bug{ background: rgba(255,107,129,0.07); border-color: var(--error); color:#ffd6db; }
+.callout.tip{ background: rgba(92,255,176,0.06); border-color: var(--success); color:#cfffe6; }
+.callout.note{ background: rgba(94,231,255,0.06); border-color: var(--cyan); color:#d8f6ff; }
+.callout strong{ display:block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+
+/* Self-check quiz */
+.quiz{
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  background: var(--bg-elevated);
+  margin-top: 8px;
+}
+.quiz .q{ font-weight: 500; margin-bottom: 12px; color: var(--text-hi); }
+.quiz-opts{ display:flex; flex-direction:column; gap:8px; }
+.quiz-opt{
+  text-align:left;
+  font-family: var(--font-body);
+  font-size: .94rem;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  color: var(--text-mid);
+  padding: 10px 14px;
+  border-radius: 9px;
+  cursor:pointer;
+  transition: var(--transition);
+}
+.quiz-opt:hover{ border-color: var(--cyan); color: var(--text-hi); }
+.quiz-opt.correct{ border-color: var(--success); background: rgba(92,255,176,0.08); color:#cfffe6; }
+.quiz-opt.wrong{ border-color: var(--error); background: rgba(255,107,129,0.08); color:#ffd6db; }
+.quiz-fb{ margin-top: 10px; font-size: .9rem; color: var(--text-mid); display:none; }
+.quiz-fb.show{ display:block; }
+
+/* progress checklist sidebar-ish, inline marker per module */
+.done-marker{
+  margin-left:auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-low);
+}
+.done-marker.complete{ color: var(--success); }
+
+/* Demo section */
+.demo-section{
+  padding: 90px 0 120px;
+  border-top: 1px solid var(--panel-border);
+}
+.demo-grid{
+  display:grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items:start;
+  margin-top: 30px;
+}
+@media (max-width: 800px){ .demo-grid{ grid-template-columns: 1fr; } }
+
+#board{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+}
+.cell{
+  aspect-ratio: 1;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  color: var(--text-hi);
+  cursor:pointer;
+  transition: var(--transition);
+  position: relative;
+}
+.cell:hover:not(.taken){ border-color: var(--cyan); box-shadow: 0 0 18px rgba(94,231,255,0.18) inset; }
+.cell.taken{ cursor: default; }
+.cell .mark-x{ color: var(--cyan); text-shadow: 0 0 14px rgba(94,231,255,0.5); }
+.cell .mark-o{ color: var(--magenta); text-shadow: 0 0 14px rgba(255,94,192,0.5); }
+.cell.win{ background: rgba(92,255,176,0.1); border-color: var(--success); }
+
+.demo-status{
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mid);
+  margin: 18px 0;
+  min-height: 20px;
+}
+.demo-controls{ display:flex; gap:10px; flex-wrap:wrap; }
+.btn{
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  padding: 9px 16px;
+  border-radius: 9px;
+  border: 1px solid var(--panel-border);
+  background: var(--panel);
+  color: var(--text-mid);
+  cursor:pointer;
+  transition: var(--transition);
+}
+.btn:hover{ border-color: var(--cyan); color: var(--text-hi); }
+.btn.primary{ border-color: rgba(94,231,255,0.4); color: var(--cyan); background: rgba(94,231,255,0.06); }
+
+.console-panel{
+  background: var(--code-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-mid);
+  max-height: 380px;
+  overflow-y: auto;
+}
+.console-panel .line{ margin-bottom: 4px; }
+.console-panel .line.sys{ color: var(--text-low); }
+.console-panel .line.x{ color: var(--cyan); }
+.console-panel .line.o{ color: var(--magenta); }
+.console-panel .line.win{ color: var(--success); }
+
+.map-table{
+  width:100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  margin: 14px 0 4px;
+}
+.map-table th, .map-table td{
+  border: 1px solid var(--panel-border);
+  padding: 8px 10px;
+  text-align:left;
+  color: var(--text-mid);
+}
+.map-table th{ color: var(--text-hi); background: rgba(255,255,255,0.02); }
+
+footer{
+  padding: 50px 0 70px;
+  text-align:center;
+  color: var(--text-low);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<nav>
+  <div class="nav-pill"><span class="nav-dot"></span> <span id="nav-status">SYSTEM BEREIT</span></div>
+</nav>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow"><span class="bracket">[</span> CODE-LERNPFAD <span class="bracket">]</span> Python &rarr; Spiellogik</div>
+    <h1>Wie baut man eine <span class="grad">TicTacToe-KI</span> aus zehn kleinen Funktionen?</h1>
+    <p class="lead">
+      Du bekommst keinen fertigen Vortrag, sondern ein Labor. Jeder Codeblock ist standardmäßig abgedeckt &mdash;
+      du analysierst ihn zuerst selbst, deckst ihn dann auf und vergleichst deine Vermutung mit der Erklärung.
+      Am Ende spielst du dein eigenes Programm live im Browser, als JavaScript-Portierung desselben Algorithmus.
+    </p>
+
+    <div class="hero-board-stage">
+      <div class="circuit-board" aria-hidden="true">
+        <svg viewBox="0 0 220 220">
+          <line class="circuit-cell-line" x1="73" y1="10" x2="73" y2="210"/>
+          <line class="circuit-cell-line" x1="147" y1="10" x2="147" y2="210"/>
+          <line class="circuit-cell-line" x1="10" y1="73" x2="210" y2="73"/>
+          <line class="circuit-cell-line" x1="10" y1="147" x2="210" y2="147"/>
+          <path class="circuit-trace" d="M 38 38 L 38 182"/>
+          <path class="circuit-trace" d="M 110 38 L 110 182"/>
+          <path class="circuit-trace v" d="M 38 38 L 182 38"/>
+          <path class="circuit-trace v" d="M 38 110 L 182 110"/>
+          <circle class="circuit-node" cx="38" cy="38" r="6"/>
+          <circle class="circuit-node" cx="110" cy="38" r="6"/>
+          <circle class="circuit-node" cx="182" cy="38" r="6"/>
+          <circle class="circuit-node" cx="38" cy="110" r="6"/>
+          <circle class="circuit-node" cx="110" cy="110" r="6"/>
+          <circle class="circuit-node" cx="182" cy="110" r="6"/>
+          <circle class="circuit-node" cx="38" cy="182" r="6"/>
+          <circle class="circuit-node" cx="110" cy="182" r="6"/>
+          <circle class="circuit-node" cx="182" cy="182" r="6"/>
+        </svg>
+      </div>
+      <div class="hero-meta">
+        <div><strong>Voraussetzungen:</strong> Listen, Funktionen, while-Schleifen, Grundidee von Minimax/Spielbäumen.</div>
+        <div style="margin-top:10px;">
+          <span class="tag">9 Funktionen</span>
+          <span class="tag">Konsole &rarr; Browser</span>
+          <span class="tag">Live-Demo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-cue"><span class="arrow">&darr;</span> Scrollen, um das Spielfeld zu initialisieren</div>
+  </section>
+
+  <!-- ================= MODULE 1 ================= -->
+  <section class="module" id="m1" data-module>
+    <div class="module-head">
+      <span class="module-index">01 / 09</span>
+      <h2>Der Spielzustand: eine Liste mit neun Strings</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      Bevor irgendeine Logik existiert, braucht das Spiel ein <strong>Gedächtnis</strong>: einen Ort, an dem steht,
+      was gerade auf dem Brett liegt. TicTacToe hat 9 Felder &mdash; die naheliegendste Datenstruktur dafür ist eine Liste.
+    </p>
+
+    <div class="think-box">
+      <span class="lbl">&#9888; Bevor du aufdeckst</span>
+      Wie würdest <em>du</em> ein leeres 3&times;3-Feld in Python speichern? Reicht eine einzige Liste mit 9 Einträgen,
+      oder bräuchtest du eine 3&times;3-Matrix (Liste von Listen)? Überlege kurz, bevor du weiterliest.
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> spielfeld.py</div>
+        <button class="reveal-btn" data-reveal="c1">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c1">
+        <div class="code-veil" data-veil="c1">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>1 Zeile Code &mdash; klicke auf &bdquo;Code aufdecken&ldquo;</div>
+        </div>
+        <pre class="code-body"><span class="tok-fn">field</span> = [<span class="tok-str">" "</span> <span class="tok-kw">for</span> _ <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">9</span>)]</pre>
+        <div class="explain" data-explain="c1">
+          <h4>Was hier passiert</h4>
+          <p>
+            Das ist eine <strong>List Comprehension</strong>: eine kompakte Schreibweise für &bdquo;erzeuge eine Liste, indem du
+            einen Ausdruck mehrmals wiederholst&ldquo;. <code>range(9)</code> liefert die Zahlen 0 bis 8, also läuft die
+            Schleife neunmal &mdash; und bei jedem Durchlauf wird <code>" "</code> (ein Leerzeichen als Platzhalter für &bdquo;leeres Feld&ldquo;)
+            an die Liste angehängt. Das Ergebnis: <code>[" ", " ", " ", " ", " ", " ", " ", " ", " "]</code>.
+          </p>
+          <p>
+            Die Indizes 0&ndash;8 entsprechen den neun Brettpositionen, gelesen von links oben nach rechts unten:
+          </p>
+          <table class="map-table">
+            <tr><th>0</th><th>1</th><th>2</th></tr>
+            <tr><td>3</td><td>4</td><td>5</td></tr>
+            <tr><td>6</td><td>7</td><td>8</td></tr>
+          </table>
+          <div class="callout note">
+            <strong>Design-Entscheidung</strong>
+            Eine flache 1D-Liste statt einer 3&times;3-Matrix zu nutzen ist bewusst einfach gehalten: kein verschachteltes Indizieren
+            (<code>field[row][col]</code>), dafür muss man bei Gewinnprüfungen und Ausgabe selbst wissen, welcher Index zu welcher
+            Position gehört. Das ist der Tradeoff, den dieser Code eingeht.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz>
+      <div class="q">Selbstcheck: Was enthält <code class="mono">field[4]</code> direkt nach der Initialisierung?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Den String <code>"X"</code></button>
+        <button class="quiz-opt" data-correct="true">Ein einzelnes Leerzeichen <code>" "</code></button>
+        <button class="quiz-opt" data-correct="false">Die Zahl <code>0</code></button>
+      </div>
+      <div class="quiz-fb" data-fb></div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 2 ================= -->
+  <section class="module" id="m2" data-module>
+    <div class="module-head">
+      <span class="module-index">02 / 09</span>
+      <h2>Das Brett anzeigen &mdash; mit einer Funktion in der Funktion</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      Jetzt, wo der Zustand existiert, braucht er eine sichtbare Form. <code class="mono">print_field()</code> übersetzt
+      die flache Liste zurück in ein 3&times;3-Raster aus Text.
+    </p>
+
+    <div class="think-box">
+      <span class="lbl">&#9888; Bevor du aufdeckst</span>
+      Eine Funktion <code class="mono">show(i)</code> wird <em>innerhalb</em> von <code class="mono">print_field()</code> definiert.
+      Warum könnte man eine Hilfsfunktion lokal statt global definieren? Was gewinnt man dadurch &mdash; und was verliert man?
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> anzeige.py</div>
+        <button class="reveal-btn" data-reveal="c2">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c2">
+        <div class="code-veil" data-veil="c2">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>1 Funktion, 1 verschachtelte Hilfsfunktion</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">print_field</span>():
+    <span class="tok-kw">def</span> <span class="tok-fn">show</span>(i):
+        <span class="tok-kw">return</span> field[i]
+
+    <span class="tok-builtin">print</span>(<span class="tok-str">f"\n {show(0)} | {show(1)} | {show(2)} "</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"---+---+---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">f" {show(3)} | {show(4)} | {show(5)} "</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"---+---+---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">f" {show(6)} | {show(7)} | {show(8)} \n"</span>)</pre>
+        <div class="explain" data-explain="c2">
+          <h4>Was hier passiert</h4>
+          <p>
+            <code>show(i)</code> ist eine sogenannte <strong>verschachtelte Funktion</strong> (nested function). Sie existiert nur
+            innerhalb von <code>print_field</code> und greift per <strong>Closure</strong> auf die globale Liste <code>field</code> zu &mdash;
+            sie braucht <code>field</code> nicht als Parameter, weil Python beim Lesen (nicht beim Schreiben) automatisch in äußeren
+            Gültigkeitsbereichen nachschaut.
+          </p>
+          <p>
+            Die drei <code>print</code>-Aufrufe nutzen <strong>f-Strings</strong>, um die neun Feldwerte an festen Positionen im
+            Raster einzusetzen. Die Trennzeilen <code>"---+---+---"</code> sind reiner Text, kein berechneter Wert.
+          </p>
+          <ul>
+            <li><code>show(0)</code>, <code>show(1)</code>, <code>show(2)</code> &rarr; obere Reihe</li>
+            <li><code>show(3)</code> bis <code>show(5)</code> &rarr; mittlere Reihe</li>
+            <li><code>show(6)</code> bis <code>show(8)</code> &rarr; untere Reihe</li>
+          </ul>
+          <div class="callout tip">
+            <strong>Warum überhaupt eine Hilfsfunktion?</strong>
+            Streng genommen könnte man auch direkt <code>field[0]</code> in den f-String schreiben &mdash; <code>show()</code> dient hier
+            nur der Lesbarkeit. In größeren Programmen nutzt man solche lokalen Funktionen, um Logik zu kapseln, die nirgendwo
+            sonst gebraucht wird, ohne den globalen Namensraum zu verschmutzen.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz>
+      <div class="q">Selbstcheck: Warum funktioniert <code class="mono">show(i)</code>, obwohl <code class="mono">field</code> nirgendwo als Parameter übergeben wird?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Python kopiert <code>field</code> automatisch in jede Funktion.</button>
+        <button class="quiz-opt" data-correct="true">Verschachtelte Funktionen können lesend auf Variablen aus äußeren Scopes zugreifen (Closure).</button>
+        <button class="quiz-opt" data-correct="false">Das ist ein Fehler, der Code würde nicht laufen.</button>
+      </div>
+      <div class="quiz-fb" data-fb></div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 3 ================= -->
+  <section class="module" id="m3" data-module>
+    <div class="module-head">
+      <span class="module-index">03 / 09</span>
+      <h2>Eingaben entgegennehmen &mdash; und allem misstrauen</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      <code class="mono">player_move()</code> ist die Funktion, die am meisten gegen &bdquo;den Nutzer&ldquo; verteidigen muss:
+      falsche Zahlen, belegte Felder, gar keine Zahl.
+    </p>
+
+    <div class="think-box">
+      <span class="lbl">&#9888; Bevor du aufdeckst</span>
+      Welche drei Dinge können bei einer Texteingabe für &bdquo;wähle Feld 1&ndash;9&ldquo; schiefgehen? Liste sie für dich,
+      bevor du schaust, wie der Code sie behandelt.
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> eingabe.py</div>
+        <button class="reveal-btn" data-reveal="c3">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c3">
+        <div class="code-veil" data-veil="c3">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>while-Schleife mit try/except</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">player_move</span>(player):
+    <span class="tok-kw">while</span> <span class="tok-builtin">True</span>:
+        <span class="tok-kw">try</span>:
+            choice = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">f"Spieler {player}, wähle ein Feld (1-9): "</span>))
+            index = choice - <span class="tok-num">1</span>
+
+            <span class="tok-kw">if</span> index &lt; <span class="tok-num">0</span> <span class="tok-kw">or</span> index &gt; <span class="tok-num">8</span>:
+                <span class="tok-builtin">print</span>(<span class="tok-str">"Fehler: Zahl muss zwischen 1 und 9 sein!"</span>)
+                <span class="tok-kw">continue</span>
+
+            <span class="tok-kw">if</span> field[index] != <span class="tok-str">" "</span>:
+                <span class="tok-builtin">print</span>(<span class="tok-str">"Fehler: Feld ist schon belegt!"</span>)
+                <span class="tok-kw">continue</span>
+
+            field[index] = player
+            <span class="tok-kw">break</span>
+
+        <span class="tok-kw">except</span> <span class="tok-builtin">ValueError</span>:
+            <span class="tok-builtin">print</span>(<span class="tok-str">"Fehler: Bitte eine gültige Zahl eingeben!"</span>)</pre>
+        <div class="explain" data-explain="c3">
+          <h4>Was hier passiert</h4>
+          <p>
+            <code>while True:</code> erzeugt eine <strong>Endlosschleife</strong>, die nur durch <code>break</code> verlassen wird &mdash;
+            das Muster &bdquo;frag immer wieder, bis die Eingabe gültig ist&ldquo;.
+          </p>
+          <p>Drei Fehlerquellen werden behandelt, in dieser Reihenfolge:</p>
+          <ul>
+            <li><strong>Keine Zahl eingegeben</strong> (z.&nbsp;B. &bdquo;abc&ldquo;) &rarr; <code>int(...)</code> löst eine <code>ValueError</code>-Exception aus, die im <code>except</code>-Block abgefangen wird.</li>
+            <li><strong>Zahl außerhalb 1&ndash;9</strong> &rarr; nach der Umrechnung <code>index = choice - 1</code> liegt der gültige Bereich bei 0&ndash;8; alles andere löst die erste Fehlermeldung aus.</li>
+            <li><strong>Feld schon belegt</strong> &rarr; <code>field[index] != " "</code> prüft, ob dort schon ein Zeichen außer dem Leerzeichen steht.</li>
+          </ul>
+          <p>
+            Jede Fehlerbedingung nutzt <code>continue</code>, um sofort zum nächsten Schleifendurchlauf zu springen &mdash; die
+            restlichen Zeilen (<code>field[index] = player</code>, <code>break</code>) werden dann übersprungen.
+          </p>
+          <div class="callout note">
+            <strong>Warum <code>choice - 1</code>?</strong>
+            Menschen zählen Felder von 1 bis 9, Python-Listen werden von 0 bis 8 indiziert. Diese Zeile ist die Brücke
+            zwischen &bdquo;Nutzersprache&ldquo; und &bdquo;Datenstruktur&ldquo;.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz>
+      <div class="q">Selbstcheck: Der Nutzer tippt &bdquo;0&ldquo; ein. Was passiert?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false"><code>ValueError</code>, da 0 keine gültige Zahl ist.</button>
+        <button class="quiz-opt" data-correct="true"><code>index</code> wird -1, die Bereichsprüfung schlägt fehl, Fehlermeldung erscheint.</button>
+        <button class="quiz-opt" data-correct="false">Feld 0 (oben links) wird belegt.</button>
+      </div>
+      <div class="quiz-fb" data-fb></div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 4 ================= -->
+  <section class="module" id="m4" data-module>
+    <div class="module-head">
+      <span class="module-index">04 / 09</span>
+      <h2>Den Spieler wechseln: die kürzeste Funktion im Programm</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">Manchmal ist die wichtigste Funktion auch die kleinste.</p>
+
+    <div class="think-box">
+      <span class="lbl">&#9888; Bevor du aufdeckst</span>
+      Wie würdest du in einer Zeile ausdrücken: &bdquo;wenn aktuell X ist, dann O, sonst X&ldquo;?
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> spielerwechsel.py</div>
+        <button class="reveal-btn" data-reveal="c4">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c4">
+        <div class="code-veil" data-veil="c4">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>2 Zeilen</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">next_player</span>(current):
+    <span class="tok-kw">return</span> <span class="tok-str">"O"</span> <span class="tok-kw">if</span> current == <span class="tok-str">"X"</span> <span class="tok-kw">else</span> <span class="tok-str">"X"</span></pre>
+        <div class="explain" data-explain="c4">
+          <h4>Was hier passiert</h4>
+          <p>
+            Ein <strong>bedingter Ausdruck</strong> (ternary expression): <code>A if Bedingung else B</code> ist ein Ausdruck,
+            der zu <code>A</code> oder <code>B</code> auswertet &mdash; kein vollständiges <code>if</code>/<code>else</code>-Statement,
+            sondern ein Wert, der direkt zurückgegeben wird.
+          </p>
+          <p>
+            Die Funktion bekommt den aktuellen Spieler übergeben und gibt den jeweils anderen zurück. Sie verändert
+            keinen globalen Zustand &mdash; das Ergebnis muss vom Aufrufer in eine Variable geschrieben werden
+            (das passiert später in <code>game_loop</code>).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 5 ================= -->
+  <section class="module" id="m5" data-module>
+    <div class="module-head">
+      <span class="module-index">05 / 09</span>
+      <h2>Gewinnprüfung: alle acht Linien durchgehen</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      Ein TicTacToe-Brett hat genau acht mögliche Gewinnlinien: drei Reihen, drei Spalten, zwei Diagonalen.
+      <code class="mono">check_win()</code> prüft sie alle.
+    </p>
+
+    <div class="think-box">
+      <span class="lbl">&#9888; Bevor du aufdeckst</span>
+      Mit dem Index-Layout aus Modul 1 (0&ndash;8): welche drei Indizes bilden die Hauptdiagonale von oben links nach unten rechts?
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> gewinnpruefung.py</div>
+        <button class="reveal-btn" data-reveal="c5">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c5">
+        <div class="code-veil" data-veil="c5">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>Eine Liste von Tupeln + eine Schleife</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">check_win</span>(player):
+    wins = [
+        (<span class="tok-num">0</span>,<span class="tok-num">1</span>,<span class="tok-num">2</span>), (<span class="tok-num">3</span>,<span class="tok-num">4</span>,<span class="tok-num">5</span>), (<span class="tok-num">6</span>,<span class="tok-num">7</span>,<span class="tok-num">8</span>),
+        (<span class="tok-num">0</span>,<span class="tok-num">3</span>,<span class="tok-num">6</span>), (<span class="tok-num">1</span>,<span class="tok-num">4</span>,<span class="tok-num">7</span>), (<span class="tok-num">2</span>,<span class="tok-num">5</span>,<span class="tok-num">8</span>),
+        (<span class="tok-num">0</span>,<span class="tok-num">4</span>,<span class="tok-num">8</span>), (<span class="tok-num">2</span>,<span class="tok-num">4</span>,<span class="tok-num">6</span>)
+    ]
+
+    <span class="tok-kw">for</span> a, b, c <span class="tok-kw">in</span> wins:
+        <span class="tok-kw">if</span> field[a] == field[b] == field[c] == player:
+            <span class="tok-kw">return</span> <span class="tok-builtin">True</span>
+    <span class="tok-kw">return</span> <span class="tok-builtin">False</span></pre>
+        <div class="explain" data-explain="c5">
+          <h4>Was hier passiert</h4>
+          <p>
+            <code>wins</code> ist eine Liste von <strong>Tupeln</strong> &mdash; jedes Tupel enthält drei Indizes, die zusammen
+            eine Gewinnlinie bilden: die ersten drei Zeilen sind die Reihen, die nächsten drei die Spalten, die letzten
+            zwei die Diagonalen.
+          </p>
+          <p>
+            <code>for a, b, c in wins:</code> <strong>entpackt</strong> bei jedem Durchlauf ein Tupel direkt in drei Variablen.
+            Die Bedingung <code>field[a] == field[b] == field[c] == player</code> nutzt <strong>verkettete Vergleiche</strong>:
+            sie ist nur wahr, wenn alle drei Felder denselben Wert haben <em>und</em> dieser Wert gleich <code>player</code> ist.
+          </p>
+          <p>
+            Sobald eine Linie passt, wird sofort <code>True</code> zurückgegeben (kurzschlüssig &mdash; die restlichen Linien
+            werden nicht mehr geprüft). Erst wenn alle acht Linien durchlaufen wurden, ohne zu treffen, kommt <code>False</code>.
+          </p>
+          <div class="callout note">
+            <strong>Wieder die Index-Karte</strong>
+            <table class="map-table" style="margin-top:8px;">
+              <tr><th>0</th><th>1</th><th>2</th></tr>
+              <tr><td>3</td><td>4</td><td>5</td></tr>
+              <tr><td>6</td><td>7</td><td>8</td></tr>
+            </table>
+            (0,4,8) ist die Diagonale von oben links nach unten rechts, (2,4,6) die Gegendiagonale.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz>
+      <div class="q">Selbstcheck: Warum wird <code class="mono">player</code> als Parameter übergeben statt nur zu prüfen, ob alle drei Felder gleich sind?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Macht keinen Unterschied, ist nur Stil.</button>
+        <button class="quiz-opt" data-correct="true">Drei gleiche Leerzeichen <code>" "=="  "=="  "</code> wären sonst fälschlich ein &bdquo;Sieg&ldquo;.</button>
+        <button class="quiz-opt" data-correct="false">Python erlaubt keine Drei-Wege-Vergleiche ohne expliziten Wert.</button>
+      </div>
+      <div class="quiz-fb" data-fb></div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 6 ================= -->
+  <section class="module" id="m6" data-module>
+    <div class="module-head">
+      <span class="module-index">06 / 09</span>
+      <h2>Unentschieden erkennen</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">Die letzte Endbedingung: das Brett ist voll, aber niemand hat gewonnen.</p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> unentschieden.py</div>
+        <button class="reveal-btn" data-reveal="c6">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c6">
+        <div class="code-veil" data-veil="c6">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>1 Zeile</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">check_unentschieden</span>():
+    <span class="tok-kw">return</span> <span class="tok-str">" "</span> <span class="tok-kw">not</span> <span class="tok-kw">in</span> field</pre>
+        <div class="explain" data-explain="c6">
+          <h4>Was hier passiert</h4>
+          <p>
+            <code>" " not in field</code> prüft, ob <em>irgendwo</em> in der Liste noch ein Leerzeichen vorkommt. Ist
+            keines mehr da, sind alle 9 Felder belegt &mdash; die Funktion gibt <code>True</code> zurück.
+          </p>
+          <div class="callout tip">
+            <strong>Reihenfolge ist wichtig</strong>
+            Diese Funktion sagt nichts darüber, <em>wer</em> gewonnen hat &mdash; sie wird im Hauptprogramm deshalb erst
+            <em>nach</em> <code>check_win()</code> aufgerufen, damit ein Sieg in der letzten möglichen Runde nicht
+            fälschlich als Unentschieden gewertet wird.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 7 ================= -->
+  <section class="module" id="m7" data-module>
+    <div class="module-head">
+      <span class="module-index">07 / 09</span>
+      <h2>Die Hauptschleife &mdash; und ein Fehler, der nicht laufen wird</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      Jetzt fügt <code class="mono">game_loop()</code> alle bisherigen Bausteine zusammen. Decke den Code auf und
+      versuche zuerst, ihn <strong>gedanklich auszuführen</strong> &mdash; bevor du die Erklärung liest.
+    </p>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> hauptschleife.py</div>
+        <button class="reveal-btn" data-reveal="c7">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c7">
+        <div class="code-veil" data-veil="c7">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>Verbindet alle bisherigen Funktionen</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">game_loop</span>():
+    current_player = <span class="tok-str">"X"</span>
+    <span class="tok-com">repeat:</span>
+        print_field()
+        player_move(current_player)
+
+        <span class="tok-kw">if</span> check_win(current_player):
+            print_field()
+            <span class="tok-builtin">print</span>(<span class="tok-str">f"Spieler {current_player} hat gewonnen!"</span>)
+            <span class="tok-kw">break</span>
+
+        <span class="tok-kw">if</span> check_unentschieden():
+            print_field()
+            <span class="tok-builtin">print</span>(<span class="tok-str">"Unentschieden!"</span>)
+            <span class="tok-kw">break</span>
+
+        current_player = next_player(current_player)</pre>
+        <div class="explain" data-explain="c7">
+          <h4>Der Ablauf, wenn er liefe</h4>
+          <ul>
+            <li>Brett anzeigen</li>
+            <li>aktuellen Spieler ziehen lassen</li>
+            <li>prüfen, ob dieser Zug zum Sieg führte &rarr; wenn ja: Brett zeigen, Meldung, <code>break</code></li>
+            <li>sonst prüfen, ob das Brett voll ist &rarr; wenn ja: Brett zeigen, &bdquo;Unentschieden&ldquo;, <code>break</code></li>
+            <li>sonst Spieler wechseln und von vorn</li>
+          </ul>
+          <div class="callout bug">
+            <strong>Aber: dieser Code startet nicht</strong>
+            <code>repeat:</code> ist <strong>kein gültiges Python-Schlüsselwort</strong> &mdash; Python kennt <code>while</code>
+            und <code>for</code>, aber kein <code>repeat</code>. Beim Ausführen wirft der Interpreter einen
+            <code>SyntaxError</code>, noch bevor irgendetwas vom Spiel passiert. Das ist vermutlich aus einer anderen
+            Sprache (z.&nbsp;B. Pascal/Ada kennen <code>repeat ... until</code>) übernommen worden, existiert in Python
+            aber nicht.
+          </div>
+          <p>Die korrekte Übersetzung ist eine Endlosschleife mit <code>while True:</code>, exakt wie in <code>player_move</code>:</p>
+          <pre class="code-body" style="margin:0; border-radius:8px; border:1px solid var(--panel-border);"><span class="tok-kw">def</span> <span class="tok-fn">game_loop</span>():
+    current_player = <span class="tok-str">"X"</span>
+    <span class="tok-kw">while</span> <span class="tok-builtin">True</span>:
+        print_field()
+        player_move(current_player)
+        <span class="tok-com"># ... Rest unverändert</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz>
+      <div class="q">Selbstcheck: Was meldet Python, wenn man diesen Code unverändert ausführt?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Eine <code>NameError</code>, weil <code>repeat</code> nicht definiert ist.</button>
+        <button class="quiz-opt" data-correct="true">Eine <code>SyntaxError</code>, weil <code>repeat</code> kein Python-Schlüsselwort ist.</button>
+        <button class="quiz-opt" data-correct="false">Das Programm läuft, bricht aber nach einer Runde ab.</button>
+      </div>
+      <div class="quiz-fb" data-fb></div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 8 ================= -->
+  <section class="module" id="m8" data-module>
+    <div class="module-head">
+      <span class="module-index">08 / 09</span>
+      <h2>Wo ist die KI?</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      Schau dir <code class="mono">game_loop()</code> noch einmal an: in jeder Runde wird
+      <code class="mono">player_move(current_player)</code> aufgerufen &mdash; für <strong>beide</strong> Spieler, X und O.
+      Es gibt keine Funktion, die für O eine eigene Entscheidung trifft. Das Original-Programm ist ein reines
+      <strong>Mensch-gegen-Mensch-Spiel</strong>, bei dem beide abwechselnd Eingaben über die Konsole machen.
+    </p>
+
+    <div class="callout note">
+      <strong>Die fehlende Zutat</strong>
+      Damit aus &bdquo;TicTacToe für zwei Menschen&ldquo; ein &bdquo;TicTacToe gegen eine KI&ldquo; wird, braucht es eine Funktion,
+      die anstelle von <code class="mono">player_move("O")</code> aufgerufen wird, sobald O am Zug ist &mdash; eine Funktion,
+      die <em>selbst</em> entscheidet, welches Feld sie wählt, ohne <code class="mono">input()</code> zu nutzen.
+    </div>
+
+    <div class="think-box">
+      <span class="lbl">&#9888; Bevor du aufdeckst</span>
+      Die einfachste denkbare KI würde irgendein freies Feld zufällig wählen. Das wäre lauffähig, aber schlagbar.
+      Wie könnte eine KI stattdessen <em>vorausdenken</em>, bevor sie zieht? Was müsste sie sich für jeden möglichen
+      Zug &bdquo;ausmalen&ldquo;?
+    </div>
+
+    <div class="code-card">
+      <div class="code-card-header">
+        <div class="code-card-title"><span class="dot-row"><span></span><span></span><span></span></span> ki_minimax.py</div>
+        <button class="reveal-btn" data-reveal="c8">Code aufdecken</button>
+      </div>
+      <div class="code-body-wrap" data-wrap="c8">
+        <div class="code-veil" data-veil="c8">
+          <div class="code-veil-content"><span class="icon">&#9608;&#9608;&#9608;</span>Rekursive Spielbaum-Suche (Minimax)</div>
+        </div>
+        <pre class="code-body"><span class="tok-kw">def</span> <span class="tok-fn">freie_felder</span>():
+    <span class="tok-kw">return</span> [i <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">9</span>) <span class="tok-kw">if</span> field[i] == <span class="tok-str">" "</span>]
+
+<span class="tok-kw">def</span> <span class="tok-fn">minimax</span>(spieler_am_zug, ki_zeichen):
+    gegner = next_player(ki_zeichen)
+    mensch = next_player(ki_zeichen)  <span class="tok-com"># entspricht dem Gegner der KI</span>
+
+    <span class="tok-kw">if</span> check_win(ki_zeichen):
+        <span class="tok-kw">return</span> <span class="tok-num">1</span>, <span class="tok-builtin">None</span>
+    <span class="tok-kw">if</span> check_win(mensch):
+        <span class="tok-kw">return</span> -<span class="tok-num">1</span>, <span class="tok-builtin">None</span>
+    <span class="tok-kw">if</span> check_unentschieden():
+        <span class="tok-kw">return</span> <span class="tok-num">0</span>, <span class="tok-builtin">None</span>
+
+    bester_zug = <span class="tok-builtin">None</span>
+
+    <span class="tok-kw">if</span> spieler_am_zug == ki_zeichen:
+        bester_wert = -<span class="tok-builtin">float</span>(<span class="tok-str">"inf"</span>)
+    <span class="tok-kw">else</span>:
+        bester_wert = <span class="tok-builtin">float</span>(<span class="tok-str">"inf"</span>)
+
+    <span class="tok-kw">for</span> zug <span class="tok-kw">in</span> freie_felder():
+        field[zug] = spieler_am_zug
+        wert, _ = minimax(next_player(spieler_am_zug), ki_zeichen)
+        field[zug] = <span class="tok-str">" "</span>
+
+        <span class="tok-kw">if</span> spieler_am_zug == ki_zeichen <span class="tok-kw">and</span> wert &gt; bester_wert:
+            bester_wert, bester_zug = wert, zug
+        <span class="tok-kw">if</span> spieler_am_zug != ki_zeichen <span class="tok-kw">and</span> wert &lt; bester_wert:
+            bester_wert, bester_zug = wert, zug
+
+    <span class="tok-kw">return</span> bester_wert, bester_zug
+
+<span class="tok-kw">def</span> <span class="tok-fn">ki_move</span>(ki_zeichen):
+    _, zug = minimax(ki_zeichen, ki_zeichen)
+    field[zug] = ki_zeichen</pre>
+        <div class="explain" data-explain="c8">
+          <h4>Die Grundidee: Minimax</h4>
+          <p>
+            <strong>Minimax</strong> ist ein klassischer Algorithmus für Zwei-Personen-Nullsummenspiele mit vollständiger
+            Information (kein Zufall, beide sehen alles). Die Idee: simuliere <em>jeden</em> möglichen Zug, dann jeden
+            möglichen Gegenzug, dann jeden möglichen Zug danach &mdash; rekursiv, bis das Spiel zu Ende ist. Jedes Spielende
+            bekommt einen Wert: <code>+1</code> wenn die KI gewinnt, <code>-1</code> wenn der Mensch gewinnt, <code>0</code> bei
+            Unentschieden.
+          </p>
+          <p>
+            Beim &bdquo;Zurückrechnen&ldquo; durch den Spielbaum wählt die KI bei ihrem eigenen Zug immer die Option mit dem
+            <strong>höchsten</strong> Wert (sie maximiert ihre Siegchance), beim Zug des Gegners wird angenommen, dass dieser
+            die Option mit dem <strong>niedrigsten</strong> Wert wählt (der Gegner spielt optimal gegen die KI). Daher der Name:
+            <em>Mini</em>mum für den Gegner, <em>Max</em>imum für sich selbst.
+          </p>
+          <ul>
+            <li><code>freie_felder()</code> wiederverwendet die List-Comprehension-Idee aus Modul 1, um alle leeren Indizes zu finden.</li>
+            <li><code>minimax(spieler_am_zug, ki_zeichen)</code> probiert für jeden freien Zug aus: Feld setzen, rekursiv weiterrechnen, Feld wieder zurücksetzen (&bdquo;Backtracking&ldquo;) &mdash; das Brett bleibt nach dem Aufruf unverändert.</li>
+            <li>Die drei Abbruchbedingungen (<code>check_win</code>, <code>check_unentschieden</code>) sind exakt dieselben Funktionen aus Modul 5 und 6 &mdash; nur jetzt nicht zur Anzeige, sondern zur <em>Bewertung</em> von Spielzuständen genutzt.</li>
+            <li><code>ki_move()</code> ist die Funktion, die anstelle von <code>player_move("O")</code> aufgerufen wird.</li>
+          </ul>
+          <div class="callout tip">
+            <strong>Konsequenz für die Hauptschleife</strong>
+            In <code>game_loop()</code> müsste die Zeile <code>player_move(current_player)</code> durch eine Verzweigung
+            ersetzt werden: <code>if current_player == "X": player_move("X") else: ki_move("O")</code> &mdash; oder allgemeiner
+            formuliert, je nachdem, welches Zeichen dem Menschen zugewiesen wird.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz" data-quiz>
+      <div class="q">Selbstcheck: Warum setzt <code class="mono">minimax</code> nach jeder Simulation das Feld mit <code class="mono">field[zug] = " "</code> zurück?</div>
+      <div class="quiz-opts">
+        <button class="quiz-opt" data-correct="false">Weil sonst das Spiel auf der Konsole falsch angezeigt würde.</button>
+        <button class="quiz-opt" data-correct="true">Weil dasselbe globale <code>field</code> für alle simulierten Zukünfte wiederverwendet wird &mdash; nach dem Test muss der reale Zustand wiederhergestellt werden.</button>
+        <button class="quiz-opt" data-correct="false">Aus Performance-Gründen, es hat keine inhaltliche Bedeutung.</button>
+      </div>
+      <div class="quiz-fb" data-fb></div>
+    </div>
+  </section>
+
+  <!-- ================= MODULE 9 / DEMO ================= -->
+  <section class="demo-section" id="m9" data-module>
+    <div class="module-head">
+      <span class="module-index">09 / 09</span>
+      <h2>Live-Demo: derselbe Algorithmus, jetzt im Browser</h2>
+      <span class="done-marker" data-marker>&#9675; offen</span>
+    </div>
+    <p class="module-sub">
+      Diese Implementierung in JavaScript folgt exakt der Struktur, die du gerade gelesen hast: <code class="mono">field</code>,
+      <code class="mono">checkWin</code>, <code class="mono">checkDraw</code>, <code class="mono">minimax</code> &mdash; nur ersetzt
+      durch Klicks statt <code class="mono">input()</code> und durch eine Konsolen-Ausgabe rechts statt <code class="mono">print()</code>.
+      Du spielst <strong>X</strong>, die KI spielt <strong>O</strong> und zieht mit demselben Minimax-Algorithmus aus Modul 8 &mdash;
+      sie spielt also <em>optimal</em>: ein Sieg gegen sie ist nicht möglich, bestenfalls ein Unentschieden.
+    </p>
+
+    <div class="demo-grid">
+      <div>
+        <div id="board" role="grid" aria-label="TicTacToe Spielfeld"></div>
+        <div class="demo-status" id="status">Du beginnt als X. Klicke ein Feld.</div>
+        <div class="demo-controls">
+          <button class="btn primary" id="btn-restart">Neues Spiel</button>
+          <button class="btn" id="btn-first">Wer beginnt: X / O tauschen</button>
+        </div>
+      </div>
+      <div>
+        <div class="code-card-title" style="margin-bottom:10px;"><span class="dot-row"><span></span><span></span><span></span></span> konsole.log</div>
+        <div class="console-panel" id="console"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Lernpfad &middot; Python-Spiellogik &amp; Minimax-KI &middot; selbst erschließbar, Schritt für Schritt &middot; <a href="../index.html" style="color:inherit; text-decoration:underline;">Zurück zur Übersicht</a>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   1) SCROLL PROGRESS + MODULE REVEAL ON SCROLL
+   ============================================================ */
+const progressBar = document.getElementById('progress-bar');
+function updateProgress(){
+  const h = document.documentElement;
+  const scrolled = h.scrollTop;
+  const max = h.scrollHeight - h.clientHeight;
+  progressBar.style.width = (max > 0 ? (scrolled / max) * 100 : 0) + '%';
+}
+document.addEventListener('scroll', updateProgress);
+updateProgress();
+
+const modules = document.querySelectorAll('[data-module]');
+const navStatus = document.getElementById('nav-status');
+const moduleNames = {
+  m1:'SPIELFELD', m2:'ANZEIGE', m3:'EINGABE', m4:'SPIELERWECHSEL',
+  m5:'GEWINNPRÜFUNG', m6:'UNENTSCHIEDEN', m7:'HAUPTSCHLEIFE', m8:'KI / MINIMAX', m9:'LIVE-DEMO'
+};
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      if(moduleNames[entry.target.id]){
+        navStatus.textContent = moduleNames[entry.target.id];
+      }
+    }
+  });
+}, { threshold: 0.18 });
+modules.forEach(m => io.observe(m));
+
+/* ============================================================
+   2) CODE REVEAL BUTTONS
+   ============================================================ */
+document.querySelectorAll('[data-reveal]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const key = btn.getAttribute('data-reveal');
+    const wrap = document.querySelector(`[data-wrap="${key}"]`);
+    const veil = document.querySelector(`[data-veil="${key}"]`);
+    const explain = document.querySelector(`[data-explain="${key}"]`);
+    const isOpen = wrap.classList.contains('open');
+    if(!isOpen){
+      wrap.classList.add('open');
+      veil.classList.add('hidden-veil');
+      btn.textContent = 'Erklärung anzeigen';
+      btn.classList.add('revealed');
+      btn.dataset.stage = 'code';
+    } else if(btn.dataset.stage === 'code'){
+      explain.classList.add('show');
+      btn.textContent = 'Code & Erklärung ausblenden';
+      btn.dataset.stage = 'explained';
+      const moduleEl = btn.closest('[data-module]');
+      const marker = moduleEl ? moduleEl.querySelector('[data-marker]') : null;
+      if(marker){ marker.textContent = '● gelesen'; marker.classList.add('complete'); }
+    } else {
+      wrap.classList.remove('open');
+      veil.classList.remove('hidden-veil');
+      explain.classList.remove('show');
+      btn.textContent = 'Code aufdecken';
+      btn.classList.remove('revealed');
+      btn.dataset.stage = '';
+    }
+  });
+  // Veil itself is also clickable
+  const key = btn.getAttribute('data-reveal');
+  const veil = document.querySelector(`[data-veil="${key}"]`);
+  if(veil){ veil.addEventListener('click', () => btn.click()); }
+});
+
+/* ============================================================
+   3) SELF-CHECK QUIZZES
+   ============================================================ */
+document.querySelectorAll('[data-quiz]').forEach(quiz => {
+  const opts = quiz.querySelectorAll('.quiz-opt');
+  const fb = quiz.querySelector('[data-fb]');
+  opts.forEach(opt => {
+    opt.addEventListener('click', () => {
+      if(quiz.dataset.answered) return;
+      quiz.dataset.answered = 'true';
+      const correct = opt.getAttribute('data-correct') === 'true';
+      opts.forEach(o => {
+        if(o.getAttribute('data-correct') === 'true'){ o.classList.add('correct'); }
+        else if(o === opt){ o.classList.add('wrong'); }
+      });
+      fb.textContent = correct
+        ? 'Richtig. Weiter geht\'s.'
+        : 'Nicht ganz — die korrekte Antwort ist grün markiert.';
+      fb.classList.add('show');
+    });
+  });
+});
+
+/* ============================================================
+   4) PLAYABLE TICTACTOE — JS PORT OF THE PYTHON LOGIC + MINIMAX AI
+   ============================================================ */
+(function(){
+  const EMPTY = " ";
+  let field = Array(9).fill(EMPTY);
+  let humanMark = "X";
+  let aiMark = "O";
+  let current = "X";
+  let gameOver = false;
+
+  const boardEl = document.getElementById('board');
+  const statusEl = document.getElementById('status');
+  const consoleEl = document.getElementById('console');
+  const btnRestart = document.getElementById('btn-restart');
+  const btnFirst = document.getElementById('btn-first');
+
+  const WIN_LINES = [
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+
+  function logLine(text, cls){
+    const div = document.createElement('div');
+    div.className = 'line' + (cls ? ' ' + cls : '');
+    div.textContent = text;
+    consoleEl.appendChild(div);
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+  }
+
+  function nextPlayer(p){ return p === "X" ? "O" : "X"; }
+
+  // direct port of check_win(player)
+  function checkWin(player){
+    for(const [a,b,c] of WIN_LINES){
+      if(field[a] === field[b] && field[b] === field[c] && field[c] === player){
+        return [a,b,c];
+      }
+    }
+    return null;
+  }
+  function isWin(player){ return checkWin(player) !== null; }
+
+  // direct port of check_unentschieden()
+  function checkDraw(){ return !field.includes(EMPTY); }
+
+  function freeFields(){
+    const out = [];
+    for(let i=0;i<9;i++){ if(field[i] === EMPTY) out.push(i); }
+    return out;
+  }
+
+  // direct port of the minimax() from Modul 8
+  function minimax(spielerAmZug, kiZeichen){
+    const mensch = nextPlayer(kiZeichen);
+    if(isWin(kiZeichen)) return { wert: 1, zug: null };
+    if(isWin(mensch)) return { wert: -1, zug: null };
+    if(checkDraw()) return { wert: 0, zug: null };
+
+    let besterZug = null;
+    let besterWert = (spielerAmZug === kiZeichen) ? -Infinity : Infinity;
+
+    for(const zug of freeFields()){
+      field[zug] = spielerAmZug;
+      const { wert } = minimax(nextPlayer(spielerAmZug), kiZeichen);
+      field[zug] = EMPTY;
+
+      if(spielerAmZug === kiZeichen && wert > besterWert){
+        besterWert = wert; besterZug = zug;
+      }
+      if(spielerAmZug !== kiZeichen && wert < besterWert){
+        besterWert = wert; besterZug = zug;
+      }
+    }
+    return { wert: besterWert, zug: besterZug };
+  }
+
+  function kiMove(){
+    const { zug } = minimax(aiMark, aiMark);
+    if(zug === null || zug === undefined) return;
+    field[zug] = aiMark;
+    logLine(`KI (${aiMark}) wählt Feld ${zug + 1}`, 'o');
+  }
+
+  function renderBoard(){
+    boardEl.innerHTML = '';
+    field.forEach((val, i) => {
+      const cell = document.createElement('div');
+      cell.className = 'cell' + (val !== EMPTY ? ' taken' : '');
+      cell.setAttribute('role','gridcell');
+      cell.setAttribute('aria-label', `Feld ${i+1}${val !== EMPTY ? ', belegt mit ' + val : ', frei'}`);
+      if(val === 'X') cell.innerHTML = '<span class="mark-x">X</span>';
+      if(val === 'O') cell.innerHTML = '<span class="mark-o">O</span>';
+      cell.addEventListener('click', () => onCellClick(i));
+      boardEl.appendChild(cell);
+    });
+  }
+
+  function highlightWin(line){
+    if(!line) return;
+    line.forEach(i => {
+      const cellEl = boardEl.children[i];
+      if(cellEl) cellEl.classList.add('win');
+    });
+  }
+
+  function onCellClick(i){
+    if(gameOver || current !== humanMark) return;
+    if(field[i] !== EMPTY){
+      logLine(`Fehler: Feld ${i+1} ist schon belegt!`, 'sys');
+      return;
+    }
+    field[i] = humanMark;
+    logLine(`Spieler ${humanMark} wählt Feld ${i + 1}`, 'x');
+    renderBoard();
+    afterMove();
+  }
+
+  function afterMove(){
+    const winLine = checkWin(current);
+    if(winLine){
+      gameOver = true;
+      renderBoard();
+      highlightWin(winLine);
+      statusEl.textContent = `Spieler ${current} hat gewonnen!`;
+      logLine(`Spieler ${current} hat gewonnen!`, 'win');
+      return;
+    }
+    if(checkDraw()){
+      gameOver = true;
+      statusEl.textContent = 'Unentschieden!';
+      logLine('Unentschieden!', 'win');
+      return;
+    }
+    current = nextPlayer(current);
+    statusEl.textContent = current === humanMark ? 'Du bist am Zug.' : 'KI denkt nach …';
+
+    if(current === aiMark && !gameOver){
+      setTimeout(() => {
+        kiMove();
+        renderBoard();
+        const aiWinLine = checkWin(aiMark);
+        if(aiWinLine){
+          gameOver = true;
+          highlightWin(aiWinLine);
+          statusEl.textContent = `KI (${aiMark}) hat gewonnen!`;
+          logLine(`KI (${aiMark}) hat gewonnen!`, 'win');
+          return;
+        }
+        if(checkDraw()){
+          gameOver = true;
+          statusEl.textContent = 'Unentschieden!';
+          logLine('Unentschieden!', 'win');
+          return;
+        }
+        current = nextPlayer(current);
+        statusEl.textContent = 'Du bist am Zug.';
+      }, 380);
+    }
+  }
+
+  function restart(){
+    field = Array(9).fill(EMPTY);
+    current = "X";
+    gameOver = false;
+    consoleEl.innerHTML = '';
+    logLine('Neues Spiel gestartet.', 'sys');
+    logLine(`Du spielst ${humanMark}, KI spielt ${aiMark}.`, 'sys');
+    renderBoard();
+    statusEl.textContent = current === humanMark ? 'Du bist am Zug.' : 'KI denkt nach …';
+    if(current === aiMark){
+      setTimeout(() => { kiMove(); renderBoard(); afterMoveAiOpening(); }, 300);
+    }
+  }
+
+  function afterMoveAiOpening(){
+    current = nextPlayer(current);
+    statusEl.textContent = 'Du bist am Zug.';
+  }
+
+  btnRestart.addEventListener('click', restart);
+  btnFirst.addEventListener('click', () => {
+    [humanMark, aiMark] = [aiMark, humanMark];
+    restart();
+  });
+
+  renderBoard();
+  logLine('Bereit. Du spielst X, KI spielt O.', 'sys');
+})();
+</script>
+
+</body>
+</html>

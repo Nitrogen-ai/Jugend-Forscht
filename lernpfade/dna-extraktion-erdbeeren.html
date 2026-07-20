@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: DNA-Extraktion aus Erdbeeren</title>
+<style>
+  :root {
+    --primary: #2f6a4f;
+    --primary-d: #1f4a37;
+    --berry: #d1495b;
+    --berry-d: #a83242;
+    --bg: #f6faf7;
+    --card: #ffffff;
+    --text: #23342c;
+    --muted: #5c7268;
+    --border: #dcece3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+  header {
+    background: linear-gradient(135deg, var(--primary-d), var(--primary) 60%, var(--berry-d));
+    color: #fff;
+    padding: 3.2rem 2rem;
+    text-align: center;
+  }
+  header .eyebrow { font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; margin-bottom: 0.6rem; }
+  header h1 { font-size: 2.3rem; margin-bottom: 0.6rem; }
+  header p { max-width: 620px; margin: 0 auto; opacity: 0.92; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--berry-d); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .info-box {
+    background: #eaf6ef;
+    border-left: 5px solid var(--primary);
+    padding: 1.4rem 1.6rem;
+    border-radius: 6px;
+    margin-bottom: 2.2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .info-box svg { flex-shrink: 0; width: 46px; height: 46px; }
+
+  h2.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-d);
+    font-size: 1.4rem;
+    margin: 2.6rem 0 1.2rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  h2.section-title:first-of-type { margin-top: 0; }
+  h2.section-title svg { width: 26px; height: 26px; flex-shrink: 0; }
+
+  .quiz-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 0.9rem;
+    overflow: hidden;
+  }
+  .quiz-card summary {
+    cursor: pointer;
+    padding: 1rem 1.3rem;
+    font-weight: 600;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .quiz-card summary::-webkit-details-marker { display: none; }
+  .quiz-card summary::after {
+    content: '+';
+    font-size: 1.3rem;
+    color: var(--berry);
+    flex-shrink: 0;
+    transition: transform 0.2s;
+  }
+  .quiz-card[open] summary::after { transform: rotate(45deg); }
+  .quiz-card .quiz-answer {
+    padding: 0 1.3rem 1.1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .quiz-answer strong { color: var(--primary-d); }
+  .quiz-points {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--berry-d);
+    background: rgba(209,73,91,0.1);
+    border-radius: 6px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+
+  .materials {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.4rem;
+  }
+  .materials ul { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem 1rem; }
+  .materials li { font-size: 0.92rem; display: flex; align-items: center; gap: 8px; }
+  .materials li::before { content: '•'; color: var(--berry); font-weight: 700; }
+  .materials .note { margin-top: 0.8rem; font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+  .step {
+    display: flex;
+    gap: 1.1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+  .step .step-num {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .step h3 { font-size: 1.02rem; margin-bottom: 0.3rem; color: var(--primary-d); }
+  .step p { font-size: 0.92rem; color: var(--muted); }
+
+  .illustration {
+    margin-top: 3rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+  }
+  .illustration svg { width: 160px; height: 160px; flex-shrink: 0; }
+  .illustration p { color: var(--muted); font-size: 0.92rem; }
+
+  .finish {
+    margin-top: 2.4rem;
+    background: linear-gradient(135deg, var(--berry-d), var(--berry));
+    color: #fff;
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    text-align: center;
+  }
+  .finish h3 { margin-bottom: 0.4rem; }
+  .finish p { opacity: 0.92; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--berry-d); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Lernpfad · Biologie</div>
+  <h1>🍓 DNA-Extraktion aus Erdbeeren</h1>
+  <p>Wie isoliert man Erbgut mit Haushaltsmitteln? Ein kurzer Wissens-Check, dann geht's ans Extrahieren.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="info-box">
+    <svg viewBox="0 0 48 48"><g fill="none" stroke="#2f6a4f" stroke-width="2.5" stroke-linecap="round"><path d="M14 4c8 6 20 6 20 20s-12 14-20 20"/><path d="M34 4c-8 6-20 6-20 20s12 14 20 20"/><path d="M15 9h18M14 15h20M14 23h20M14 31h20M15 39h18"/></g></svg>
+    <div>
+      Die DNA ist ein fadenförmiges Molekül im Zellkern, das den Bauplan und alle Erbinformationen von Lebewesen enthält. Sie steuert Entwicklung, Funktion und Wachstum durch eine Doppelhelix-Struktur, die aus vier Basen (Adenin, Thymin, Guanin und Cytosin) besteht. Die Abkürzung DNA steht für Desoxyribonukleinsäure. Sie wurde 1953 von Watson und Crick entdeckt.
+    </div>
+  </div>
+
+  <h2 class="section-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#2f6a4f" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 4.8 1c0 1.6-2.3 1.6-2.3 3.6" stroke-linecap="round"/><circle cx="12" cy="17" r="0.6" fill="#2f6a4f"/></svg>
+    Wissens-Quiz
+  </h2>
+
+  <details class="quiz-card">
+    <summary>In welchem Jahr wurde die DNA entdeckt? <span class="quiz-points">250 Punkte</span></summary>
+    <div class="quiz-answer">Antwort: <strong>1953</strong> — entdeckt von Watson und Crick.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Aus wie vielen Basen besteht die Doppelhelixstruktur der DNA? <span class="quiz-points">200 Punkte</span></summary>
+    <div class="quiz-answer">Zur Auswahl standen 2, 3, 4 und 5 — richtig ist <strong>4</strong> (Adenin, Thymin, Guanin, Cytosin).</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Wofür steht die Abkürzung DNA? <span class="quiz-points">500 Punkte</span></summary>
+    <div class="quiz-answer">Antwort: <strong>Desoxyribonukleinsäure</strong>.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Was ist <em>keine</em> Base der Doppelhelix-Struktur der DNA? <span class="quiz-points">300 Punkte</span></summary>
+    <div class="quiz-answer">Adenin, Thymin, Cytosin und Guanin sind echte Basen — <strong>„Helynin"</strong> gibt es nicht, das ist die richtige Antwort auf die Fangfrage.</div>
+  </details>
+
+  <h2 class="section-title">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#d1495b" stroke-width="2"><path d="M12 21c-5-4-8-7.5-8-11.5A4.5 4.5 0 0 1 12 6a4.5 4.5 0 0 1 8 3.5C20 13.5 17 17 12 21z"/></svg>
+    DNA extrahieren
+  </h2>
+  <p style="margin-bottom:1.4rem; color:var(--muted);">In diesem Abschnitt wollen wir DNA aus Erdbeeren extrahieren. Seid ihr bereit?</p>
+
+  <div class="materials">
+    <h3 style="margin-bottom:0.8rem; color:var(--primary-d);">Was du brauchst</h3>
+    <ul>
+      <li>2–3 Erdbeeren</li>
+      <li>Spülmittel</li>
+      <li>Wasser</li>
+      <li>Kochsalz</li>
+      <li>Kaltes Alkohol</li>
+      <li>Gefrierbeutel / kleines sauberes Plastiksäckchen</li>
+      <li>2 Gläser / 2 Becher</li>
+      <li>Kaffeefilter / Küchenrolle</li>
+      <li>Holzstäbchen / Zahnstocher / Schaschlikspieß</li>
+      <li>Trichter</li>
+      <li>50 ml Wasser</li>
+      <li>1 TL Salz</li>
+      <li>1–2 TL Spülmittel</li>
+    </ul>
+    <div class="note">TL bedeutet Teelöffel.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div>
+      <h3>Extraktionslösung anrühren</h3>
+      <p>Rühre 50 ml Wasser, 1 TL Salz und 1–2 TL Spülmittel vorsichtig zusammen, damit dabei nicht zu viel Schaum entsteht.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div>
+      <h3>Erdbeeren zerdrücken</h3>
+      <p>Erdbeeren in den Gefrierbeutel bzw. Plastikbeutel geben. Beutel verschließen und die Erdbeeren gründlich zerdrücken, bis ein Mus entsteht (1–2 Minuten).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div>
+      <h3>Extraktionslösung zugeben</h3>
+      <p>Etwa 40–50 ml der Extraktionslösung in den Beutel geben, den Beutel wieder verschließen und vorsichtig vermischen.</p>
+    </div>
+  </div>
+
+  <div class="illustration">
+    <svg viewBox="0 0 160 160">
+      <path d="M80 30 C110 30 130 55 125 85 C120 118 100 140 80 145 C60 140 40 118 35 85 C30 55 50 30 80 30 Z" fill="#d1495b"/>
+      <path d="M62 30 C68 18 92 18 98 30 C90 24 70 24 62 30 Z" fill="#3f9a5e"/>
+      <path d="M55 34 L48 20 M80 30 L80 14 M105 34 L112 20" stroke="#3f9a5e" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <g fill="#f7d9de">
+        <circle cx="65" cy="60" r="2.6"/><circle cx="85" cy="55" r="2.6"/><circle cx="100" cy="70" r="2.6"/>
+        <circle cx="55" cy="80" r="2.6"/><circle cx="75" cy="85" r="2.6"/><circle cx="95" cy="95" r="2.6"/>
+        <circle cx="65" cy="105" r="2.6"/><circle cx="85" cy="115" r="2.6"/><circle cx="60" cy="125" r="2.6"/>
+        <circle cx="100" cy="115" r="2.6"/>
+      </g>
+    </svg>
+    <p>Beim Zerdrücken platzen die Zellwände der Erdbeere auf. Die Spülmittel-Salz-Lösung löst danach die Zellmembranen und Proteine, sodass die darin enthaltene DNA frei wird und anschließend mit kaltem Alkohol ausgefällt werden kann.</p>
+  </div>
+
+  <div class="finish">
+    <h3>🏆 Wer entdeckt zuerst die DNA?</h3>
+    <p>Nach dem Ausfällen mit kaltem Alkohol wird die DNA als weißliche, fädige Substanz sichtbar — und lässt sich vorsichtig mit einem Holzstäbchen aufwickeln. Wow, ihr habt gute Augen!</p>
+  </div>
+
+</main>
+
+<footer>
+  DNA-Extraktion aus Erdbeeren · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>

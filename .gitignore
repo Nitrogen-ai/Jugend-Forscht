@@ -1,0 +1,15 @@
+# Niemals personenbezogene/vertrauliche Rohdaten
+privat/
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+
+# System- und temporäre Dateien
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+~$*

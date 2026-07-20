@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jugend forscht – Forschungs-AG</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+
+  :root {
+    --teal:    #1ab5a8;
+    --teal-d:  #0e8a7f;
+    --green:   #7dc243;
+    --green-d: #5a9a2a;
+    --orange:  #f47920;
+    --purple:  #7b4fa0;
+    --bg:      #f4fbfa;
+    --surface: #ffffff;
+    --text:    #1a2e2b;
+    --muted:   #5a7570;
+    --border:  #d0ebe8;
+
+    --font-display: 'Nunito', system-ui, sans-serif;
+    --font-body:    'Inter', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0e8a7f 0%, #1ab5a8 35%, #7dc243 75%, #a8d840 100%);
+    padding: 0;
+  }
+
+  .hero-wimmelbild {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    opacity: 0.92;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(14,138,127,0.2) 0%,
+      rgba(14,138,127,0.05) 35%,
+      rgba(14,138,127,0.85) 100%
+    );
+  }
+
+  .hero-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 40px 36px;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #c8f5f0;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: #d4f5a0;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.88);
+    max-width: 540px;
+    margin-bottom: 20px;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ── INFOLEISTE ── */
+  .info-bar {
+    background: var(--teal-d);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.9);
+  }
+
+  .info-item:last-child { border-right: none; }
+  .info-item .ii-icon { font-size: 1.1rem; }
+  .info-item strong { color: #ffffff; }
+
+  /* ── HAUPT-LAYOUT ── */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    margin-top: 60px;
+  }
+
+  .sec-head:first-child { margin-top: 0; }
+
+  .sec-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .si-teal   { background: rgba(26,181,168,0.15); }
+  .si-green  { background: rgba(125,194,67,0.15); }
+  .si-orange { background: rgba(244,121,32,0.15); }
+  .si-purple { background: rgba(123,79,160,0.15); }
+
+  .sec-head h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+
+  .sec-head .sec-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 400;
+    margin-top: 1px;
+  }
+
+  hr.sec-rule {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin-bottom: 24px;
+    margin-top: -4px;
+  }
+
+  /* ── PROJEKT-KARTEN ── */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 22px 20px;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+
+  .pc-teal::before   { background: linear-gradient(90deg, var(--teal), var(--green)); }
+  .pc-green::before  { background: linear-gradient(90deg, var(--green), var(--teal)); }
+  .pc-orange::before { background: linear-gradient(90deg, var(--orange), #f5c842); }
+  .pc-purple::before { background: linear-gradient(90deg, var(--purple), var(--teal)); }
+  .pc-placeholder::before { background: var(--border); }
+
+  .project-card:hover {
+    box-shadow: 0 8px 28px rgba(26,181,168,0.15);
+    transform: translateY(-3px);
+    border-color: var(--teal);
+  }
+
+  .project-card.placeholder {
+    opacity: 0.6;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .project-card.placeholder:hover {
+    box-shadow: none;
+    transform: none;
+  }
+
+  .pc-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal-d);
+    background: rgba(26,181,168,0.1);
+    border-radius: 6px;
+    padding: 3px 8px;
+    align-self: flex-start;
+  }
+
+  .pc-label-orange {
+    color: var(--orange);
+    background: rgba(244,121,32,0.1);
+  }
+
+  .pc-label-green {
+    color: var(--green-d);
+    background: rgba(125,194,67,0.12);
+  }
+
+  .pc-label-purple {
+    color: var(--purple);
+    background: rgba(123,79,160,0.1);
+  }
+
+  .pc-label-placeholder {
+    color: var(--muted);
+    background: rgba(90,117,112,0.1);
+  }
+
+  .pc-title {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .pc-desc {
+    font-size: 0.855rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .pc-arrow {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--teal);
+  }
+
+  .pc-arrow.orange { color: var(--orange); }
+  .pc-arrow.purple { color: var(--purple); }
+
+  .placeholder-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(90,117,112,0.1);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 3px 8px;
+    margin-top: auto;
+  }
+
+  /* ── WETTBEWERB-KARTEN ── */
+  .competition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .comp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .comp-card:hover {
+    box-shadow: 0 8px 28px rgba(26,181,168,0.15);
+    transform: translateY(-3px);
+  }
+
+  .comp-card-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+  }
+
+  .comp-card-img-placeholder {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--green) 100%);
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+
+  .comp-card-body {
+    padding: 20px 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .comp-card-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal-d);
+  }
+
+  .comp-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text);
+  }
+
+  .comp-card p {
+    font-size: 0.855rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .comp-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: filter 0.15s;
+  }
+
+  .comp-cta:hover { filter: brightness(1.08); }
+
+  .cta-teal   { background: var(--teal);   color: #fff; }
+  .cta-orange { background: var(--orange); color: #fff; }
+
+  /* ── NETZWERK-LOGO-STREIFEN ── */
+  .network-strip {
+    margin-top: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px 26px;
+  }
+
+  .network-strip .ns-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .network-logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    align-items: center;
+  }
+
+  .network-logos div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 96px;
+  }
+
+  .network-logos img {
+    max-width: 64px;
+    max-height: 64px;
+    object-fit: contain;
+  }
+
+  .network-logos span {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* ── SUMMERSCHOOL POSTER CARD ── */
+  .summer-card {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .summer-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    display: block;
+    min-height: 320px;
+  }
+
+  .summer-poster-placeholder {
+    background: linear-gradient(160deg, #1ab5a8, #7dc243);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    min-height: 320px;
+  }
+
+  .summer-body {
+    padding: 32px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .summer-eyebrow {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal-d);
+  }
+
+  .summer-body h3 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .summer-body h3 span { color: var(--teal); }
+
+  .summer-body p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .summer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .sd-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+
+  .sd-item .sd-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .sd-item strong { color: var(--teal-d); }
+
+  .summer-contact {
+    margin-top: 4px;
+    padding: 12px 14px;
+    background: rgba(26,181,168,0.07);
+    border: 1px solid rgba(26,181,168,0.2);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .summer-contact a {
+    color: var(--teal-d);
+    font-weight: 600;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--teal-d);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 28px 20px;
+    font-size: 0.82rem;
+    line-height: 1.7;
+  }
+
+  footer a { color: rgba(255,255,255,0.9); }
+  footer strong { color: #ffffff; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero-content { padding: 20px 20px 28px; }
+    main { padding: 40px 16px 60px; }
+    .info-bar { flex-direction: column; }
+    .info-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .summer-card { grid-template-columns: 1fr; }
+    .summer-poster, .summer-poster-placeholder { min-height: 220px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO mit Wimmelbild -->
+<div class="hero">
+  <img class="hero-wimmelbild"
+       src="assets/bilder/jugend-forscht-wimmelbild.jpg"
+       alt="Jugend forscht Wimmelbild">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Rosa-Luxemburg-Gymnasium · Jugend Forscht</span>
+    <h1>Jugend <em>forscht</em></h1>
+    <p class="hero-sub">Unsere Forschungs-AG erkundet Wissenschaft und Technik – von KI bis DNA-Extraktion. Hier findest du alle Projekte, Lernpfade und Infos zur MINT-Summerschool.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">🔬 Forschungsprojekte</span>
+      <span class="hero-pill">🤖 Lernpfade</span>
+      <span class="hero-pill">☀️ MINT-Summerschule 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- INFOLEISTE -->
+<div class="info-bar">
+  <div class="info-item">
+    <span class="ii-icon">📅</span>
+    <span><strong>Schuljahr</strong> 2025/26</span>
+  </div>
+  <div class="info-item">
+    <span class="ii-icon">🏫</span>
+    <span><strong>Rosa-Luxemburg-Gymnasium</span>
+  </div>
+  <div class="info-item">
+    <span class="ii-icon">🧪</span>
+    <span><strong>Fach</strong> Informatik & MINT</span>
+  </div>
+  <div class="info-item">
+    <span class="ii-icon">🌟</span>
+    <span><strong>Wettbewerb</strong> Jugend forscht</span>
+  </div>
+</div>
+
+<!-- HAUPTINHALT -->
+<main>
+
+  <!-- LERNPFADE -->
+  <div class="sec-head">
+    <div class="sec-icon si-teal">🔬</div>
+    <div>
+      <h2>Unsere Lernpfade</h2>
+      <div class="sec-sub">Interaktive Guides zu unseren Forschungsthemen</div>
+    </div>
+  </div>
+  <hr class="sec-rule">
+
+  <div class="project-grid">
+
+    <a class="project-card pc-teal" href="lernpfade/dna-extraktion-erdbeeren.html">
+      <span class="pc-label">🍓 Biologie</span>
+      <div class="pc-title">DNA-Extraktion aus Erdbeeren</div>
+      <p class="pc-desc">Schritt für Schritt: Wie isoliert man DNA aus Erdbeeren mit Hausmitteln? Mit Wissens-Quiz und Extraktionsanleitung.</p>
+      <div class="pc-arrow">→ Lernpfad starten</div>
+    </a>
+
+    <a class="project-card pc-green" href="lernpfade/fahrroboter.html">
+      <span class="pc-label pc-label-green">🤖 Robotik</span>
+      <div class="pc-title">Fahrroboter – Lernpfad</div>
+      <p class="pc-desc">Grundlagen der Roboterprogrammierung: Sensoren, Motoren und autonome Navigation mit dem Fahrroboter.</p>
+      <div class="pc-arrow">→ Lernpfad starten</div>
+    </a>
+
+    <a class="project-card pc-orange" href="lernpfade/lichtwecker.html">
+      <span class="pc-label pc-label-orange">💡 Elektronik</span>
+      <div class="pc-title">Lichtwecker – Lernpfad</div>
+      <p class="pc-desc">Bau deinen eigenen Lichtwecker: Schaltkreise, Programmierung und das Prinzip des sanften Aufwachens mit Licht.</p>
+      <div class="pc-arrow pc-arrow orange">→ Lernpfad starten</div>
+    </a>
+
+    <a class="project-card pc-purple" href="lernpfade/tictactoe.html">
+      <span class="pc-label pc-label-purple">🐍 Informatik</span>
+      <div class="pc-title">TicTacToe-KI – Lernpfad</div>
+      <p class="pc-desc">Wie baut man eine TicTacToe-KI aus zehn kleinen Funktionen? Python-Spiellogik und Minimax-Algorithmus zum Selbsterschließen.</p>
+      <div class="pc-arrow purple">→ Lernpfad starten</div>
+    </a>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🔧 In Arbeit</span>
+      <div class="pc-title">Weiteres Projekt</div>
+      <p class="pc-desc">Hier entsteht bald ein neuer Lernpfad unserer Forschungs-AG.</p>
+      <span class="placeholder-badge">Demnächst</span>
+    </div>
+
+  </div>
+
+  <!-- ERGEBNISSE -->
+  <div class="sec-head">
+    <div class="sec-icon si-purple">🧫</div>
+    <div>
+      <h2>Ergebnisse</h2>
+      <div class="sec-sub">Abgeschlossene Forschungsprojekte unserer AG</div>
+    </div>
+  </div>
+  <hr class="sec-rule">
+
+  <div class="project-grid">
+
+    <a class="project-card pc-purple" href="ergebnisse/anodisierung-titan.html">
+      <span class="pc-label pc-label-purple">⚗️ Chemie</span>
+      <div class="pc-title">Anodisierung von Titan</div>
+      <p class="pc-desc">Wie aus blankem Titan durch Strom und eine einfache Elektrolytlösung leuchtende Farben ganz ohne Farbstoffe entstehen.</p>
+      <div class="pc-arrow purple">→ Ergebnis ansehen</div>
+    </a>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🔧 In Arbeit</span>
+      <div class="pc-title">Weiteres Ergebnis</div>
+      <p class="pc-desc">Weitere Forschungsergebnisse folgen in Kürze.</p>
+      <span class="placeholder-badge">Demnächst</span>
+    </div>
+
+  </div>
+
+  <!-- EXPERIMENTE -->
+  <div class="sec-head">
+    <div class="sec-icon si-green">🧪</div>
+    <div>
+      <h2>Experimente</h2>
+      <div class="sec-sub">Unsere Experimentierstationen – Lernpfade folgen nach und nach</div>
+    </div>
+  </div>
+  <hr class="sec-rule">
+
+  <div class="project-grid">
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🖨️ Technik</span>
+      <div class="pc-title">Anwendung des 3D-Druckers</div>
+      <p class="pc-desc">Einstieg in additive Fertigung: vom Modell zum gedruckten Bauteil.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🧴 Chemie</span>
+      <div class="pc-title">Chemie der Sinne – Dein eigenes Parfum</div>
+      <p class="pc-desc">Duftöle herstellen und die Chemie hinter Gerüchen verstehen.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🧬 Biologie</span>
+      <div class="pc-title">Erwecke deine Erkenntnisse zum Leben</div>
+      <p class="pc-desc">Forschungsgeschichte(n) großer Naturwissenschaftlerinnen und -wissenschaftler.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🚦 Elektronik</span>
+      <div class="pc-title">Hacker der Straße – Knacke den Ampelcode</div>
+      <p class="pc-desc">Ampelschaltungen mit Arduino, LEDs und Mikrocontroller nachbauen.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">💧 Chemie</span>
+      <div class="pc-title">Knallgas und Zukunft</div>
+      <p class="pc-desc">Herstellung und Nachweis von Wasserstoff – Einstieg in die Energie von morgen.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🐸 Natur</span>
+      <div class="pc-title">Rette Väri!</div>
+      <p class="pc-desc">Ein Experimentierabenteuer rund um Amphibien und ihren Lebensraum.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🧼 Chemie</span>
+      <div class="pc-title">Seife selber machen</div>
+      <p class="pc-desc">Chemie, die man anfassen kann: Verseifung und Tensid-Chemie im Selbstversuch.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🎮 Informatik</span>
+      <div class="pc-title">Touch & Code – Deine Welt wird zum Controller</div>
+      <p class="pc-desc">Sensorik und Interaktion: die Umgebung als Eingabegerät nutzen.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🦴 Geologie</span>
+      <div class="pc-title">Versteinert im See des Schreckens</div>
+      <p class="pc-desc">Fossilien, Mineralisation und die Chemie der Versteinerung.</p>
+      <span class="placeholder-badge">Lernpfad folgt</span>
+    </div>
+
+  </div>
+
+  <!-- WETTBEWERBE & WEITERE ANGEBOTE -->
+  <div class="sec-head">
+    <div class="sec-icon si-orange">🏆</div>
+    <div>
+      <h2>Wettbewerbe & weitere Angebote</h2>
+      <div class="sec-sub">Alles über Jugend forscht und verwandte Wettbewerbe</div>
+    </div>
+  </div>
+  <hr class="sec-rule">
+
+  <div class="competition-grid">
+
+    <a class="comp-card" href="https://www.jugend-forscht.de" target="_blank" rel="noopener">
+      <div class="comp-card-img-placeholder">🔭</div>
+      <div class="comp-card-body">
+        <div class="comp-card-eyebrow">Offizielle Website</div>
+        <h3>Jugend forscht</h3>
+        <p>Deutschlands bekanntester Nachwuchswettbewerb für Naturwissenschaft und Technik – für alle bis 21 Jahre.</p>
+        <a class="comp-cta cta-teal" href="https://www.jugend-forscht.de" target="_blank">Mehr erfahren →</a>
+      </div>
+    </a>
+
+    <a class="comp-card" href="https://www.schueler-experimentieren.de" target="_blank" rel="noopener">
+      <div class="comp-card-img-placeholder">🧫</div>
+      <div class="comp-card-body">
+        <div class="comp-card-eyebrow">Für Jüngere</div>
+        <h3>Schüler experimentieren</h3>
+        <p>Der Einstiegswettbewerb für Kinder und Jugendliche unter 15 Jahren – Experimentieren und Forschen auf Augenhöhe.</p>
+        <a class="comp-cta cta-teal" href="https://www.schueler-experimentieren.de" target="_blank">Mehr erfahren →</a>
+      </div>
+    </a>
+
+  </div>
+
+  <div class="network-strip">
+    <div class="ns-label">Weitere Wettbewerbe, Olympiaden und Angebote, an denen unsere AG interessiert ist – fragt eure Lehrkraft nach den aktuellen Links und Terminen:</div>
+    <div class="network-logos">
+      <div><img src="assets/bilder/logos/bundesumweltwettbewerb.png" alt="Logo Bundesumweltwettbewerb"><span>Bundesumweltwettbewerb</span></div>
+      <div><img src="assets/bilder/logos/jso.png" alt="Logo Junior Science Olympiade"><span>Junior-Science-Olympiade</span></div>
+      <div><img src="assets/bilder/logos/chemkids.png" alt="Logo ChemKids"><span>ChemKids</span></div>
+      <div><img src="assets/bilder/logos/internationale-biologie-olympiade.png" alt="Logo Internationale Biologie-Olympiade"><span>Internationale Biologie-Olympiade</span></div>
+      <div><img src="assets/bilder/logos/internationale-chemie-olympiade.png" alt="Logo Internationale Chemie-Olympiade"><span>Internationale Chemie-Olympiade</span></div>
+      <div><img src="assets/bilder/logos/european-olympiad-of-experimental-science.png" alt="Logo European Olympiad of Experimental Science"><span>European Olympiad of Experimental Science</span></div>
+    </div>
+  </div>
+
+  <!-- MINT-SUMMERSCHOOL -->
+  <div class="sec-head">
+    <div class="sec-icon si-green">☀️</div>
+    <div>
+      <h2>MINT-Summerschool 2026</h2>
+      <div class="sec-sub">17.–19. August 2026</div>
+    </div>
+  </div>
+  <hr class="sec-rule">
+
+  <div class="summer-card">
+    <img class="summer-poster"
+         src="assets/bilder/mint-summerschool-2026.jpg"
+         alt="MINT-Summerschool 2026 Poster">
+    <div class="summer-body">
+      <div class="summer-eyebrow">Anmeldestart bald</div>
+      <h3>Drei Tage <span>Wissenschaft</span> pur</h3>
+      <p>Bei der MINT-Summerschool erwartet euch ein intensives Programm aus Workshops, Experimenten und Vorträgen rund um Mathematik, Informatik, Naturwissenschaften und Technik.</p>
+      <div class="summer-details">
+        <div class="sd-item">
+          <span class="sd-icon">📅</span>
+          <span><strong>Datum:</strong> 17. bis 19. August 2026</span>
+        </div>
+        <div class="sd-item">
+          <span class="sd-icon">🏫</span>
+          <span><strong>Ort:</strong> Rosa-Luxemburg-Gymnasium</span>
+        </div>
+        <div class="sd-item">
+          <span class="sd-icon">🎯</span>
+          <span><strong>Zielgruppe:</strong> Schülerinnen und Schüler ab Klasse 7</span>
+        </div>
+        <div class="sd-item">
+          <span class="sd-icon">💰</span>
+          <span><strong>Kosten:</strong> Kostenlos</span>
+        </div>
+      </div>
+      <div class="summer-contact">
+        Interesse? Melde dich bei der Informatik-AG oder schreib uns eine E-Mail.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Forschungs-AG</strong> · Rosa-Luxemburg-Gymnasium<br>
+  Jugend forscht Schuljahr 2025/26 ·
+  <a href="https://nitrogen-ai.github.io/Informatik/">← Zurück zur Informatik-Übersicht</a>
+</footer>
+
+</body>
+</html>
