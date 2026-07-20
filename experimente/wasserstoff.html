@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: Knallgas und Zukunft – Dein Einstieg in die Welt des Wasserstoffs</title>
+<style>
+  :root {
+    --cyan: #4fc3e0;
+    --orange: #e8823c;
+    --bg: #101820;
+    --card: #1a2530;
+    --card2: #202e3a;
+    --border: #2c3d4a;
+    --text: #eaf3f7;
+    --muted: #93aab5;
+    --dim: #5c7280;
+    --green: #6ab97a;
+    --red: #d9695a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header { padding: 3.4rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, #0a2a3a, #1a5a6e 45%, #e8823c 115%); border-bottom: 1px solid var(--border); }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #eaf3f7; opacity: 0.85; margin-bottom: 0.8rem; }
+  header h1 { font-size: 2.05rem; margin-bottom: 0.7rem; }
+  header p { max-width: 660px; margin: 0 auto; color: #eaf3f7; opacity: 0.92; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--orange); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .intro-box { background: #142a33; border-left: 5px solid var(--cyan); padding: 1.4rem 1.6rem; border-radius: 6px; margin-bottom: 1.4rem; font-size: 0.95rem; color: var(--muted); }
+  .intro-box strong { color: var(--text); }
+
+  h2.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; margin: 2.8rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h2.section-title:first-of-type { margin-top: 0; }
+  .sec-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+
+  .step { display: flex; gap: 1.1rem; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 0.9rem; align-items: flex-start; flex-wrap: wrap; }
+  .step-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; color: #101820; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; background: var(--cyan); }
+  .step-num.orange { background: var(--orange); }
+  .step-body { flex: 1; min-width: 220px; }
+  .step-body h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+  .step-body p { font-size: 0.9rem; color: var(--muted); }
+  .step-media { margin-top: 0.7rem; }
+  .step-media svg { width: 100%; max-width: 460px; height: auto; border-radius: 8px; border: 1px solid var(--border); display: block; }
+
+  .callout { display: flex; gap: 12px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
+  .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout strong { color: var(--text); }
+  .callout a { color: var(--orange); }
+
+  .quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.8rem; overflow: hidden; }
+  .quiz-card summary { cursor: pointer; padding: 0.9rem 1.2rem; font-weight: 600; font-size: 0.92rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .quiz-card summary::-webkit-details-marker { display: none; }
+  .quiz-card summary::after { content: '+'; font-size: 1.2rem; color: var(--orange); flex-shrink: 0; transition: transform 0.2s; }
+  .quiz-card[open] summary::after { transform: rotate(45deg); }
+  .quiz-card .quiz-answer { padding: 0 1.2rem 1rem; color: var(--muted); font-size: 0.88rem; }
+  .quiz-answer strong { color: var(--green); }
+  .quiz-answer .tip { margin-top: 6px; color: var(--dim); font-style: italic; }
+
+  .mail-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.7rem; margin-bottom: 1rem; }
+  .mail-box .field { margin-bottom: 0.9rem; }
+  .mail-box label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .mail-box input[type="text"], .mail-box input[type="email"] { width: 100%; background: #0c1319; border: 1px solid var(--border); border-radius: 6px; padding: 0.55rem 0.7rem; color: var(--text); font-size: 0.9rem; }
+  .mail-box .check-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.88rem; color: var(--muted); }
+  .mail-box .check-row label { display: flex; align-items: center; gap: 6px; margin: 0; }
+  .mail-box .file-row { border: 1px dashed var(--border); border-radius: 8px; padding: 0.9rem 1rem; font-size: 0.85rem; color: var(--muted); }
+  .mail-box .file-status { margin-top: 6px; font-size: 0.82rem; }
+  .mail-box .file-status.ok { color: var(--green); }
+  .mail-box .file-status.warn { color: var(--orange); }
+  .mail-hint { font-size: 0.8rem; color: var(--dim); margin-top: 0.8rem; line-height: 1.5; }
+  .btn { background: var(--orange); color: #1a1410; border: none; border-radius: 8px; padding: 0.65rem 1.2rem; font-weight: 700; font-size: 0.88rem; cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+
+  .finish { margin-top: 2.4rem; background: linear-gradient(135deg, #0a2a3a, #1a5a6e, #e8823c); border-radius: 12px; padding: 2rem; text-align: center; }
+  .finish h3 { margin-bottom: 0.6rem; }
+  .finish p { color: #eaf3f7; margin-bottom: 0.6rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; font-size: 0.88rem; }
+  footer a { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Experiment · Chemie &amp; Energie</div>
+  <h1>💧⚡ Knallgas und Zukunft – Dein Einstieg in die Welt des Wasserstoffs</h1>
+  <p>Wasserstoff gilt als einer der großen Hoffnungsträger für eine klimafreundliche Zukunft: Er könnte dabei helfen, fossile Brennstoffe zu ersetzen, CO₂-Emissionen zu senken und Energie nachhaltiger zu nutzen. In diesem Lernpfad stellst du selbst Wasserstoff her, fängst ihn auf und weist ihn mit der Knallgasprobe nach.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Werde selbst zur/zum Energieforschenden!</strong> Du führst ein Experiment zur Elektrolyse durch, lernst, wie Wasserstoff gewonnen und aufgefangen wird, und entdeckst, wie er sich sicher nachweisen lässt.
+  </div>
+
+  <details class="quiz-card">
+    <summary>👉 Einstiegsfrage: Aus welchem ganz alltäglichen Stoff lässt sich das Gas Wasserstoff herstellen?</summary>
+    <div class="quiz-answer"><strong>Wasser (H₂O).</strong> Mit elektrischem Strom lässt sich Wasser in seine Bestandteile Wasserstoff und Sauerstoff zerlegen – dieser Vorgang heißt Elektrolyse.</div>
+  </details>
+
+  <!-- EXPERIMENT -->
+  <h2 class="section-title">🔋 Wasserstoff selbst herstellen</h2>
+  <div class="sec-sub">Mit einem selbst gebauten Elektrolyseapparat aus einer Tic-Tac-Schachtel.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Elektrolyseapparat bauen</h3>
+      <p><strong>Materialien:</strong> leere Tic-Tac-Schachtel, zwei Nägel, zwei Krokodilklemmen, zwei Büroklammern, etwas Aluminiumfolie, Patafix-Knetmasse, Flachbatterie (4,5 V) oder Blockbatterie (9 V).</p>
+      <p>Ein Nagel wird mit der Tiegelzange über dem Bunsenbrenner erhitzt und schmilzt damit zwei Löcher in den Boden der Tic-Tac-Dose. Vor den Löchern werden Patafix-Knetmasse und ein Stück Aluminiumfolie angebracht, damit später kein Wasser ausläuft und eine stromleitende Verbindung entsteht. Die Nägel werden links und rechts eingesteckt, die Dose wird etwa zur Hälfte mit Wasser gefüllt.</p>
+      <p>Danach wird je ein Ende der beiden Büroklammern mit einer Aluminiumfolie verbunden; die anderen Enden kommen an Plus- bzw. Minuspol der Batterie.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="460" height="220" fill="#0c1319" rx="8"/>
+          <rect x="60" y="90" width="140" height="90" rx="10" fill="#1a2530" stroke="#4fc3e0" stroke-width="1.5"/>
+          <rect x="70" y="140" width="120" height="34" fill="#2a5a6e" opacity="0.5"/>
+          <line x1="90" y1="180" x2="90" y2="100" stroke="#c7c7c7" stroke-width="4"/>
+          <line x1="170" y1="180" x2="170" y2="100" stroke="#c7c7c7" stroke-width="4"/>
+          <circle cx="90" cy="150" r="3" fill="#eaf3f7" opacity="0.8"/>
+          <circle cx="90" cy="130" r="2" fill="#eaf3f7" opacity="0.6"/>
+          <circle cx="170" cy="145" r="4" fill="#eaf3f7" opacity="0.8"/>
+          <circle cx="170" cy="120" r="3" fill="#eaf3f7" opacity="0.6"/>
+          <text x="130" y="200" text-anchor="middle" font-size="8" fill="#93aab5">Tic-Tac-Box mit Wasser</text>
+          <text x="90" y="95" text-anchor="middle" font-size="7" fill="#e8823c">– (Wasserstoff)</text>
+          <text x="170" y="95" text-anchor="middle" font-size="7" fill="#4fc3e0">+ (Sauerstoff)</text>
+          <path d="M90,100 C70,60 60,40 70,30" stroke="#e8823c" stroke-width="2" fill="none"/>
+          <path d="M170,100 C190,60 200,40 190,30" stroke="#4fc3e0" stroke-width="2" fill="none"/>
+          <rect x="290" y="70" width="60" height="36" rx="4" fill="#e8823c"/>
+          <text x="320" y="93" text-anchor="middle" font-size="9" fill="#1a1410" font-weight="700">9V</text>
+          <line x1="70" y1="30" x2="290" y2="80" stroke="#e8823c" stroke-width="1.6"/>
+          <line x1="190" y1="30" x2="350" y2="85" stroke="#4fc3e0" stroke-width="1.6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Gas pneumatisch auffangen</h3>
+      <p>Ein kleines, mit Wasser gefülltes Reagenzglas (z. B. ein geleertes Aromafläschchen) wird mit dem Daumen verschlossen und vorsichtig kopfüber über den Nagel gehalten, der mit dem Minuspol verbunden ist – so wie das pneumatische Auffangen von Gasen bereits aus dem Unterricht bekannt ist. Sobald der Stromkreis geschlossen ist, steigt der entstehende Wasserstoff auf und verdrängt das Wasser im Reagenzglas.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num orange">3</div>
+    <div class="step-body">
+      <h3>Wasserstoff nachweisen: die Knallgasprobe</h3>
+      <p>Das aufgefangene Reagenzglas wird mit dem Daumen verschlossen aus dem Wasser gezogen – dabei soll so wenig Gas wie möglich entweichen (Wasserstoff ist extrem leicht und verflüchtigt sich schnell). Danach wird der Daumen entfernt und sofort eine Zündquelle an die Öffnung gehalten: Ein leises Pfeifen, „Bellen" oder ein kleiner Knall zeigt, dass tatsächlich Wasserstoff entstanden ist.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">🎥</span>
+    <div><strong>Dokumentiert eure Ergebnisse!</strong> Haltet den Aufbau als Foto fest und nehmt ein Video der Knallgasprobe auf. <a href="#ergebnis-mail">→ Jetzt Bestätigungs-E-Mail vorbereiten</a></div>
+  </div>
+
+  <!-- SACHKOMPETENZ -->
+  <h2 class="section-title">📚 Sachkompetenz (ab Klasse 7)</h2>
+
+  <details class="quiz-card">
+    <summary>Lückentext: Vervollständige den Bericht über euer Experiment.</summary>
+    <div class="quiz-answer">Bei unserem Experiment haben wir Wasser (H₂O) mithilfe von elektrischem Strom zerlegt. Diesen chemischen Vorgang nennt man <strong>Elektrolyse</strong>. Dabei sind zwei Gase entstanden: An dem mit dem Minuspol verbundenen Nagel entstand brennbarer <strong>Wasserstoff</strong> (H₂), den wir mit der <strong>Knallgasprobe</strong> nachgewiesen haben. An dem Nagel am Pluspol entstand das Gas <strong>Sauerstoff</strong> (O₂).</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welcher Stoff lässt sich mit der Knallgasprobe nachweisen?</summary>
+    <div class="quiz-answer"><strong>Wasserstoff.</strong> Reagiert er schlagartig mit dem Sauerstoff der Luft, entsteht das charakteristische Knallgeräusch.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Bringt die Schritte zum Nachweis von Wasserstoff in die richtige Reihenfolge.</summary>
+    <div class="quiz-answer">
+      <strong>1.</strong> Ein mit Wasser gefülltes Reagenzglas wird kopfüber über den Nagel am Minuspol gestülpt.<br>
+      <strong>2.</strong> Es wird gewartet, bis das Gas im Reagenzglas das Wasser fast vollständig verdrängt hat.<br>
+      <strong>3.</strong> Das Reagenzglas wird mit dem Daumen verschlossen und aus dem Wasser genommen.<br>
+      <strong>4.</strong> Der Daumen wird vom Reagenzglas genommen, und sofort wird eine Zündquelle an die Öffnung gehalten.<br>
+      <strong>5.</strong> Auf ein leises Pfeifen, „Bellen" oder einen kleinen Knall wird gelauscht.
+    </div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Lückentext: Warum musste das Reagenzglas beim pneumatischen Auffangen kopfüber ins Wasser gehalten werden?</summary>
+    <div class="quiz-answer"><strong>Wasserstoff</strong> hat eine viel geringere <strong>Dichte</strong> als Wasser und Luft und steigt daher sehr schnell auf. Hielte man das <strong>Reagenzglas</strong> nicht kopfüber, würde der Wasserstoff sofort nach oben <strong>entweichen</strong>, statt sich im Glas zu sammeln.</div>
+  </details>
+
+  <div class="callout">
+    <span class="ic">🎬</span>
+    <div>Eine ähnliche Durchführung mit anschaulicher Erklärung zeigt dieses <a href="https://www.youtube.com/watch?v=7EH9HehH5gg" target="_blank">Video „Wasserstoff selber herstellen"</a>, eine vertiefte fachliche Erläuterung auf Englisch bietet dieses <a href="https://www.youtube.com/watch?v=KXzqSbFo57A" target="_blank">Erklärvideo für die Oberstufe</a>.</div>
+  </div>
+
+  <!-- FUN FACTS -->
+  <h2 class="section-title">✨ Fun Facts</h2>
+
+  <details class="quiz-card">
+    <summary>Schätzfrage: Wie viel wiegt ein Liter Wasserstoff bei Normalbedingungen (in mg)?</summary>
+    <div class="quiz-answer"><strong>Ca. 90 mg.</strong> Wasserstoff ist das leichteste aller Elemente – deshalb steigen wasserstoffgefüllte Ballons so gut auf.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Wasserstoff besitzt in seinem häufigsten Isotop (Protium) nur zwei der drei typischen Kernbausteine. Welcher fehlt?</summary>
+    <div class="quiz-answer"><strong>Das Neutron.</strong> Protium besteht nur aus einem Proton und einem Elektron – ganz ohne Neutron im Kern.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Metallischer Wasserstoff – welche Aussage über diesen exotischen Zustand ist eindeutig falsch?</summary>
+    <div class="quiz-answer"><strong>„Es ist ein Nichtmetall der 7. Hauptgruppe."</strong> Das ist falsch – Wasserstoff steht in der 1. Hauptgruppe, und unter extremem Druck (&gt;400 GPa) wird er sogar elektrisch leitend wie ein Metall. Echt sind dagegen: die elektrische Leitfähigkeit, das mögliche Vorkommen im Inneren von Jupiter oder Saturn und seine Rolle als Supraleiter-Kandidat bei Raumtemperatur.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>In Sternen wie der Sonne verschmelzen Wasserstoffkerne durch Kernfusion (4 ¹H → ⁴He + 2 e⁺ + …) zu welchem Element?</summary>
+    <div class="quiz-answer"><strong>Helium.</strong> Diese Kernfusion ist die Energiequelle, die unsere Sonne zum Leuchten bringt.</div>
+  </details>
+
+  <!-- ERGEBNIS PER E-MAIL -->
+  <h2 class="section-title" id="ergebnis-mail">📧 Ergebnis per E-Mail sichern</h2>
+  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – Fotos oder Videos lassen sich also nicht automatisch hochladen. Unterstützt euer Gerät die native „Teilen"-Funktion mit Dateien, wählt der Button unten direkt „Mail" mit Anhang vor. Sonst bereitet er die Nachricht ohne Anhang vor, und ihr hängt eure Datei manuell an.</p>
+
+  <div class="mail-box">
+    <div class="field">
+      <label for="mailName">Spitzname (optional)</label>
+      <input type="text" id="mailName" placeholder="z. B. Rosa">
+    </div>
+    <div class="field">
+      <label for="mailAddress">Eure E-Mail-Adresse (dorthin geht die Bestätigung)</label>
+      <input type="email" id="mailAddress" placeholder="deine.adresse@beispiel.de" required>
+    </div>
+    <div class="field">
+      <label>Was habt ihr geschafft?</label>
+      <div class="check-row">
+        <label><input type="checkbox" id="mailHerstellung" checked> Wasserstoff selbst hergestellt</label>
+        <label><input type="checkbox" id="mailNachweis" checked> Wasserstoff mit der Knallgasprobe nachgewiesen</label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="mailVideo">Foto oder Video auswählen</label>
+      <div class="file-row">
+        <input type="file" id="mailVideo" accept="video/*,image/*">
+        <div class="file-status" id="fileStatus">Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.</div>
+      </div>
+    </div>
+    <button class="btn" id="prepareMail" type="button">✉️ Bestätigungs-E-Mail vorbereiten</button>
+    <div class="mail-hint" id="mailHint">
+      Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt Foto oder Video manuell an – haltet Videos dafür bewusst „datenklein".
+    </div>
+  </div>
+
+  <div class="finish">
+    <h3>🎉 Geschafft!</h3>
+    <p>Ihr habt gelernt, wie Wasserstoff per Elektrolyse gewonnen, pneumatisch aufgefangen und mit der Knallgasprobe nachgewiesen wird. Stempelt euch nun eine kleine Erinnerung in euer Forschungsheft!</p>
+  </div>
+
+</main>
+
+<footer>
+  Knallgas und Zukunft – Dein Einstieg in die Welt des Wasserstoffs · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+<script>
+  (function () {
+    var fileInput = document.getElementById('mailVideo');
+    var fileStatus = document.getElementById('fileStatus');
+    var mailBtn = document.getElementById('prepareMail');
+    var mailHint = document.getElementById('mailHint');
+
+    function canShareFiles(file) {
+      return !!(navigator.canShare && file && navigator.canShare({ files: [file] }));
+    }
+
+    function updateUiForFile() {
+      var f = fileInput.files[0];
+      if (!f) {
+        fileStatus.className = 'file-status';
+        fileStatus.textContent = 'Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht.';
+        return;
+      }
+      var mb = f.size / (1024 * 1024);
+      var sizeNote = mb > 15
+        ? '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Video kürzen oder stärker komprimieren.'
+        : '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB)';
+      if (canShareFiles(f)) {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + (mb > 15 ? '' : ' – wird beim Klick direkt mit angehängt!');
+        mailBtn.textContent = '🎥 E-Mail mit Anhang vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich die Teilen-Funktion eures Systems. Wählt dort „Mail" – Datei, Betreff und Text sind dann schon eingefügt.';
+      } else {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + ' – dieser Browser kann Dateien nicht automatisch teilen, also gleich manuell anhängen!';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt eure Datei manuell an.';
+      }
+    }
+
+    fileInput.addEventListener('change', updateUiForFile);
+
+    function buildMessage(attachedAutomatically) {
+      var name = document.getElementById('mailName').value.trim() || 'Energieforscher:in';
+      var d1 = document.getElementById('mailHerstellung').checked;
+      var d2 = document.getElementById('mailNachweis').checked;
+      var f = fileInput.files[0];
+
+      var lines = [];
+      lines.push('Hallo ' + name + ',');
+      lines.push('');
+      lines.push('🎉 Glückwunsch – du hast den Wasserstoff-Bound geschafft!');
+      lines.push('');
+      lines.push('Zusammenfassung deines Ergebnisses:');
+      if (d1) lines.push('✅ Wasserstoff selbst per Elektrolyse hergestellt');
+      if (d2) lines.push('✅ Wasserstoff mit der Knallgasprobe nachgewiesen');
+      if (!d1 && !d2) lines.push('(Noch nichts angehakt – trag oben ein, was du geschafft hast, bevor du sendest.)');
+      lines.push('');
+      if (attachedAutomatically) {
+        lines.push('🎥 Deine Datei ist dieser Nachricht direkt beigefügt.');
+      } else if (f) {
+        lines.push('📎 WICHTIG: Häng jetzt deine Datei (' + f.name + ') an diese E-Mail an, bevor du sie an dich selbst sendest.');
+      }
+      lines.push('So hast du dein Ergebnis später griffbereit, z. B. für Präsentationen oder weitere Experimente.');
+      lines.push('');
+      lines.push('Lernpfad: Knallgas und Zukunft – Dein Einstieg in die Welt des Wasserstoffs');
+      lines.push('Jugend forscht · Rosa-Luxemburg-Gymnasium');
+      return lines.join('\n');
+    }
+
+    mailBtn.addEventListener('click', function () {
+      var addressField = document.getElementById('mailAddress');
+      var address = addressField.value.trim();
+      if (!address || address.indexOf('@') === -1) {
+        addressField.focus();
+        addressField.style.borderColor = 'var(--red)';
+        return;
+      }
+      addressField.style.borderColor = '';
+
+      var subject = '💧⚡ Mein Wasserstoff-Ergebnis – Knallgas und Zukunft';
+      var f = fileInput.files[0];
+
+      if (canShareFiles(f)) {
+        var body = buildMessage(true);
+        navigator.share({ files: [f], title: subject, text: body }).catch(function () {});
+        return;
+      }
+
+      var bodyFallback = buildMessage(false);
+      var mailtoUrl = 'mailto:' + encodeURIComponent(address) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(bodyFallback);
+      window.location.href = mailtoUrl;
+    });
+  })();
+</script>
+
+</body>
+</html>
