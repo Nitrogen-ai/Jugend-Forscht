@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: Chemie der Sinne – So entsteht dein eigenes Parfum</title>
+<style>
+  :root {
+    --amber: #e0a95c;
+    --amber-d: #b3813a;
+    --purple: #a87fc9;
+    --bg: #1a1420;
+    --card: #241c2e;
+    --card2: #2c2338;
+    --border: #3a2f47;
+    --text: #f0e9f5;
+    --muted: #a99bb8;
+    --dim: #6d5f80;
+    --green: #6ab97a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header { padding: 3.4rem 2rem 3rem; text-align: center; background: linear-gradient(135deg, #3a2245, #6b3d4a 45%, #b3813a 85%, #1a1420); border-bottom: 1px solid var(--border); }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #f0e0d0; opacity: 0.85; margin-bottom: 0.8rem; }
+  header h1 { font-size: 2.1rem; margin-bottom: 0.7rem; }
+  header p { max-width: 640px; margin: 0 auto; color: #f0e0d0; opacity: 0.92; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--amber); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .intro-box { background: #2c2030; border-left: 5px solid var(--purple); padding: 1.3rem 1.5rem; border-radius: 6px; margin-bottom: 1rem; font-size: 0.94rem; color: var(--muted); }
+  .intro-box strong { color: var(--text); }
+
+  h2.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.3rem; margin: 2.8rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h2.section-title:first-of-type { margin-top: 0; }
+  .sec-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+  .bar-amber { border-color: var(--amber); }
+  .bar-purple { border-color: var(--purple); }
+
+  .step { display: flex; gap: 1.1rem; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 0.9rem; align-items: flex-start; flex-wrap: wrap; }
+  .step-num { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; color: #1a1420; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; background: var(--amber); }
+  .step-num.purple { background: var(--purple); }
+  .step-body { flex: 1; min-width: 220px; }
+  .step-body h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+  .step-body p { font-size: 0.9rem; color: var(--muted); }
+  .step-body ul { margin: 0.5rem 0 0 1.1rem; font-size: 0.88rem; color: var(--muted); }
+  .step-body li { margin-bottom: 0.3rem; }
+  .step-media { margin-top: 0.7rem; }
+  .step-media svg { width: 100%; max-width: 460px; height: auto; border-radius: 8px; border: 1px solid var(--border); display: block; }
+
+  .callout { display: flex; gap: 12px; background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
+  .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout strong { color: var(--text); }
+  .callout a { color: var(--amber); }
+
+  .quiz-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 0.8rem; overflow: hidden; }
+  .quiz-card summary { cursor: pointer; padding: 0.9rem 1.2rem; font-weight: 600; font-size: 0.92rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .quiz-card summary::-webkit-details-marker { display: none; }
+  .quiz-card summary::after { content: '+'; font-size: 1.2rem; color: var(--amber); flex-shrink: 0; transition: transform 0.2s; }
+  .quiz-card[open] summary::after { transform: rotate(45deg); }
+  .quiz-card .quiz-answer { padding: 0 1.2rem 1rem; color: var(--muted); font-size: 0.88rem; }
+  .quiz-answer strong { color: var(--green); }
+  .quiz-answer .tip { margin-top: 6px; color: var(--dim); font-style: italic; }
+
+  .mail-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1rem; }
+  .mail-box .field { margin-bottom: 0.9rem; }
+  .mail-box label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .mail-box input[type="text"], .mail-box input[type="email"] { width: 100%; background: #14101a; border: 1px solid var(--border); border-radius: 6px; padding: 0.55rem 0.7rem; color: var(--text); font-size: 0.9rem; }
+  .mail-box .check-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.88rem; color: var(--muted); }
+  .mail-box .check-row label { display: flex; align-items: center; gap: 6px; margin: 0; }
+  .mail-box .file-row { border: 1px dashed var(--border); border-radius: 8px; padding: 0.9rem 1rem; font-size: 0.85rem; color: var(--muted); }
+  .mail-box .file-status { margin-top: 6px; font-size: 0.82rem; }
+  .mail-box .file-status.ok { color: var(--green); }
+  .mail-box .file-status.warn { color: var(--amber); }
+  .mail-hint { font-size: 0.8rem; color: var(--dim); margin-top: 0.8rem; line-height: 1.5; }
+  .btn { background: var(--amber); color: #1a1420; border: none; border-radius: 8px; padding: 0.65rem 1.2rem; font-weight: 700; font-size: 0.88rem; cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+
+  .finish { margin-top: 2.4rem; background: linear-gradient(135deg, #3a2245, #6b3d4a, #b3813a); border-radius: 12px; padding: 2rem; text-align: center; }
+  .finish h3 { margin-bottom: 0.6rem; }
+  .finish p { color: #f0e0d0; margin-bottom: 0.6rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; font-size: 0.88rem; }
+  footer a { color: var(--amber); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Experiment · Chemie &amp; Design</div>
+  <h1>🌸 Chemie der Sinne – So entsteht dein eigenes Parfum</h1>
+  <p>Tauche ein in die Welt der Düfte und des Designs: Du gewinnst ätherisches Öl per Wasserdampfdestillation, konstruierst deinen eigenen Flacon in Tinkercad und druckst ihn in 3D.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Zwei Wege durch diesen Lernpfad:</strong> Wenn du den Aufbau der Wasserdampfdestillationsapparatur schon kennst, kannst du direkt loslegen. Sonst führt dich jeder Schritt genau durch den Aufbau. Ein optionales Zusatzexperiment mit dem Makey Makey ergänzt das Projekt um einen selbst gebauten Überlaufsensor.
+  </div>
+
+  <!-- ÖLGEWINNUNG -->
+  <h2 class="section-title bar-amber">🧪 Ölgewinnung durch Wasserdampfdestillation</h2>
+  <div class="sec-sub">Aus Pflanzenbestandteilen wird ätherisches Öl gewonnen – der Duftstoff für dein Parfum.</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Material bereitstellen &amp; Apparatur aufbauen</h3>
+      <p>Das Material für die Wasserdampfdestillation wird aus den Kisten geholt und bereitgelegt. Die Schliffstellen der Glasgeräte werden gefettet, damit sie sich nicht verkanten und sich später wieder leicht lösen lassen. Die Übergänge werden mit Schliffklammern fest verbunden, zuletzt wird der Tropftrichter montiert.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 460 260" xmlns="http://www.w3.org/2000/svg">
+          <rect width="460" height="260" fill="#14101a" rx="8"/>
+          <!-- Heizplatte -->
+          <rect x="40" y="200" width="90" height="16" rx="3" fill="#3a2f47"/>
+          <circle cx="85" cy="208" r="5" fill="#e0a95c"/>
+          <!-- Rundkolben -->
+          <circle cx="85" cy="165" r="34" fill="#2c2338" stroke="#a87fc9" stroke-width="1.5"/>
+          <rect x="75" y="132" width="20" height="20" fill="#2c2338" stroke="#a87fc9" stroke-width="1.5"/>
+          <!-- Stativ -->
+          <line x1="150" y1="216" x2="150" y2="40" stroke="#3a2f47" stroke-width="4"/>
+          <line x1="120" y1="120" x2="200" y2="120" stroke="#3a2f47" stroke-width="4"/>
+          <!-- Übergang/Kühler schräg -->
+          <line x1="95" y1="145" x2="220" y2="90" stroke="#a87fc9" stroke-width="6" stroke-linecap="round" opacity="0.55"/>
+          <rect x="150" y="95" width="60" height="16" rx="6" fill="none" stroke="#e0a95c" stroke-width="2" transform="rotate(-25 150 103)"/>
+          <!-- Tropftrichter -->
+          <path d="M280,70 L320,70 L305,110 L295,110 Z" fill="#2c2338" stroke="#e0a95c" stroke-width="1.5"/>
+          <rect x="296" y="108" width="8" height="30" fill="none" stroke="#e0a95c" stroke-width="1.5"/>
+          <!-- Auffanggefäß -->
+          <rect x="270" y="150" width="60" height="55" rx="4" fill="#2c2338" stroke="#a87fc9" stroke-width="1.5"/>
+          <circle cx="300" cy="180" r="4" fill="#e0a95c"/>
+          <text x="300" y="230" text-anchor="middle" font-size="8" fill="#a99bb8">Auffanggefäß</text>
+          <text x="85" y="212" text-anchor="middle" font-size="7" fill="#a99bb8">Heizplatte</text>
+          <text x="85" y="120" text-anchor="middle" font-size="7" fill="#a99bb8">Rundkolben</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Zutaten zerkleinern &amp; abwiegen</h3>
+      <p>Werdet kreativ: Wählt eigene Pflanzenbestandteile für die Destillation (z. B. Gewürznelken oder Orangenschale) und zerkleinert sie mit Sparschäler, Zestenreißer oder Gewürzmühle – wichtig ist, dass das zerkleinerte Gut noch in den Rundkolben passt. Notiert für jeden Bestandteil: Art, Zerkleinerungsmethode und abgewogene Masse.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h3>Destillation durchführen</h3>
+      <p>Sobald der Gummistopfen fest sitzt, wird die Heizplatte angeschaltet. Der aufsteigende Wasserdampf reißt die ätherischen Öle mit sich, im Tropftrichter kondensiert das Gemisch wieder. Der wässrige Teil wird über den Hahn abgelassen, das ätherische Öl schwimmt aufgrund seiner geringeren Dichte obenauf.</p>
+    </div>
+  </div>
+
+  <details class="quiz-card">
+    <summary>Warum wird das Pflanzenmaterial vor der Destillation zerkleinert?</summary>
+    <div class="quiz-answer"><strong>Die Zerkleinerung erhöht die Oberfläche des Pflanzenmaterials und damit die Kontaktfläche zum Wasserdampf</strong> – dadurch lassen sich die ätherischen Öle effizienter herauslösen.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Sicherheitscheck: Warum müssen die Glasgefäße mit Normschliff durch Schliffklammern befestigt werden?</summary>
+    <div class="quiz-answer"><strong>Beim Verdampfen des kochenden Wassers entsteht ein hoher Druck, durch den sich die Glasgefäße sonst lösen könnten.</strong> Die Klammern halten die Übergänge während des gesamten Destillationsvorgangs sicher zusammen.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Lückentext: Die meisten ätherischen Öle ___ auf Wasser, weil sie eine geringere ___ haben.</summary>
+    <div class="quiz-answer"><strong>… schwimmen … Dichte …</strong> Wasser hat eine Dichte von 1 g/ml; die meisten ätherischen Öle liegen darunter und sammeln sich deshalb an der Oberfläche des Destillats im Tropftrichter.</div>
+  </details>
+
+  <div class="callout">
+    <span class="ic">🎥</span>
+    <div><strong>Dokumentiert die laufende Apparatur!</strong> Nehmt ein kurzes Video auf, sobald die Destillation korrekt läuft. Miss anschließend das extrahierte Volumen mit einer Pipette, fotografiere es und berechne eure Ausbeute in Prozent. <a href="#ergebnis-mail">→ Jetzt Bestätigungs-E-Mail vorbereiten</a></div>
+  </div>
+
+  <!-- ZUSATZEXPERIMENT -->
+  <h2 class="section-title bar-purple">🔌 Zusatzexperiment: Überlaufschutz mit Sensoren</h2>
+  <div class="sec-sub">Optional: Baut mit dem Makey Makey einen eigenen Sensor, der rechtzeitig warnt, bevor die Destillationsflüssigkeit überläuft.</div>
+
+  <div class="step">
+    <div class="step-num purple">1</div>
+    <div class="step-body">
+      <h3>Idee verstehen</h3>
+      <p>Ein Sensor soll den stetig ansteigenden Flüssigkeitsstand im Becherglas erkennen und rechtzeitig warnen. Der Makey Makey erkennt leitende Materialien als „Tastendruck" – sobald die Flüssigkeit zwei Aluminiumstreifen im Glas gleichzeitig berührt, schließt sich der Stromkreis.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num purple">2</div>
+    <div class="step-body">
+      <h3>Sensor bauen</h3>
+      <p>Baut eine Apparatur mit Makey Makey, Rechner und Becherglas, sodass zwei Aluminiumstreifen in das Glas ragen und über Krokodilklemmen mit dem Makey Makey verbunden sind. <a href="https://www.youtube.com/watch?v=aW8h9JqXg0w&t=117s" target="_blank">Anleitungsvideo zum Makey-Makey-Aufbau</a></p>
+      <div class="step-media">
+        <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="460" height="220" fill="#14101a" rx="8"/>
+          <path d="M120,60 L100,180 Q100,200 130,200 L210,200 Q240,200 240,180 L220,60 Z" fill="none" stroke="#a87fc9" stroke-width="2"/>
+          <rect x="105" y="150" width="10" height="45" fill="#e0a95c"/>
+          <rect x="225" y="150" width="10" height="45" fill="#e0a95c"/>
+          <line x1="110" y1="150" x2="80" y2="90" stroke="#e0a95c" stroke-width="2"/>
+          <line x1="230" y1="150" x2="280" y2="90" stroke="#e0a95c" stroke-width="2"/>
+          <rect x="330" y="60" width="90" height="60" rx="8" fill="#2c2338" stroke="#6ab97a" stroke-width="1.5"/>
+          <text x="375" y="95" text-anchor="middle" font-size="9" fill="#6ab97a" font-weight="700">Makey Makey</text>
+          <line x1="80" y1="90" x2="330" y2="85" stroke="#e0a95c" stroke-width="1.6"/>
+          <line x1="280" y1="90" x2="330" y2="100" stroke="#e0a95c" stroke-width="1.6"/>
+          <path d="M100,175 Q170,185 240,175" stroke="#a87fc9" stroke-width="8" fill="none" opacity="0.35"/>
+          <text x="170" y="30" text-anchor="middle" font-size="8" fill="#a99bb8">Alu-Streifen knapp unterhalb des Randes = Warnschwelle</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <details class="quiz-card">
+    <summary>Welches günstige, flexible, leitfähige Material eignet sich für die Streifen im Becherglas?</summary>
+    <div class="quiz-answer"><strong>Aluminiumfolie.</strong> Sie ist leitfähig, biegsam und lässt sich leicht zuschneiden.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Sollen die Aluminiumstreifen tief im Becherglas, in der Mitte oder knapp unterhalb des Randes angebracht werden?</summary>
+    <div class="quiz-answer"><strong>Knapp unterhalb des Randes innen.</strong> So löst der Sensor erst aus, wenn die Flüssigkeit tatsächlich fast überläuft – ein echter Frühwarn-Sensor statt einer Dauer-Meldung.</div>
+  </details>
+
+  <div class="callout">
+    <span class="ic">🎥</span>
+    <div><strong>Testet euren Sensor!</strong> Nehmt zum Schluss ein Video eures Projektergebnisses oder Zwischenstands auf, um eure Idee festzuhalten. <a href="#ergebnis-mail">→ Jetzt Bestätigungs-E-Mail vorbereiten</a></div>
+  </div>
+
+  <!-- FLACONDESIGN -->
+  <h2 class="section-title bar-amber">🧴 Flacondesign in Tinkercad</h2>
+  <div class="sec-sub">Berechnet die passende Größe und konstruiert euren eigenen Parfum-Flacon.</div>
+
+  <details class="quiz-card">
+    <summary>📐 Rechenaufgabe: Ihr wollt 50 ml Parfum im Verhältnis 1:5 (ätherisches Öl : Alkohol) herstellen. Wie viel Platz braucht der Flacon mindestens?</summary>
+    <div class="quiz-answer"><strong>50 ml</strong> – das ist genau das angestrebte Gesamtvolumen aus ätherischem Öl und kosmetischem Alkohol zusammen. Denkt daran, zusätzlich ca. 50 % Platz für den Stopfen freizuhalten.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>📐 Übungsaufgabe: Berechnet das Volumen eines Quaders mit a = 2 cm, b = 2 cm, h = 4 cm.</summary>
+    <div class="quiz-answer"><strong>16 ml</strong> (V = a · b · h = 2 cm · 2 cm · 4 cm = 16 cm³ = 16 ml).</div>
+  </details>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Bei Tinkercad anmelden</h3>
+      <p>Wie im Lernpfad „Anwendung des 3D-Druckers" beschrieben: Klasse beitreten, Spitzname eingeben, ersten 3D-Entwurf erstellen und euer Parfumprojekt benennen.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Flacon konstruieren</h3>
+      <ul>
+        <li>Zylinder aus den „Einfachen Formen" in die Arbeitsfläche ziehen, Durchmesser und Höhe passend zum berechneten Volumen einstellen.</li>
+        <li>Einen zweiten, etwas kleineren Zylinder als Hohlkörper darüberlegen, um den Flacon auszuhöhlen – das wird der Aufbewahrungsort für euer Parfum.</li>
+        <li>Einen dritten Zylinder als Deckel gestalten, der genau auf die Öffnung passt.</li>
+        <li>Für die persönliche Note: ein Symbol oder eure Initialen als Vertiefung in den Deckel einbringen (wie beim „R" im 3D-Drucker-Lernpfad – Text in eine Bohrung verwandeln, zentrieren und einsetzen).</li>
+      </ul>
+      <div class="step-media">
+        <svg viewBox="0 0 460 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="460" height="220" fill="#14101a" rx="8"/>
+          <ellipse cx="150" cy="60" rx="40" ry="12" fill="#3a2f47" stroke="#e0a95c" stroke-width="1.5"/>
+          <rect x="110" y="60" width="80" height="20" fill="#2c2338" stroke="#e0a95c" stroke-width="1.5"/>
+          <ellipse cx="150" cy="80" rx="40" ry="12" fill="#2c2338" stroke="#e0a95c" stroke-width="1.5"/>
+          <rect x="118" y="80" width="64" height="90" fill="#241c2e" stroke="#a87fc9" stroke-width="1.5"/>
+          <ellipse cx="150" cy="170" rx="32" ry="10" fill="#241c2e" stroke="#a87fc9" stroke-width="1.5"/>
+          <text x="150" y="128" text-anchor="middle" font-size="20" font-weight="800" fill="#a87fc9" font-family="Georgia, serif" opacity="0.55">R</text>
+          <text x="150" y="200" text-anchor="middle" font-size="8" fill="#a99bb8">Flacon: Zylinder + Hohlkörper + Deckel</text>
+          <rect x="300" y="40" width="130" height="150" rx="6" fill="#241c2e" stroke="#3a2f47"/>
+          <text x="365" y="58" text-anchor="middle" font-size="7" fill="#a99bb8">Einfache Formen</text>
+          <rect x="315" y="66" width="40" height="30" rx="4" fill="#2c2338" stroke="#e0a95c"/>
+          <ellipse cx="335" cy="72" rx="16" ry="5" fill="none" stroke="#e0a95c"/>
+          <text x="335" y="104" text-anchor="middle" font-size="6" fill="#a99bb8">Zylinder</text>
+          <rect x="365" y="66" width="40" height="30" rx="4" fill="#2c2338" stroke="#a87fc9" stroke-dasharray="3 2"/>
+          <text x="385" y="104" text-anchor="middle" font-size="6" fill="#a99bb8">Hohlkörper</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D-DRUCK -->
+  <h2 class="section-title bar-purple">🖨️ 3D-Druck des Flacons</h2>
+
+  <div class="step">
+    <div class="step-num purple">1</div>
+    <div class="step-body">
+      <h3>Slicen &amp; drucken</h3>
+      <ul>
+        <li>AnkerMake Studio öffnen und die .stl-Datei des Flacons in die Modellierfläche ziehen.</li>
+        <li>Mit „Print" das Modell in druckbare Schichten slicen.</li>
+        <li>Das fertige Modell als .gcode-Datei exportieren, auf einen USB-Stick ziehen und den Druck starten.</li>
+        <li>Nach dem Druck: ein Foto des eigenen Flacons machen und ihn mit dem selbst hergestellten Parfum befüllen!</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FUN FACTS -->
+  <h2 class="section-title bar-amber">✨ Fun Facts</h2>
+
+  <details class="quiz-card">
+    <summary>Schätzfrage: Wie lange nutzen Menschen schon Düfte – wie viele Jahre vor heute?</summary>
+    <div class="quiz-answer"><strong>Etwa vor 5.000 Jahren</strong> begann die bewusste Nutzung von Düften in frühen Hochkulturen (Spanne der Schätzungen reicht von vor 70.000 bis heute).</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Bringt diese Duftstoffe in die Reihenfolge von teuer nach günstig.</summary>
+    <div class="quiz-answer"><strong>Safran (~10.000 €/kg) → Vanille (~700 €/kg) → Limonene aus Zitronenschalen (~40 €/kg) → Nelken (~20 €/kg).</strong></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welcher dieser Fun Facts über Düfte ist frei erfunden?</summary>
+    <div class="quiz-answer"><strong>„Im alten Rom waren alle Bürger verpflichtet, täglich einen bestimmten Duft zu tragen, um die soziale Hierarchie zu kennzeichnen."</strong> Das ist erfunden. Echt sind dagegen: universelle Duftvorlieben, die evolutionäre Bedeutung von Gerüchen, die Verbindung von Geruch und Gedächtnis, der historische Handel mit Düften und Gewürzen sowie der (falsche) Pest-Aberglaube rund um Duftstoffe im 14. Jahrhundert.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welche Besonderheit über den Autor Patrick Süskind (Das Parfum) stimmt nicht?</summary>
+    <div class="quiz-answer"><strong>„Das Comeback: Patrick Süskind hält regelmäßig öffentliche Lesungen und Interviews."</strong> Das stimmt nicht – tatsächlich meidet er die Öffentlichkeit bewusst und gab seit dem Welterfolg von „Das Parfum" nur sehr wenige Interviews.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welche Aussagen über den Einfluss von Düften auf Tiere sind korrekt? (mehrere richtig)</summary>
+    <div class="quiz-answer">
+      <strong>Richtig:</strong> Männliche Sackflügelfledermäuse locken Weibchen mit speziellen Düften aus ihrem Urin an. Füchse schnüffeln gerne an Gerüchen – auch menschlichen Fußgerüchen – um ihre Umgebung zu erkunden. Halsbandpekaris wälzen sich in fremden Gerüchen, um ihren eigenen Duft hinzuzufügen und ihr Territorium zu markieren.<br>
+      <strong class="tip" style="color:var(--dim); font-style:italic;">Falsch: Elefanten nutzen ihre großen Ohren nicht zum Filtern von Düften – sie dienen dem Hören und der Wärmeregulation.</strong>
+    </div>
+  </details>
+
+  <!-- ERGEBNIS PER E-MAIL -->
+  <h2 class="section-title bar-purple" id="ergebnis-mail">📧 Ergebnis per E-Mail sichern</h2>
+  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – ein Video lässt sich also nicht automatisch hochladen oder verschicken. Unterstützt euer Gerät die native „Teilen"-Funktion mit Dateien, wählt der Button unten direkt „Mail" mit Video im Anhang vor. Sonst bereitet er die Nachricht ohne Anhang vor, und ihr hängt das Video manuell an.</p>
+
+  <div class="mail-box">
+    <div class="field">
+      <label for="mailName">Spitzname (optional)</label>
+      <input type="text" id="mailName" placeholder="z. B. Rosa">
+    </div>
+    <div class="field">
+      <label for="mailAddress">Eure E-Mail-Adresse (dorthin geht die Bestätigung)</label>
+      <input type="email" id="mailAddress" placeholder="deine.adresse@beispiel.de" required>
+    </div>
+    <div class="field">
+      <label>Was habt ihr geschafft?</label>
+      <div class="check-row">
+        <label><input type="checkbox" id="mailDestillation" checked> Ölgewinnung durch Wasserdampfdestillation</label>
+        <label><input type="checkbox" id="mailSensor"> Zusatzexperiment: Überlaufschutz-Sensor</label>
+        <label><input type="checkbox" id="mailFlacon" checked> Flacon konstruiert &amp; gedruckt</label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="mailVideo">Video oder Foto auswählen</label>
+      <div class="file-row">
+        <input type="file" id="mailVideo" accept="video/*,image/*">
+        <div class="file-status" id="fileStatus">Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.</div>
+      </div>
+    </div>
+    <button class="btn" id="prepareMail" type="button">✉️ Bestätigungs-E-Mail vorbereiten</button>
+    <div class="mail-hint" id="mailHint">
+      Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt euer Video oder Foto manuell an – haltet Videos dafür bewusst „datenklein" (wenige Sekunden, ggf. komprimiert).
+    </div>
+  </div>
+
+  <div class="finish">
+    <h3>🎉 Geschafft!</h3>
+    <p>Ihr habt gelernt, wie man ätherische Öle per Wasserdampfdestillation gewinnt, einen eigenen Flacon konstruiert und in 3D druckt. Stempelt euch nun eine kleine Erinnerung in euer Forschungsheft!</p>
+  </div>
+
+</main>
+
+<footer>
+  Chemie der Sinne – So entsteht dein eigenes Parfum · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+<script>
+  (function () {
+    var fileInput = document.getElementById('mailVideo');
+    var fileStatus = document.getElementById('fileStatus');
+    var mailBtn = document.getElementById('prepareMail');
+    var mailHint = document.getElementById('mailHint');
+
+    function canShareFiles(file) {
+      return !!(navigator.canShare && file && navigator.canShare({ files: [file] }));
+    }
+
+    function updateUiForFile() {
+      var f = fileInput.files[0];
+      if (!f) {
+        fileStatus.className = 'file-status';
+        fileStatus.textContent = 'Noch keine Datei ausgewählt – die E-Mail wird dann ohne Anhang vorbereitet.';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Wählt danach oben eine Datei aus und hängt sie manuell an.';
+        return;
+      }
+      var mb = f.size / (1024 * 1024);
+      var sizeNote = mb > 15
+        ? '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Video kürzen oder stärker komprimieren.'
+        : '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB)';
+      if (canShareFiles(f)) {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + (mb > 15 ? '' : ' – wird beim Klick direkt mit angehängt!');
+        mailBtn.textContent = '🎥 E-Mail mit Anhang vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich die Teilen-Funktion eures Systems. Wählt dort „Mail" – Datei, Betreff und Text sind dann schon eingefügt.';
+      } else {
+        fileStatus.className = mb > 15 ? 'file-status warn' : 'file-status ok';
+        fileStatus.textContent = sizeNote + ' – dieser Browser kann Dateien nicht automatisch teilen, also gleich manuell anhängen!';
+        mailBtn.textContent = '✉️ Bestätigungs-E-Mail vorbereiten';
+        mailHint.textContent = 'Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt eure Datei manuell an.';
+      }
+    }
+
+    fileInput.addEventListener('change', updateUiForFile);
+
+    function buildMessage(attachedAutomatically) {
+      var name = document.getElementById('mailName').value.trim() || 'Duft-Designer:in';
+      var d1 = document.getElementById('mailDestillation').checked;
+      var d2 = document.getElementById('mailSensor').checked;
+      var d3 = document.getElementById('mailFlacon').checked;
+      var f = fileInput.files[0];
+
+      var lines = [];
+      lines.push('Hallo ' + name + ',');
+      lines.push('');
+      lines.push('🎉 Glückwunsch – dein eigenes Parfum ist fertig!');
+      lines.push('');
+      lines.push('Zusammenfassung deines Ergebnisses:');
+      if (d1) lines.push('✅ Ölgewinnung durch Wasserdampfdestillation');
+      if (d2) lines.push('✅ Zusatzexperiment: Überlaufschutz-Sensor mit Makey Makey');
+      if (d3) lines.push('✅ Flacon konstruiert und 3D-gedruckt');
+      if (!d1 && !d2 && !d3) lines.push('(Noch nichts angehakt – trag oben ein, was du geschafft hast, bevor du sendest.)');
+      lines.push('');
+      if (attachedAutomatically) {
+        lines.push('🎥 Deine Datei ist dieser Nachricht direkt beigefügt.');
+      } else {
+        lines.push('📎 WICHTIG: Häng jetzt dein Video oder Foto an diese E-Mail an' + (f ? ' (' + f.name + ')' : '') + ' – bevor du sie an dich selbst sendest.');
+      }
+      lines.push('So hast du dein Ergebnis später griffbereit, z. B. für Präsentationen oder weitere Experimente.');
+      lines.push('');
+      lines.push('Lernpfad: Chemie der Sinne – So entsteht dein eigenes Parfum');
+      lines.push('Jugend forscht · Rosa-Luxemburg-Gymnasium');
+      return lines.join('\n');
+    }
+
+    mailBtn.addEventListener('click', function () {
+      var addressField = document.getElementById('mailAddress');
+      var address = addressField.value.trim();
+      if (!address || address.indexOf('@') === -1) {
+        addressField.focus();
+        addressField.style.borderColor = 'var(--amber)';
+        return;
+      }
+      addressField.style.borderColor = '';
+
+      var subject = '🌸 Mein Parfum ist fertig! – Chemie der Sinne';
+      var f = fileInput.files[0];
+
+      if (canShareFiles(f)) {
+        var body = buildMessage(true);
+        navigator.share({ files: [f], title: subject, text: body }).catch(function () {});
+        return;
+      }
+
+      var bodyFallback = buildMessage(false);
+      var mailtoUrl = 'mailto:' + encodeURIComponent(address) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(bodyFallback);
+      window.location.href = mailtoUrl;
+    });
+  })();
+</script>
+
+</body>
+</html>
