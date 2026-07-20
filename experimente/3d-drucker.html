@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: Anwendung des 3D-Druckers</title>
+<style>
+  :root {
+    --primary: #1c5fa8;
+    --primary-d: #123f73;
+    --accent: #00b894;
+    --bg: #f4f8fb;
+    --card: #ffffff;
+    --text: #1a2733;
+    --muted: #5a6b7a;
+    --border: #dbe6ee;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header {
+    background: linear-gradient(135deg, var(--primary-d), var(--primary) 60%, var(--accent));
+    color: #fff;
+    padding: 3.2rem 2rem;
+    text-align: center;
+  }
+  header .eyebrow { font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.85; margin-bottom: 0.6rem; }
+  header h1 { font-size: 2.2rem; margin-bottom: 0.6rem; }
+  header p { max-width: 620px; margin: 0 auto; opacity: 0.92; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--primary); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .intro-box {
+    background: #e9f3fc;
+    border-left: 5px solid var(--primary);
+    padding: 1.3rem 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+  .intro-box strong { color: var(--text); }
+
+  h2.phase-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-d);
+    font-size: 1.3rem;
+    margin: 2.6rem 0 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  h2.phase-title:first-of-type { margin-top: 0; }
+  h2.phase-title .phase-icon { font-size: 1.3rem; }
+
+  .step {
+    display: flex;
+    gap: 1.2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .step-body { flex: 1; min-width: 220px; }
+  .step-body h3 { font-size: 0.98rem; margin-bottom: 0.3rem; color: var(--primary-d); }
+  .step-body p { font-size: 0.9rem; color: var(--muted); }
+
+  .step-media {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
+  }
+  .step-media svg {
+    width: 220px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+
+  .finish {
+    margin-top: 2.2rem;
+    background: linear-gradient(135deg, var(--primary-d), var(--accent));
+    color: #fff;
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    text-align: center;
+  }
+  .finish h3 { margin-bottom: 0.5rem; }
+  .finish p { opacity: 0.92; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--primary); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Experiment · Technik</div>
+  <h1>🖨️ Anwendung des 3D-Druckers</h1>
+  <p>Vom leeren Tinkercad-Entwurf zum fertig gedruckten Werkstück: ein Namensanhänger mit gravierten Buchstaben, Schritt für Schritt.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Ziel dieses Lernpfads:</strong> Ihr entwerft in Tinkercad einen kleinen Quader mit eingravierten Buchstaben (z. B. euren Initialen), exportiert ihn als .STL-Datei, slict ihn in AnkerMake Studio zu G-Code und druckt ihn am 3D-Drucker aus.
+  </div>
+
+  <!-- PHASE 1 -->
+  <h2 class="phase-title"><span class="phase-icon">🔑</span> Bei Tinkercad anmelden</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Klasse beitreten</h3>
+      <p>Öffne <a href="https://www.tinkercad.com/joinclass" target="_blank">tinkercad.com/joinclass</a> und gib den Code ein, den deine Lehrkraft freigegeben hat.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#2f7fd9"/>
+          <rect x="40" y="20" width="200" height="130" rx="10" fill="#f4f6f8"/>
+          <text x="140" y="50" text-anchor="middle" font-weight="700" font-size="14" fill="#1a2733">Klasse beitreten</text>
+          <text x="140" y="68" text-anchor="middle" font-size="7.5" fill="#5a6b7a">Gib den Code ein, den deine</text>
+          <text x="140" y="78" text-anchor="middle" font-size="7.5" fill="#5a6b7a">Lehrkraft freigegeben hat.</text>
+          <rect x="60" y="92" width="160" height="22" rx="5" fill="#fff" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="140" y="107" text-anchor="middle" font-size="9" fill="#7a8a99" letter-spacing="2">XXX XXX XXX</text>
+          <rect x="60" y="122" width="160" height="20" rx="5" fill="#4caf6a"/>
+          <text x="140" y="136" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="600">Zu meiner Klasse gehen</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Anmeldeoptionen wählen &amp; Spitzname eingeben</h3>
+      <p>Wähle „Mit Spitzname beitreten" aus und gib einen Spitznamen ein (zum Testen reicht ein beliebiger Name).</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#2f7fd9"/>
+          <rect x="35" y="10" width="210" height="150" rx="10" fill="#f4f6f8"/>
+          <text x="140" y="34" text-anchor="middle" font-size="8" fill="#5a6b7a">Willkommen bei</text>
+          <text x="140" y="49" text-anchor="middle" font-size="11" font-weight="700" fill="#1a2733">Robotik &amp; 3D-Druck</text>
+          <rect x="55" y="62" width="170" height="20" rx="5" fill="#4caf6a"/>
+          <text x="140" y="76" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="600">Mit Spitzname beitreten</text>
+          <rect x="55" y="88" width="170" height="20" rx="5" fill="#3a7dff"/>
+          <text x="140" y="102" text-anchor="middle" font-size="8" fill="#fff" font-weight="600">E-Mail oder Benutzername</text>
+          <text x="140" y="120" text-anchor="middle" font-size="7" fill="#7a8a99">Andere Anbieter</text>
+          <rect x="60" y="128" width="24" height="18" rx="4" fill="#fff" stroke="#dfe4e8"/>
+          <rect x="92" y="128" width="24" height="18" rx="4" fill="#fff" stroke="#dfe4e8"/>
+          <rect x="124" y="128" width="24" height="18" rx="4" fill="#fff" stroke="#dfe4e8"/>
+          <rect x="156" y="128" width="24" height="18" rx="4" fill="#fff" stroke="#dfe4e8"/>
+        </svg>
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#2f7fd9"/>
+          <rect x="35" y="20" width="210" height="130" rx="10" fill="#f4f6f8"/>
+          <text x="140" y="46" text-anchor="middle" font-size="8" fill="#5a6b7a">Willkommen bei</text>
+          <text x="140" y="61" text-anchor="middle" font-size="11" font-weight="700" fill="#1a2733">Robotik &amp; 3D-Druck</text>
+          <text x="140" y="80" text-anchor="middle" font-size="8" fill="#5a6b7a">Dein Spitzname?</text>
+          <rect x="60" y="90" width="160" height="20" rx="5" fill="#fff" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="70" y="104" font-size="9" fill="#1a2733">dein-name</text>
+          <rect x="60" y="118" width="160" height="20" rx="5" fill="#4caf6a"/>
+          <text x="140" y="132" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="600">Das bin ich!</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h3>Ersten 3D-Entwurf erstellen</h3>
+      <p>Klicke auf „Erstelle deinen ersten 3D-Entwurf".</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#eef2f5"/>
+          <rect x="10" y="10" width="60" height="150" fill="#fff" stroke="#dbe6ee"/>
+          <circle cx="40" cy="35" r="14" fill="#c7d6e3"/>
+          <rect x="14" y="70" width="52" height="16" rx="4" fill="#fff" stroke="#3a7dff"/>
+          <text x="40" y="81" text-anchor="middle" font-size="6.5" fill="#3a7dff">Start</text>
+          <rect x="80" y="10" width="190" height="150" fill="#eef2f5"/>
+          <rect x="90" y="20" width="80" height="80" rx="6" fill="#fff" stroke="#3a7dff" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="130" y="58" text-anchor="middle" font-size="20" fill="#3a7dff">+</text>
+          <text x="130" y="90" text-anchor="middle" font-size="6.5" fill="#3a7dff" font-weight="600">Erstelle deinen</text>
+          <text x="130" y="98" text-anchor="middle" font-size="6.5" fill="#3a7dff" font-weight="600">ersten 3D-Entwurf</text>
+          <path d="M215,35 L175,65" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow1)"/>
+          <defs><marker id="arrow1" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+          <rect x="190" y="20" width="70" height="60" rx="4" fill="#fff" stroke="#dbe6ee"/>
+          <rect x="200" y="45" width="24" height="24" fill="#c98a4a"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h3>Entwurf benennen</h3>
+      <p>Benenne deinen Entwurf oben links durch Anklicken des bisherigen Namens, z. B. „Mein Namensanhänger".</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 100" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="100" fill="#fff"/>
+          <rect x="10" y="20" width="16" height="16" fill="#f47920"/>
+          <rect x="28" y="20" width="16" height="16" fill="#7dc243"/>
+          <rect x="10" y="38" width="16" height="16" fill="#e9c92c"/>
+          <rect x="28" y="38" width="16" height="16" fill="#1ab5a8"/>
+          <rect x="55" y="20" width="150" height="34" rx="6" fill="#fff" stroke="#3a7dff" stroke-width="2"/>
+          <text x="65" y="42" font-size="12" font-weight="700" fill="#1a2733">Mein Namensanhänger</text>
+          <line x1="200" y1="28" x2="200" y2="46" stroke="#3a7dff" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <h2 class="phase-title"><span class="phase-icon">📐</span> Grundform erstellen</h2>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <h3>Würfel in die Arbeitsfläche ziehen</h3>
+      <p>Ziehe von der rechten Bildschirmseite einen Würfel per Drag&amp;Drop in dein Modellierungsfeld.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#f4f8fb"/>
+          <polygon points="20,140 260,140 220,30 60,30" fill="none" stroke="#c7d6e3"/>
+          <g transform="translate(120,60)"><rect x="0" y="10" width="34" height="34" fill="#e0a058" opacity="0.75"/><polygon points="0,10 12,0 46,0 34,10" fill="#c98a4a" opacity="0.75"/></g>
+          <rect x="215" y="10" width="55" height="150" fill="#fff" stroke="#dbe6ee"/>
+          <rect x="222" y="18" width="18" height="18" fill="#e0a058" stroke="#c98a4a"/>
+          <rect x="244" y="18" width="18" height="18" fill="#e0955c"/>
+          <path d="M225,45 C170,55 150,60 130,75" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow2)"/>
+          <defs><marker id="arrow2" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <h3>Breite &amp; Tiefe einstellen</h3>
+      <p>Gib die Tiefe und Breite in der X-Y-Ebene an beiden Stellen ein, z. B. 12 mm (voreingestellt sind 20 mm).</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#f4f8fb"/>
+          <rect x="90" y="55" width="90" height="80" fill="#d9605e" stroke="#3a7dff" stroke-width="1.5"/>
+          <polygon points="90,55 110,40 200,40 180,55" fill="#e07f7d" stroke="#3a7dff" stroke-width="1.5"/>
+          <line x1="185" y1="55" x2="230" y2="55" stroke="#333" stroke-width="1"/>
+          <line x1="185" y1="135" x2="230" y2="135" stroke="#333" stroke-width="1"/>
+          <line x1="222" y1="58" x2="222" y2="132" stroke="#333" stroke-width="1"/>
+          <rect x="200" y="85" width="46" height="16" fill="#fff" stroke="#333"/>
+          <text x="223" y="97" text-anchor="middle" font-size="9" fill="#1a2733">20.00</text>
+          <line x1="90" y1="140" x2="180" y2="140" stroke="#333" stroke-width="1"/>
+          <rect x="112" y="145" width="46" height="16" fill="#fff" stroke="#333"/>
+          <text x="135" y="157" text-anchor="middle" font-size="9" fill="#1a2733">20.00</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-body">
+      <h3>Höhe einstellen</h3>
+      <p>Als Nächstes wird die Höhe des Quaders eingegeben, z. B. 24 mm.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#f4f8fb"/>
+          <rect x="110" y="55" width="70" height="80" fill="#d9605e" stroke="#3a7dff" stroke-width="1.5"/>
+          <polygon points="110,55 130,40 200,40 180,55" fill="#e07f7d" stroke="#3a7dff" stroke-width="1.5"/>
+          <line x1="205" y1="45" x2="205" y2="130" stroke="#333" stroke-width="1"/>
+          <path d="M145,95 L185,60" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow3)"/>
+          <defs><marker id="arrow3" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+          <rect x="210" y="80" width="40" height="16" fill="#fff" stroke="#333"/>
+          <text x="230" y="92" text-anchor="middle" font-size="9" fill="#1a2733">24.00</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">8</div>
+    <div class="step-body">
+      <h3>Filamentfarbe Weiß wählen</h3>
+      <p>Die Farbe wird auf die Filamentfarbe Weiß umgestellt, um sich das gedruckte Modell besser vorstellen zu können.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#fff"/>
+          <text x="20" y="20" font-size="10" font-weight="700" fill="#1a2733">Volumenkörperfarben</text>
+          <g>
+            <circle cx="30" cy="45" r="12" fill="#d9605e"/>
+            <circle cx="60" cy="45" r="12" fill="#f2a65a"/>
+            <circle cx="90" cy="45" r="12" fill="#e9d15c"/>
+            <circle cx="120" cy="45" r="12" fill="#7dc243"/>
+            <circle cx="150" cy="45" r="12" fill="#1ab5a8"/>
+            <circle cx="180" cy="45" r="12" fill="#3a7dff"/>
+            <circle cx="210" cy="45" r="14" fill="#ffffff" stroke="#3a7dff" stroke-width="2.5"/>
+            <circle cx="240" cy="45" r="12" fill="#9aa5ad"/>
+          </g>
+          <path d="M175,80 L215,58" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow4)"/>
+          <defs><marker id="arrow4" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+          <text x="140" y="100" text-anchor="middle" font-size="8" fill="#5a6b7a">Weiß = Filament-Vorschau</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <h2 class="phase-title"><span class="phase-icon">✒️</span> Gravur mit dem Textwerkzeug</h2>
+
+  <div class="step">
+    <div class="step-num">9</div>
+    <div class="step-body">
+      <h3>Textbaustein hinzufügen</h3>
+      <p>Der Textbaustein wird in das Modellierungsfeld gezogen, um dem Modell erkennbare Symbole hinzuzufügen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <rect x="20" y="30" width="70" height="90" fill="#e8ecef" stroke="#3a7dff" stroke-width="1.5"/>
+          <polygon points="20,30 35,20 105,20 90,30" fill="#f2f4f6" stroke="#3a7dff" stroke-width="1.5"/>
+          <rect x="210" y="15" width="55" height="120" fill="#fff" stroke="#dbe6ee"/>
+          <rect x="217" y="90" width="40" height="30" rx="4" fill="#fff" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="237" y="109" text-anchor="middle" font-size="11" font-weight="700" fill="#d9605e">Tt</text>
+          <path d="M215,100 C170,105 130,95 95,75" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow5)"/>
+          <defs><marker id="arrow5" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">10</div>
+    <div class="step-body">
+      <h3>Symbol eintippen</h3>
+      <p>Durch Anklicken der Schaltfläche lässt sich das gewünschte Symbol eintippen, z. B. „R" für die Initiale.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#fff"/>
+          <rect x="15" y="10" width="250" height="34" rx="6" fill="#fff" stroke="#dbe6ee"/>
+          <text x="30" y="32" font-size="11" font-weight="700" fill="#1a2733">Text</text>
+          <circle cx="65" cy="27" r="9" fill="#d9605e"/>
+          <path d="M100,27 L140,60" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow6)"/>
+          <defs><marker id="arrow6" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+          <rect x="40" y="65" width="70" height="55" fill="#e8ecef"/>
+          <text x="75" y="105" text-anchor="middle" font-size="26" font-weight="800" fill="#d9605e" font-family="Georgia, serif">TEXT</text>
+        </svg>
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#fff"/>
+          <rect x="15" y="10" width="250" height="34" rx="6" fill="#fff" stroke="#dbe6ee"/>
+          <text x="30" y="32" font-size="11" font-weight="700" fill="#1a2733">Text</text>
+          <text x="30" y="70" font-size="9" fill="#5a6b7a">Text</text>
+          <rect x="60" y="55" width="180" height="24" rx="5" fill="#fff" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="72" y="72" font-size="14" font-weight="700" fill="#1a2733">R</text>
+          <path d="M120,110 L80,80" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow7)"/>
+          <defs><marker id="arrow7" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+          <text x="140" y="130" text-anchor="middle" font-size="8" fill="#5a6b7a">Schriftart: Mehrsprachig</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">11</div>
+    <div class="step-body">
+      <h3>Text in eine Bohrung verwandeln</h3>
+      <p>Der ausgefüllte Text wird in eine Bohrung überführt, damit er sich in das Modell eingraviert, statt darauf zu liegen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#fff"/>
+          <rect x="15" y="10" width="250" height="34" rx="6" fill="#fff" stroke="#dbe6ee"/>
+          <text x="30" y="32" font-size="11" font-weight="700" fill="#1a2733">Text</text>
+          <rect x="30" y="55" width="80" height="55" rx="6" fill="#fff" stroke="#dbe6ee" stroke-width="1.5"/>
+          <circle cx="70" cy="82" r="16" fill="#d9605e"/>
+          <text x="70" y="128" text-anchor="middle" font-size="8" fill="#5a6b7a">Volumenkörper</text>
+          <rect x="150" y="55" width="80" height="55" rx="6" fill="#eef4fb" stroke="#3a7dff" stroke-width="2"/>
+          <circle cx="190" cy="82" r="16" fill="#c7d6e3" stroke="#8fa3b3" stroke-width="1.5"/>
+          <path d="M170,90 L180,80 M175,90 L192,73 M182,90 L200,73" stroke="#8fa3b3" stroke-width="1.2"/>
+          <text x="190" y="128" text-anchor="middle" font-size="8" fill="#3a7dff" font-weight="700">Bohrung</text>
+          <path d="M130,95 L155,85" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow8)"/>
+          <defs><marker id="arrow8" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">12</div>
+    <div class="step-body">
+      <h3>Bohrungstiefe anpassen</h3>
+      <p>Für die Bohrungstiefe sollte etwa 1 mm eingegeben werden. Voreingestellt sind noch 10 mm.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <rect x="30" y="35" width="80" height="80" fill="#c7d6e3" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="70" y="85" text-anchor="middle" font-size="30" font-weight="800" fill="#8fa3b3" font-family="Georgia, serif">R</text>
+          <rect x="150" y="55" width="60" height="26" rx="5" fill="#fff" stroke="#333"/>
+          <text x="180" y="73" text-anchor="middle" font-size="12" fill="#d9605e" text-decoration="line-through">10.00</text>
+          <path d="M150,95 L200,95" stroke="#7dc243" stroke-width="0" />
+          <rect x="150" y="90" width="60" height="26" rx="5" fill="#fff" stroke="#00b894" stroke-width="2"/>
+          <text x="180" y="108" text-anchor="middle" font-size="12" fill="#00b894" font-weight="700">1.00</text>
+          <path d="M180,82 L180,89" stroke="#00b894" stroke-width="3" marker-end="url(#arrow9)"/>
+          <defs><marker id="arrow9" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#00b894"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">13</div>
+    <div class="step-body">
+      <h3>Symbol um 90° drehen</h3>
+      <p>Danach muss das Symbol um die eigene Achse gedreht werden, um seitlich am Quader platziert zu werden.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <rect x="70" y="45" width="70" height="70" fill="#c7d6e3" stroke="#3a7dff" stroke-width="1.5"/>
+          <circle cx="180" cy="80" r="45" fill="none" stroke="#1ab5a8" stroke-width="1.2" stroke-dasharray="3 2"/>
+          <path d="M180,35 A45,45 0 0 1 220,80" stroke="#f47920" stroke-width="4" fill="none"/>
+          <path d="M180,25 L180,40 L192,32 Z" fill="#7dc243"/>
+          <text x="240" y="45" text-anchor="middle" font-size="11" fill="#1a2733" font-weight="700">90°</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">14</div>
+    <div class="step-body">
+      <h3>Auf die richtige Höhe ziehen</h3>
+      <p>Das Symbol wird am kegelförmigen Griff hochgezogen, bis es auf der gewünschten Höhe für das 3D-Modell angekommen ist.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <rect x="80" y="30" width="90" height="90" fill="#c7d6e3" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="125" y="90" text-anchor="middle" font-size="30" font-weight="800" fill="#8fa3b3" font-family="Georgia, serif">R</text>
+          <path d="M125,60 L125,20" stroke="#7dc243" stroke-width="6" marker-end="url(#arrow10)"/>
+          <defs><marker id="arrow10" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+          <polygon points="118,58 132,58 125,68" fill="#1a2733"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">15</div>
+    <div class="step-body">
+      <h3>Mit den Pfeiltasten feinjustieren</h3>
+      <p>Über die Pfeiltasten der Tastatur lässt sich das Symbol einfach zur gewünschten Bohrungsstelle im 3D-Modell führen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <rect x="30" y="25" width="90" height="100" fill="#c7d6e3" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="75" y="90" text-anchor="middle" font-size="30" font-weight="800" fill="#8fa3b3" font-family="Georgia, serif">R</text>
+          <g transform="translate(200,75)" fill="#fff" stroke="#3a7dff" stroke-width="1.2">
+            <rect x="-14" y="-36" width="28" height="20" rx="3"/><rect x="-14" y="16" width="28" height="20" rx="3"/>
+            <rect x="-38" y="-10" width="28" height="20" rx="3"/><rect x="14" y="-10" width="28" height="20" rx="3"/>
+          </g>
+          <g fill="#1a2733" font-size="12" text-anchor="middle">
+            <text x="200" y="-21">↑</text><text x="200" y="31">↓</text><text x="176" y="5">←</text><text x="224" y="5">→</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">16</div>
+    <div class="step-body">
+      <h3>Weitere Symbole ergänzen</h3>
+      <p>Weitere Symbole bzw. Bohrungen, z. B. „L" und „G", werden erstellt und an den anderen Seiten des Quaders positioniert.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <polygon points="70,30 150,30 180,55 100,55" fill="#dfe6ec" stroke="#3a7dff" stroke-width="1.2"/>
+          <rect x="70" y="30" width="80" height="80" fill="#c7d6e3" stroke="#3a7dff" stroke-width="1.5"/>
+          <polygon points="150,30 180,55 180,135 150,110" fill="#b3c3d1" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="108" y="82" text-anchor="middle" font-size="26" font-weight="800" fill="#8fa3b3" font-family="Georgia, serif">R</text>
+          <text x="165" y="90" text-anchor="middle" font-size="18" font-weight="800" fill="#7a8f9e" font-family="Georgia, serif">L</text>
+          <path d="M195,60 A20,20 0 1 1 194,59" stroke="#7dc243" stroke-width="2.5" fill="none" marker-end="url(#arrow11)"/>
+          <defs><marker id="arrow11" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7dc243"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">17</div>
+    <div class="step-body">
+      <h3>Modell von allen Seiten prüfen</h3>
+      <p>Wenn das Modell von allen Seiten überprüft wurde und druckbereit ist, kann es als .STL-Datei exportiert werden.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#f4f8fb"/>
+          <polygon points="90,25 160,25 190,50 120,50" fill="#dfe6ec" stroke="#3a7dff" stroke-width="1.2"/>
+          <rect x="90" y="25" width="70" height="90" fill="#c7d6e3" stroke="#3a7dff" stroke-width="1.5"/>
+          <polygon points="160,25 190,50 190,140 160,115" fill="#b3c3d1" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="122" y="80" text-anchor="middle" font-size="22" font-weight="800" fill="#8fa3b3" font-family="Georgia, serif">R</text>
+          <text x="175" y="90" text-anchor="middle" font-size="15" font-weight="800" fill="#7a8f9e" font-family="Georgia, serif">L</text>
+          <circle cx="225" cy="45" r="18" fill="#00b894"/>
+          <path d="M217,45 L223,52 L235,37" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <h2 class="phase-title"><span class="phase-icon">📤</span> Modell exportieren</h2>
+
+  <div class="step">
+    <div class="step-num">18</div>
+    <div class="step-body">
+      <h3>Exportieren anklicken</h3>
+      <p>Oben rechts wird auf „Exportieren" geklickt.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 110" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="110" fill="#fff"/>
+          <rect x="10" y="10" width="260" height="30" fill="#f4f8fb" stroke="#dbe6ee"/>
+          <rect x="70" y="16" width="80" height="18" rx="4" fill="#fff" stroke="#dbe6ee"/>
+          <text x="110" y="29" text-anchor="middle" font-size="8" fill="#5a6b7a">Importieren</text>
+          <rect x="155" y="16" width="80" height="18" rx="4" fill="#fff" stroke="#3a7dff" stroke-width="1.5"/>
+          <text x="195" y="29" text-anchor="middle" font-size="8" fill="#3a7dff" font-weight="700">Exportieren</text>
+          <rect x="40" y="50" width="200" height="40" rx="6" fill="#1a2733"/>
+          <text x="140" y="74" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">Herunterladen und in 3D drucken</text>
+          <path d="M195,45 L195,50" stroke="#1a2733" stroke-width="1.5"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">19</div>
+    <div class="step-body">
+      <h3>.STL-Datei wählen</h3>
+      <p>Alle Objekte im Entwurf werden ausgewählt und auf die Schaltfläche .STL geklickt, um die .STL-Datei zu exportieren.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#fff"/>
+          <text x="20" y="24" font-size="10" fill="#5a6b7a">Einschließen</text>
+          <circle cx="130" cy="20" r="6" fill="#fff" stroke="#3a7dff" stroke-width="2"/>
+          <circle cx="130" cy="20" r="2.5" fill="#3a7dff"/>
+          <text x="145" y="24" font-size="9" fill="#1a2733">Alle Objekte im Entwurf</text>
+          <rect x="20" y="45" width="70" height="40" rx="5" fill="#fff" stroke="#dbe6ee"/>
+          <text x="55" y="69" text-anchor="middle" font-size="10" fill="#5a6b7a">.OBJ</text>
+          <rect x="100" y="45" width="70" height="40" rx="5" fill="#eef4fb" stroke="#3a7dff" stroke-width="2"/>
+          <text x="135" y="69" text-anchor="middle" font-size="10" fill="#3a7dff" font-weight="700">.STL</text>
+          <rect x="20" y="95" width="70" height="40" rx="5" fill="#fff" stroke="#dbe6ee"/>
+          <text x="55" y="119" text-anchor="middle" font-size="9" fill="#5a6b7a">GLTF</text>
+          <path d="M200,110 L145,75" stroke="#7dc243" stroke-width="6" fill="none" marker-end="url(#arrow12)"/>
+          <defs><marker id="arrow12" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#7dc243"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <h2 class="phase-title"><span class="phase-icon">🍰</span> Slicen mit AnkerMake Studio</h2>
+
+  <div class="step">
+    <div class="step-num">20</div>
+    <div class="step-body">
+      <h3>.STL-Datei laden</h3>
+      <p>Die Slicing-Software AnkerMake Studio wird geöffnet und die .STL-Datei wird per Drag&amp;Drop in das Feld gezogen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#1c222b"/>
+          <rect x="0" y="0" width="280" height="18" fill="#262d38"/>
+          <circle cx="10" cy="9" r="3" fill="#00b894"/>
+          <text x="140" y="12" text-anchor="middle" font-size="6.5" fill="#c7d1db">AnkerMake Studio</text>
+          <polygon points="30,120 130,120 100,55 60,55" fill="none" stroke="#3a4553"/>
+          <rect x="75" y="80" width="16" height="34" fill="#00b894"/>
+          <text x="83" y="128" text-anchor="middle" font-size="6" fill="#8fa3b3">Mein_Namensanhänger.stl</text>
+          <rect x="180" y="30" width="90" height="100" fill="#20262f" stroke="#3a4553"/>
+          <text x="188" y="45" font-size="7" fill="#c7d1db">Printer</text>
+          <rect x="188" y="50" width="72" height="14" rx="3" fill="#2c333e"/>
+          <text x="188" y="80" font-size="7" fill="#c7d1db">Filament</text>
+          <rect x="188" y="85" width="72" height="14" rx="3" fill="#2c333e"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">21</div>
+    <div class="step-body">
+      <h3>Qualität wählen &amp; Slice Now</h3>
+      <p>Die Einstellungen werden auf „Normal" gestellt und die Schaltfläche „Slice Now" wird angeklickt.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#1c222b"/>
+          <rect x="150" y="15" width="115" height="24" rx="4" fill="#2c333e"/>
+          <text x="158" y="31" font-size="8" fill="#c7d1db">⚡ Fast</text>
+          <rect x="150" y="42" width="115" height="24" rx="4" fill="#0d3b30" stroke="#00b894" stroke-width="1.5"/>
+          <text x="158" y="58" font-size="8" fill="#00d9ac" font-weight="700">✓ Normal</text>
+          <rect x="150" y="69" width="115" height="24" rx="4" fill="#2c333e"/>
+          <text x="158" y="85" font-size="8" fill="#c7d1db">♥ Precision</text>
+          <rect x="150" y="118" width="115" height="24" rx="5" fill="#00b894"/>
+          <text x="207" y="134" text-anchor="middle" font-size="9" fill="#0e1a15" font-weight="700">Slice Now</text>
+          <path d="M207,110 L207,119" stroke="#00d9ac" stroke-width="3" marker-end="url(#arrow13)"/>
+          <defs><marker id="arrow13" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#00d9ac"/></marker></defs>
+          <polygon points="40,110 90,110 75,60 55,60" fill="#00b894" opacity="0.85"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">22</div>
+    <div class="step-body">
+      <h3>Fehlerfrei exportieren</h3>
+      <p>Die Datei kann exportiert werden, wenn wie in der Vorschau keine Fehlermeldungen erscheinen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#1c222b"/>
+          <polygon points="70,110 130,110 115,55 85,55" fill="#e07f30"/>
+          <line x1="70" y1="85" x2="130" y2="85" stroke="#1c222b" stroke-width="1.5"/>
+          <line x1="75" y1="70" x2="125" y2="70" stroke="#1c222b" stroke-width="1.5"/>
+          <ellipse cx="100" cy="112" rx="40" ry="8" fill="none" stroke="#00b894" stroke-width="1.5"/>
+          <rect x="160" y="118" width="45" height="22" rx="4" fill="#2c333e"/>
+          <text x="182" y="133" text-anchor="middle" font-size="8" fill="#c7d1db">Export</text>
+          <rect x="212" y="118" width="45" height="22" rx="4" fill="#00b894"/>
+          <text x="234" y="133" text-anchor="middle" font-size="8" fill="#0e1a15" font-weight="700">Print</text>
+          <path d="M180,105 L184,116" stroke="#7dc243" stroke-width="5" marker-end="url(#arrow14)"/>
+          <defs><marker id="arrow14" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#7dc243"/></marker></defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">23</div>
+    <div class="step-body">
+      <h3>Dateiformat .gcode wählen</h3>
+      <p>Das Dateiformat .gcode wird beim Speichern ausgewählt.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="150" fill="#1c222b"/>
+          <text x="140" y="24" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">Save</text>
+          <text x="20" y="46" font-size="7.5" fill="#c7d1db">Save As:</text>
+          <rect x="20" y="52" width="240" height="20" rx="4" fill="#2c333e"/>
+          <text x="28" y="66" font-size="7.5" fill="#c7d1db">Mein_Namensanhänger_0.2mm</text>
+          <text x="20" y="92" font-size="7.5" fill="#c7d1db">File type:</text>
+          <rect x="20" y="98" width="240" height="20" rx="4" fill="#0d3b30" stroke="#00b894" stroke-width="1.5"/>
+          <text x="30" y="112" font-size="8" fill="#00d9ac" font-weight="700">✓ G-code files (*.gcode)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 6 -->
+  <h2 class="phase-title"><span class="phase-icon">🖨️</span> Drucken</h2>
+
+  <div class="step">
+    <div class="step-num">24</div>
+    <div class="step-body">
+      <h3>G-Code auf den Drucker übertragen</h3>
+      <p>Die .gcode-Datei ist nun für den Drucker lesbar und kann auf den USB-Stick übertragen werden, um den 3D-Druck zu starten.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 280 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="280" height="170" fill="#f4f8fb"/>
+          <rect x="40" y="120" width="170" height="14" rx="3" fill="#4a5563"/>
+          <rect x="55" y="45" width="10" height="80" fill="#6b7684"/>
+          <rect x="185" y="45" width="10" height="80" fill="#6b7684"/>
+          <circle cx="60" cy="30" r="22" fill="none" stroke="#9aa5ad" stroke-width="6"/>
+          <rect x="90" y="65" width="70" height="6" fill="#1a2733"/>
+          <rect x="115" y="65" width="20" height="30" fill="#00b894"/>
+          <rect x="170" y="55" width="16" height="26" rx="3" fill="#1a2733"/>
+          <circle cx="178" cy="63" r="3" fill="#00d9ac"/>
+          <rect x="70" y="128" width="140" height="4" fill="#1ab5a8" opacity="0.5"/>
+          <g transform="translate(230,110)">
+            <rect x="0" y="0" width="24" height="34" rx="3" fill="#dbe6ee" stroke="#8fa3b3"/>
+            <rect x="6" y="-8" width="12" height="10" fill="#8fa3b3"/>
+            <rect x="4" y="10" width="16" height="6" fill="#3a7dff"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="finish">
+    <h3>🎉 Geschafft!</h3>
+    <p>Euer gravierter Namensanhänger ist bereit für den Druck. Wiederholt die Gravur-Schritte gern mit euren eigenen Initialen oder anderen kleinen Symbolen.</p>
+  </div>
+
+</main>
+
+<footer>
+  Anwendung des 3D-Druckers · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>
