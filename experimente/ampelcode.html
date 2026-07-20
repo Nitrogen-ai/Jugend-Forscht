@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lernpfad: Hacker der Straße – Knacke den Ampelcode!</title>
+<style>
+  :root {
+    --red: #e6483f;
+    --yellow: #eec22c;
+    --green: #3fae6a;
+    --bg: #10141a;
+    --card: #1a212a;
+    --card2: #212a35;
+    --border: #2b3542;
+    --text: #e8ecf2;
+    --muted: #8b98a8;
+    --dim: #566373;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header {
+    padding: 3.4rem 2rem 3rem;
+    text-align: center;
+    background: linear-gradient(135deg, #3a0d0d, #4a3a08 35%, #0d3a20 75%, #10141a);
+    border-bottom: 1px solid var(--border);
+  }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #d8dee6; opacity: 0.8; margin-bottom: 0.8rem; }
+  header h1 { font-size: 2.2rem; margin-bottom: 0.7rem; }
+  header p { max-width: 640px; margin: 0 auto; color: #d8dee6; opacity: 0.92; }
+  .signal { display: inline-flex; flex-direction: column; gap: 5px; background: #1a1a1a; border-radius: 8px; padding: 8px 10px; margin-bottom: 1rem; }
+  .signal span { width: 14px; height: 14px; border-radius: 50%; display: block; }
+  .signal .r { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .signal .y { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+  .signal .g { background: var(--green); box-shadow: 0 0 8px var(--green); }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--yellow); }
+
+  main { max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  h2.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    margin: 2.8rem 0 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  h2.section-title:first-of-type { margin-top: 0; }
+  .bar-red { border-color: var(--red); }
+  .bar-yellow { border-color: var(--yellow); }
+  .bar-green { border-color: var(--green); }
+
+  .intro-box {
+    background: #241a1a;
+    border-left: 5px solid var(--red);
+    padding: 1.3rem 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.94rem;
+    color: var(--muted);
+  }
+  .intro-box strong { color: var(--text); }
+
+  /* Bauteile-Checkliste */
+  .parts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .part-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+  }
+  .part-card.no { opacity: 0.45; }
+  .part-card svg { width: 100%; height: 70px; }
+  .part-card .label { font-size: 0.76rem; margin-top: 6px; color: var(--muted); }
+  .part-badge {
+    position: absolute; top: 6px; right: 6px;
+    width: 18px; height: 18px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800;
+  }
+  .part-badge.yes { background: var(--green); color: #06210f; }
+  .part-badge.no { background: #5a2222; color: #f2b8b8; }
+
+  /* Steps */
+  .step {
+    display: flex;
+    gap: 1.1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    color: #12161c;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .step-num.red { background: var(--red); }
+  .step-num.yellow { background: var(--yellow); }
+  .step-num.green { background: var(--green); }
+  .step-body { flex: 1; min-width: 220px; }
+  .step-body h3 { font-size: 0.98rem; margin-bottom: 0.3rem; }
+  .step-body p { font-size: 0.9rem; color: var(--muted); }
+  .step-body ul { margin: 0.5rem 0 0 1.1rem; font-size: 0.88rem; color: var(--muted); }
+  .step-body li { margin-bottom: 0.3rem; }
+  .step-media { margin-top: 0.7rem; }
+  .step-media svg { width: 100%; max-width: 440px; height: auto; border-radius: 8px; border: 1px solid var(--border); display: block; }
+
+  .code-block {
+    margin-top: 12px;
+    background: #0c0f13;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.82rem;
+    color: #c8d3e0;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+  .code-block .kw { color: #7db3ff; }
+  .code-block .fn { color: #eec22c; }
+  .code-block .cmt { color: var(--dim); font-style: italic; }
+
+  .callout {
+    display: flex;
+    gap: 12px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout strong { color: var(--text); }
+  .callout a { color: var(--yellow); }
+
+  /* OOP objects */
+  .oop-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 1rem 0; }
+  .oop-card {
+    flex: 1; min-width: 220px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+  }
+  .oop-card h4 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .oop-card ul { list-style: none; font-size: 0.85rem; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  .oop-card li::before { content: '• '; color: var(--yellow); }
+
+  /* Quiz */
+  .quiz-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 0.8rem;
+    overflow: hidden;
+  }
+  .quiz-card summary {
+    cursor: pointer;
+    padding: 0.9rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .quiz-card summary::-webkit-details-marker { display: none; }
+  .quiz-card summary::after { content: '+'; font-size: 1.2rem; color: var(--yellow); flex-shrink: 0; transition: transform 0.2s; }
+  .quiz-card[open] summary::after { transform: rotate(45deg); }
+  .quiz-card .quiz-answer { padding: 0 1.2rem 1rem; color: var(--muted); font-size: 0.88rem; }
+  .quiz-answer strong { color: var(--green); }
+  .quiz-answer .tip { margin-top: 6px; color: var(--dim); font-style: italic; }
+
+  .finish {
+    margin-top: 2.4rem;
+    background: linear-gradient(135deg, #3a0d0d, #4a3a08, #0d3a20);
+    border-radius: 12px;
+    padding: 2rem 2rem;
+    text-align: center;
+  }
+  .finish h3 { margin-bottom: 0.6rem; }
+  .finish p { color: #dfe4ea; margin-bottom: 0.6rem; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--yellow); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Experiment · Elektronik &amp; Informatik</div>
+  <div class="signal"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+  <h1>🚦 Hacker der Straße – Knacke den Ampelcode!</h1>
+  <p>Hinter jeder Ampel steckt mehr, als man denkt: Stromkreise, Platinen, Kabelsalat – und ein cleverer Code, der genau vorgibt, wann welches Licht leuchten darf. Baut eure eigene Ampelschaltung mit Arduino und LEDs, und programmiert am Ende sogar eine ganze Kreuzung.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Zwei Wege durch diesen Lernpfad:</strong> Im <strong>Experiment</strong> baut und programmiert ihr eine klassische Autoampel mit drei LEDs und einem Arduino. In der <strong>Vertiefung</strong> geht es dann um objektorientierte Programmierung am Beispiel einer gefährlichen Kreuzung, an der Fahrzeug und Fußgänger:in koordiniert werden müssen. Ihr könnt einen oder beide Wege gehen.
+  </div>
+
+  <!-- BAUTEILE-CHECK -->
+  <h2 class="section-title bar-red">🧰 Bauteile-Check</h2>
+  <p style="color:var(--muted); font-size:0.92rem; margin-bottom:1rem;">Nicht jedes Bauteil aus der Box gehört zur Ampelschaltung. Findet heraus, was ihr wirklich für Rot-, Gelb- und Grünphase braucht.</p>
+
+  <div class="parts-grid">
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#e6483f"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
+      <div class="label">Rote LED</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#eec22c"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
+      <div class="label">Gelbe LED</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#3fae6a"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
+      <div class="label">Grüne LED</div>
+    </div>
+    <div class="part-card no"><span class="part-badge no">✗</span>
+      <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#3a6fd8"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
+      <div class="label">Blaue LED</div>
+    </div>
+    <div class="part-card no"><span class="part-badge no">✗</span>
+      <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#eef2f5" stroke="#c7c7c7"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
+      <div class="label">Weiße LED</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><rect x="20" y="26" width="20" height="9" rx="4" fill="#d69e4a"/><line x1="10" y1="30" x2="20" y2="30" stroke="#c7c7c7" stroke-width="2"/><line x1="40" y1="30" x2="50" y2="30" stroke="#c7c7c7" stroke-width="2"/><text x="30" y="55" text-anchor="middle" font-size="9" fill="#8b98a8">220 Ω</text></svg>
+      <div class="label">Schutzwiderstand</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><path d="M8,50 Q8,20 30,20" stroke="#e6483f" stroke-width="3" fill="none"/><circle cx="8" cy="50" r="3" fill="#8a8a8a"/><circle cx="30" cy="20" r="3" fill="#8a8a8a"/></svg>
+      <div class="label">Rotes Steckkabel</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><path d="M8,50 Q8,20 30,20" stroke="#3a6fd8" stroke-width="3" fill="none"/><circle cx="8" cy="50" r="3" fill="#8a8a8a"/><circle cx="30" cy="20" r="3" fill="#8a8a8a"/></svg>
+      <div class="label">Blaues Steckkabel</div>
+    </div>
+    <div class="part-card no"><span class="part-badge no">✗</span>
+      <svg viewBox="0 0 60 70"><rect x="18" y="24" width="24" height="16" rx="3" fill="#2c333e"/><circle cx="30" cy="20" r="7" fill="#12161c" stroke="#556"/></svg>
+      <div class="label">Tastschalter</div>
+    </div>
+    <div class="part-card no"><span class="part-badge no">✗</span>
+      <svg viewBox="0 0 60 70"><rect x="16" y="30" width="28" height="16" rx="2" fill="#c98a4a"/><circle cx="30" cy="24" r="9" fill="#1a1a1a"/></svg>
+      <div class="label">Potentiometer</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><rect x="8" y="20" width="44" height="30" rx="2" fill="#fff" stroke="#c7c7c7"/><g stroke="#e6483f" stroke-width="0.8"><line x1="12" y1="24" x2="12" y2="46"/><line x1="18" y1="24" x2="18" y2="46"/><line x1="24" y1="24" x2="24" y2="46"/><line x1="30" y1="24" x2="30" y2="46"/><line x1="36" y1="24" x2="36" y2="46"/><line x1="42" y1="24" x2="42" y2="46"/><line x1="48" y1="24" x2="48" y2="46"/></g></svg>
+      <div class="label">Steckplatine</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><rect x="8" y="20" width="44" height="28" rx="4" fill="#12161c"/><rect x="12" y="16" width="10" height="8" fill="#1e2733"/><circle cx="44" cy="26" r="2" fill="#3fae6a"/><text x="30" y="40" text-anchor="middle" font-size="7" fill="#8b98a8">UNO</text></svg>
+      <div class="label">Arduino UNO R3</div>
+    </div>
+    <div class="part-card"><span class="part-badge yes">✓</span>
+      <svg viewBox="0 0 60 70"><rect x="10" y="34" width="22" height="14" rx="2" fill="#eec22c"/><text x="21" y="44" text-anchor="middle" font-size="8" fill="#3a2c00">9V</text><path d="M32,40 Q42,40 42,28" stroke="#8b98a8" stroke-width="2" fill="none"/><rect x="40" y="16" width="6" height="12" rx="2" fill="#c7c7c7"/></svg>
+      <div class="label">Netzteil / 9V-Batterie</div>
+    </div>
+  </div>
+
+  <!-- SCHALTUNG & PROGRAMMIERUNG -->
+  <h2 class="section-title bar-yellow">🔌 Schaltung bauen &amp; programmieren</h2>
+
+  <div class="step">
+    <div class="step-num red">I</div>
+    <div class="step-body">
+      <h3>Neuen Schaltkreis erstellen</h3>
+      <p>Erstellt bei Tinkercad einen neuen Schaltkreis mit eurem Klassencode – wie im 3D-Drucker-Lernpfad beschrieben.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num red">II</div>
+    <div class="step-body">
+      <h3>Ampelschaltung aufbauen</h3>
+      <p>Konstruiert eine Ampelschaltung mit drei LED-Lampen (rot, gelb, grün) und jeweils einem 220-Ω-Schutzwiderstand.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 440 220" xmlns="http://www.w3.org/2000/svg">
+          <rect width="440" height="220" fill="#0c0f13" rx="8"/>
+          <rect x="30" y="70" width="180" height="120" rx="6" fill="#171d25" stroke="#2b3542"/>
+          <g stroke="#3a4552" stroke-width="1"><line x1="30" y1="95" x2="210" y2="95"/><line x1="30" y1="165" x2="210" y2="165"/></g>
+          <rect x="260" y="60" width="120" height="140" rx="8" fill="#12161c" stroke="#2b3542" stroke-width="1.5"/>
+          <circle cx="320" cy="85" r="12" fill="#e6483f"/>
+          <circle cx="320" cy="120" r="12" fill="#eec22c"/>
+          <circle cx="320" cy="155" r="12" fill="#3fae6a"/>
+          <rect x="60" y="30" width="24" height="30" rx="4" fill="#12161c"/>
+          <text x="72" y="50" text-anchor="middle" font-size="7" fill="#8b98a8">UNO</text>
+          <path d="M84,40 C160,40 260,60 308,80" stroke="#e6483f" stroke-width="2" fill="none"/>
+          <path d="M84,45 C170,55 260,90 308,115" stroke="#eec22c" stroke-width="2" fill="none"/>
+          <path d="M84,50 C180,80 260,130 308,150" stroke="#3fae6a" stroke-width="2" fill="none"/>
+          <rect x="215" y="80" width="14" height="6" fill="#d69e4a"/>
+          <rect x="215" y="115" width="14" height="6" fill="#d69e4a"/>
+          <rect x="215" y="150" width="14" height="6" fill="#d69e4a"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num yellow">III</div>
+    <div class="step-body">
+      <h3>Programmierung planen</h3>
+      <ul>
+        <li>Klickt auf die Schaltfläche „Code".</li>
+        <li>Zieht die Wiederholschleife „forever" in das Programmierfeld.</li>
+        <li>Setzt den Pin zu einer LED über den Ausgangsblock auf „high" – die LED soll leuchten.</li>
+        <li>Gebt eine Wartezeit ein, die das Leuchten in diesem Zustand hält.</li>
+        <li>Testet euer Programm über „Simulation starten" oben rechts.</li>
+        <li>Wenn ihr zufrieden seid: Schaltung und C++-Code lassen sich jederzeit exportieren.</li>
+      </ul>
+      <div class="code-block"><span class="cmt">// vereinfachtes Ablaufprinzip</span><br>
+<span class="kw">forever</span> {<br>
+&nbsp;&nbsp;<span class="fn">digitalWrite</span>(rotPin, HIGH); <span class="cmt">// Rot an</span><br>
+&nbsp;&nbsp;<span class="fn">wait</span>(3000);<br>
+&nbsp;&nbsp;<span class="fn">digitalWrite</span>(gelbPin, HIGH); <span class="cmt">// Rot-Gelb</span><br>
+&nbsp;&nbsp;<span class="fn">wait</span>(1000);<br>
+&nbsp;&nbsp;<span class="fn">digitalWrite</span>(rotPin, LOW);<br>
+&nbsp;&nbsp;<span class="fn">digitalWrite</span>(gelbPin, LOW);<br>
+&nbsp;&nbsp;<span class="fn">digitalWrite</span>(gruenPin, HIGH); <span class="cmt">// Grün an</span><br>
+&nbsp;&nbsp;<span class="fn">wait</span>(3000);<br>
+}</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num green">IV</div>
+    <div class="step-body">
+      <h3>Code auf den echten Arduino übertragen</h3>
+      <ul>
+        <li>Kopiert den Code, der aus eurem Blockcode-Programm übersetzt wurde.</li>
+        <li>Startet die Arduino IDE.</li>
+        <li>Verbindet den Arduino mit dem Rechner und wählt ihn in der IDE aus.</li>
+        <li>Fügt den kopierten Code ein, schließt den Arduino an und ladet den Code hoch.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">🎥</span>
+    <div><strong>Dokumentiert euer Ergebnis!</strong> Nehmt am Ende ein kurzes Video eurer funktionierenden Ampelschaltung auf. Vergesst nicht, eine E-Mail-Adresse anzugeben, damit ihr euer Ergebnis später wieder abrufen könnt – zum Beispiel für Präsentationen oder weitere Experimente.</div>
+  </div>
+
+  <!-- VERTIEFUNG -->
+  <h2 class="section-title bar-green">🧠 Vertiefung: Gefährliche Kreuzung sicher programmieren</h2>
+  <p style="color:var(--muted); font-size:0.92rem; margin-bottom:1rem;">Bei einer echten Kreuzung reicht eine einzelne Ampel nicht: Fahrzeuge und Fußgänger:innen müssen koordiniert werden. Dafür lohnt sich ein Blick auf die <strong>objektorientierte Programmierung (OOP)</strong> – Autoampel und Fußgänger:in werden dabei als eigenständige Objekte mit Zuständen und Verhalten modelliert.</p>
+
+  <div class="oop-row">
+    <div class="oop-card">
+      <h4>🚗 Objekt: Autoampel</h4>
+      <ul>
+        <li>Zustand: Rot / Rot-Gelb / Grün / Gelb</li>
+        <li>Methode: Phase wechseln</li>
+        <li>Methode: Aktuellen Zustand anzeigen</li>
+      </ul>
+    </div>
+    <div class="oop-card">
+      <h4>🚶 Objekt: Fußgänger:in</h4>
+      <ul>
+        <li>Zustand: Warten / Gehen</li>
+        <li>Methode: Straße überqueren</li>
+        <li>Bedingung: nur bei Grün für Fußgänger:in</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">🔗</span>
+    <div>Nutzt <a href="https://inf-schule.de/oop/scratch" target="_blank">inf-schule.de/oop/scratch</a>, um das Konzept der objektorientierten Programmierung am Beispiel der gefährlichen Kreuzung besser zu verstehen. Löst schrittweise bis einschließlich Abschnitt 2.3 („Übungen") – das legt die Grundlage, um später komplexe Verkehrssteuerungen selbst zu planen.</div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">🎥</span>
+    <div><strong>Aufgabe:</strong> Gebt ein Video einer Simulation der gefährlichen Kreuzung ab, in dem zwei Wege eines Fahrzeugs und eines:r Fußgänger:in sich kreuzen und die Notwendigkeit eines Ampelsystems deutlich wird. Wenn ihr schon weiter seid, könnt ihr auch euer implementiertes Ampelsystem aufnehmen, das ein sicheres Überqueren an dieser Kreuzung ermöglicht.</div>
+  </div>
+
+  <!-- SACHKOMPETENZ QUIZ -->
+  <h2 class="section-title bar-red">📚 Sachkompetenz-Check</h2>
+
+  <details class="quiz-card">
+    <summary>Eine LED hat zwei Beine unterschiedlicher Länge. Welches Bein ist der Pluspol (Anode)?</summary>
+    <div class="quiz-answer"><strong>Das längere Bein.</strong> Es wird mit dem stromführenden Pin verbunden.<div class="tip">Tipp: Kurz vor Minus, lang vor Plus.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welche Funktion hat der 220-Ohm-Widerstand in einem einfachen LED-Stromkreis mit einem Arduino?</summary>
+    <div class="quiz-answer"><strong>Er schützt die LED vor zu hohem Strom.</strong><div class="tip">Der Widerstand begrenzt den Stromfluss vom Arduino-Pin zur LED, um eine Beschädigung zu verhindern.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welchen Wert in Ohm (Ω) hat der Schutzwiderstand, der typischerweise für eine Standard-LED am 5V-Arduino-Pin verwendet wird?</summary>
+    <div class="quiz-answer"><strong>220 Ω</strong> ist ein gebräuchlicher und sicherer Wert, um den Strom für die meisten LEDs an einem 5V-Ausgang zu begrenzen.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Womit wird der Minuspol (Kathode) einer LED in einem Arduino-Schaltkreis typischerweise verbunden?</summary>
+    <div class="quiz-answer"><strong>Mit dem GND-Pin.</strong><div class="tip">GND steht für „Ground" (Masse) und ist der gemeinsame Minuspol für den Stromkreis.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welches Bauteil wird verwendet, um elektronische Komponenten wie LEDs und Widerstände ohne Löten miteinander zu verbinden?</summary>
+    <div class="quiz-answer"><strong>Eine Steckplatine (Breadboard).</strong><div class="tip">Speziell dafür konzipiert, Prototypen von Schaltungen schnell und reversibel aufzubauen.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Vervollständige den Satz: In der Arduino IDE wird der ___ geschrieben, um die Lichtsignalabfolge der Ampel zu steuern.</summary>
+    <div class="quiz-answer"><strong>Code</strong> – der Programmcode enthält die Befehle, die dem Arduino sagen, wann welche LED leuchten soll.</div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Eine rote LED in eurer Schaltung leuchtet nicht. Das Kabel steckt in Pin 9, der Code ist korrekt. Was ist wahrscheinlich das Problem?</summary>
+    <div class="quiz-answer"><strong>Die rote LED ist verpolt eingesetzt.</strong></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Bringt die Farben einer deutschen Fußgängerampel in die richtige Reihenfolge, beginnend mit „Halt".</summary>
+    <div class="quiz-answer"><strong>Rot, Rot-Gelb, Grün, Gelb.</strong><div class="tip">Stehenbleiben bei Rot, Gehen bei Grün.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Der Arduino und die Ampelschaltung werden mit Gleichstrom betrieben. Der Begriff „Gleichstrom" bedeutet, dass der Strom …</summary>
+    <div class="quiz-answer"><strong>… nur in eine Richtung fließt.</strong><div class="tip">Gleichstrom (DC) fließt konstant vom Plus- zum Minuspol, im Gegensatz zu Wechselstrom (AC).</div></div>
+  </details>
+
+  <div class="callout">
+    <span class="ic">💡</span>
+    <div>Wie genau in einer LED Licht entsteht, erklären <a href="https://www.leifiphysik.de/elektronik/halbleiterdiode/grundwissen/leuchtdioden-led-einfuehrung" target="_blank">LEIFIphysik – Leuchtdioden (LED)</a> auf Teilchenebene und dieses <a href="https://www.youtube.com/watch?v=IFCgo3bYoZk" target="_blank">3D-Animationsvideo</a> modellhaft.</div>
+  </div>
+
+  <!-- FUN FACTS -->
+  <h2 class="section-title bar-green">✨ Fun Facts</h2>
+
+  <details class="quiz-card">
+    <summary>Woher hat der Arduino-Mikrocontroller seinen Namen?</summary>
+    <div class="quiz-answer"><strong>Von einer Bar in Ivrea (Italien), in der sich die Entwickler trafen.</strong><div class="tip">Nicht zu verwechseln mit Arduin von Ivrea, einem italienischen König – der lieferte nur den Namen der Bar.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Die erste elektrische Ampelanlage der Welt wurde 1914 in Betrieb genommen. In welcher Stadt war das?</summary>
+    <div class="quiz-answer"><strong>Cleveland, USA.</strong><div class="tip">Am 5. August 1914 wurde in Cleveland, Ohio, die erste als sicher geltende elektrische Ampelanlage installiert.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Der berühmte Ampelmann, eine Symbolfigur auf vielen Fußgängerampeln, stammt ursprünglich aus …</summary>
+    <div class="quiz-answer"><strong>… der DDR (Ost-Berlin), 1961.</strong><div class="tip">Der Verkehrspsychologe Karl Peglau entwarf den Ampelmann 1961 in Ost-Berlin, um die Sicherheit für Fußgänger:innen zu erhöhen.</div></div>
+  </details>
+
+  <details class="quiz-card">
+    <summary>Welches dieser kurios klingenden, aber tatsächlich realisierten Projekte wurde mit einem Arduino umgesetzt?</summary>
+    <div class="quiz-answer"><strong>Ein Mini-Satellit (TubeSat), der mit Arduino-Technik ins All geschickt wurde.</strong></div>
+  </details>
+
+  <div class="finish">
+    <h3>🎉 Geschafft – Ampelcode geknackt!</h3>
+    <p>Ihr habt gelernt, wie eine Ampel elektrisch geschaltet wird, wie man sie mit einem Arduino steuert und wie sogar komplexe Kreuzungssysteme programmiert werden können. Respekt – echtes Technik-Know-how erarbeitet!</p>
+    <p>Weiterdenken lohnt sich: eine Fußgängerampel mit Taster und Countdown, ein Miniatur-Verkehrssystem mit mehreren Fahrzeugen und Sensoren, eine Umweltampel, die auf Feinstaub oder Lautstärke reagiert, oder eine smarte Paketbox mit LED-Statusanzeige. Mit dem Arduino lässt sich (fast) alles steuern, was Strom hat!</p>
+  </div>
+
+</main>
+
+<footer>
+  Hacker der Straße – Knacke den Ampelcode! · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>
