@@ -81,17 +81,58 @@
     text-align: center;
     position: relative;
   }
-  .part-card.no { opacity: 0.45; }
-  .part-card svg { width: 100%; height: 70px; }
-  .part-card .label { font-size: 0.76rem; margin-top: 6px; color: var(--muted); }
+  .part-card { cursor: pointer; user-select: none; transition: border-color 0.15s, transform 0.1s; }
+  .part-card:hover { border-color: var(--dim); transform: translateY(-2px); }
+  .part-card.selected { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(238,194,44,0.25); }
+  .part-card.correct { border-color: var(--green); box-shadow: 0 0 0 2px rgba(63,174,106,0.3); }
+  .part-card.wrong { border-color: var(--red); box-shadow: 0 0 0 2px rgba(230,72,63,0.3); opacity: 1; }
+  .part-card svg { width: 100%; height: 70px; pointer-events: none; }
+  .part-card .label { font-size: 0.76rem; margin-top: 6px; color: var(--muted); pointer-events: none; }
   .part-badge {
     position: absolute; top: 6px; right: 6px;
     width: 18px; height: 18px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
+    display: none; align-items: center; justify-content: center;
     font-size: 11px; font-weight: 800;
   }
+  .part-card.checked .part-badge { display: flex; }
   .part-badge.yes { background: var(--green); color: #06210f; }
   .part-badge.no { background: #5a2222; color: #f2b8b8; }
+
+  .parts-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 1.6rem; }
+  .btn {
+    background: var(--yellow); color: #2a2205; border: none; border-radius: 8px;
+    padding: 0.65rem 1.2rem; font-weight: 700; font-size: 0.88rem; cursor: pointer;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .parts-result { font-size: 0.9rem; color: var(--muted); min-height: 1.4em; }
+  .parts-result.success { color: var(--green); font-weight: 600; }
+  .parts-result.partial { color: var(--yellow); font-weight: 600; }
+
+  /* E-Mail-Ergebnis-Formular */
+  .mail-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+  .mail-box .field { margin-bottom: 0.9rem; }
+  .mail-box label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+  .mail-box input[type="text"], .mail-box input[type="email"] {
+    width: 100%; background: #0c0f13; border: 1px solid var(--border); border-radius: 6px;
+    padding: 0.55rem 0.7rem; color: var(--text); font-size: 0.9rem;
+  }
+  .mail-box .check-row { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.88rem; color: var(--muted); }
+  .mail-box .check-row label { display: flex; align-items: center; gap: 6px; margin: 0; }
+  .mail-box .file-row {
+    border: 1px dashed var(--border); border-radius: 8px; padding: 0.9rem 1rem;
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .mail-box .file-status { margin-top: 6px; font-size: 0.82rem; }
+  .mail-box .file-status.ok { color: var(--green); }
+  .mail-box .file-status.warn { color: var(--yellow); }
+  .mail-hint { font-size: 0.8rem; color: var(--dim); margin-top: 0.8rem; line-height: 1.5; }
 
   /* Steps */
   .step {
@@ -237,59 +278,65 @@
   <h2 class="section-title bar-red">🧰 Bauteile-Check</h2>
   <p style="color:var(--muted); font-size:0.92rem; margin-bottom:1rem;">Nicht jedes Bauteil aus der Box gehört zur Ampelschaltung. Findet heraus, was ihr wirklich für Rot-, Gelb- und Grünphase braucht.</p>
 
-  <div class="parts-grid">
-    <div class="part-card"><span class="part-badge yes">✓</span>
+  <div class="parts-grid" id="partsGrid">
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#e6483f"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
       <div class="label">Rote LED</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#eec22c"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
       <div class="label">Gelbe LED</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#3fae6a"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
       <div class="label">Grüne LED</div>
     </div>
-    <div class="part-card no"><span class="part-badge no">✗</span>
+    <div class="part-card" data-correct="false"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#3a6fd8"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
       <div class="label">Blaue LED</div>
     </div>
-    <div class="part-card no"><span class="part-badge no">✗</span>
+    <div class="part-card" data-correct="false"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><ellipse cx="30" cy="24" rx="14" ry="16" fill="#eef2f5" stroke="#c7c7c7"/><rect x="24" y="38" width="4" height="26" fill="#c7c7c7"/><rect x="34" y="38" width="4" height="20" fill="#c7c7c7"/></svg>
       <div class="label">Weiße LED</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><rect x="20" y="26" width="20" height="9" rx="4" fill="#d69e4a"/><line x1="10" y1="30" x2="20" y2="30" stroke="#c7c7c7" stroke-width="2"/><line x1="40" y1="30" x2="50" y2="30" stroke="#c7c7c7" stroke-width="2"/><text x="30" y="55" text-anchor="middle" font-size="9" fill="#8b98a8">220 Ω</text></svg>
       <div class="label">Schutzwiderstand</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><path d="M8,50 Q8,20 30,20" stroke="#e6483f" stroke-width="3" fill="none"/><circle cx="8" cy="50" r="3" fill="#8a8a8a"/><circle cx="30" cy="20" r="3" fill="#8a8a8a"/></svg>
       <div class="label">Rotes Steckkabel</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><path d="M8,50 Q8,20 30,20" stroke="#3a6fd8" stroke-width="3" fill="none"/><circle cx="8" cy="50" r="3" fill="#8a8a8a"/><circle cx="30" cy="20" r="3" fill="#8a8a8a"/></svg>
       <div class="label">Blaues Steckkabel</div>
     </div>
-    <div class="part-card no"><span class="part-badge no">✗</span>
+    <div class="part-card" data-correct="false"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><rect x="18" y="24" width="24" height="16" rx="3" fill="#2c333e"/><circle cx="30" cy="20" r="7" fill="#12161c" stroke="#556"/></svg>
       <div class="label">Tastschalter</div>
     </div>
-    <div class="part-card no"><span class="part-badge no">✗</span>
+    <div class="part-card" data-correct="false"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><rect x="16" y="30" width="28" height="16" rx="2" fill="#c98a4a"/><circle cx="30" cy="24" r="9" fill="#1a1a1a"/></svg>
       <div class="label">Potentiometer</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><rect x="8" y="20" width="44" height="30" rx="2" fill="#fff" stroke="#c7c7c7"/><g stroke="#e6483f" stroke-width="0.8"><line x1="12" y1="24" x2="12" y2="46"/><line x1="18" y1="24" x2="18" y2="46"/><line x1="24" y1="24" x2="24" y2="46"/><line x1="30" y1="24" x2="30" y2="46"/><line x1="36" y1="24" x2="36" y2="46"/><line x1="42" y1="24" x2="42" y2="46"/><line x1="48" y1="24" x2="48" y2="46"/></g></svg>
       <div class="label">Steckplatine</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><rect x="8" y="20" width="44" height="28" rx="4" fill="#12161c"/><rect x="12" y="16" width="10" height="8" fill="#1e2733"/><circle cx="44" cy="26" r="2" fill="#3fae6a"/><text x="30" y="40" text-anchor="middle" font-size="7" fill="#8b98a8">UNO</text></svg>
       <div class="label">Arduino UNO R3</div>
     </div>
-    <div class="part-card"><span class="part-badge yes">✓</span>
+    <div class="part-card" data-correct="true"><span class="part-badge"></span>
       <svg viewBox="0 0 60 70"><rect x="10" y="34" width="22" height="14" rx="2" fill="#eec22c"/><text x="21" y="44" text-anchor="middle" font-size="8" fill="#3a2c00">9V</text><path d="M32,40 Q42,40 42,28" stroke="#8b98a8" stroke-width="2" fill="none"/><rect x="40" y="16" width="6" height="12" rx="2" fill="#c7c7c7"/></svg>
       <div class="label">Netzteil / 9V-Batterie</div>
     </div>
+  </div>
+
+  <div class="parts-actions">
+    <button class="btn" id="checkParts" type="button">Auswertung anzeigen</button>
+    <button class="btn secondary" id="resetParts" type="button">Neu mischen &amp; zurücksetzen</button>
+    <div class="parts-result" id="partsResult"></div>
   </div>
 
   <!-- SCHALTUNG & PROGRAMMIERUNG -->
@@ -299,7 +346,66 @@
     <div class="step-num red">I</div>
     <div class="step-body">
       <h3>Neuen Schaltkreis erstellen</h3>
-      <p>Erstellt bei Tinkercad einen neuen Schaltkreis mit eurem Klassencode – wie im 3D-Drucker-Lernpfad beschrieben.</p>
+      <p>Erstellt bei Tinkercad einen neuen Schaltkreis mit eurem Klassencode.</p>
+      <div class="step-media" style="display:flex; flex-wrap:wrap; gap:10px;">
+        <svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg" style="max-width:210px;">
+          <rect width="210" height="150" fill="#2f7fd9"/>
+          <rect x="14" y="10" width="182" height="18" rx="3" fill="#12161c" opacity="0.35"/>
+          <text x="20" y="23" font-size="8" fill="#dfe9f7">tinkercad.com/joinclass</text>
+          <rect x="24" y="40" width="162" height="95" rx="8" fill="#f4f6f8"/>
+          <text x="105" y="62" text-anchor="middle" font-weight="700" font-size="10" fill="#1a2733">a) URL eingeben</text>
+          <rect x="40" y="75" width="130" height="18" rx="4" fill="#fff" stroke="#3a7dff" stroke-width="1.2"/>
+          <text x="105" y="87" text-anchor="middle" font-size="7" fill="#7a8a99" letter-spacing="1.5">tinkercad.com/joinclass</text>
+          <rect x="40" y="102" width="130" height="16" rx="4" fill="#4caf6a"/>
+          <text x="105" y="113" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Zu meiner Klasse gehen</text>
+        </svg>
+        <svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg" style="max-width:210px;">
+          <rect width="210" height="150" fill="#2f7fd9"/>
+          <rect x="24" y="18" width="162" height="115" rx="8" fill="#f4f6f8"/>
+          <text x="105" y="40" text-anchor="middle" font-weight="700" font-size="10" fill="#1a2733">b) Klassencode</text>
+          <text x="105" y="55" text-anchor="middle" font-size="7" fill="#5a6b7a">Type the code your</text>
+          <text x="105" y="64" text-anchor="middle" font-size="7" fill="#5a6b7a">teacher shared</text>
+          <rect x="45" y="75" width="120" height="18" rx="4" fill="#fff" stroke="#3a7dff" stroke-width="1.2"/>
+          <text x="105" y="87" text-anchor="middle" font-size="8" fill="#7a8a99" letter-spacing="2">XXX XXX XXX</text>
+          <rect x="45" y="102" width="120" height="16" rx="4" fill="#4caf6a"/>
+          <text x="105" y="113" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Join Class</text>
+        </svg>
+        <svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg" style="max-width:210px;">
+          <rect width="210" height="150" fill="#2f7fd9"/>
+          <rect x="24" y="12" width="162" height="126" rx="8" fill="#f4f6f8"/>
+          <text x="105" y="32" text-anchor="middle" font-size="7" fill="#5a6b7a">Willkommen bei</text>
+          <text x="105" y="45" text-anchor="middle" font-size="9" font-weight="700" fill="#1a2733">Ampelschaltung</text>
+          <text x="105" y="62" text-anchor="middle" font-weight="700" font-size="9" fill="#1a2733">c) Spitzname</text>
+          <rect x="42" y="72" width="126" height="16" rx="4" fill="#fff" stroke="#3a7dff" stroke-width="1.2"/>
+          <text x="52" y="83" font-size="7" fill="#1a2733">dein-name</text>
+          <rect x="42" y="98" width="126" height="16" rx="4" fill="#4caf6a"/>
+          <text x="105" y="109" text-anchor="middle" font-size="7" fill="#fff" font-weight="600">Das bin ich!</text>
+        </svg>
+        <svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg" style="max-width:210px;">
+          <rect width="210" height="150" fill="#eef2f5"/>
+          <rect x="8" y="8" width="55" height="134" fill="#fff" stroke="#dbe6ee"/>
+          <text x="35" y="24" text-anchor="middle" font-size="6.5" fill="#3a7dff" font-weight="700">Schaltkreise</text>
+          <rect x="70" y="8" width="132" height="134" fill="#eef2f5"/>
+          <rect x="76" y="18" width="60" height="60" rx="5" fill="#fff" stroke="#3a7dff" stroke-width="1.4" stroke-dasharray="3 2"/>
+          <text x="106" y="46" text-anchor="middle" font-size="15" fill="#3a7dff">+</text>
+          <text x="106" y="62" text-anchor="middle" font-size="6" fill="#3a7dff" font-weight="600">Erstelle deinen</text>
+          <text x="106" y="70" text-anchor="middle" font-size="6" fill="#3a7dff" font-weight="600">ersten Schaltkreis</text>
+          <path d="M150,50 L138,58" stroke="#7dc243" stroke-width="4" marker-end="url(#arrI)"/>
+          <defs><marker id="arrI" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#7dc243"/></marker></defs>
+          <text x="106" y="128" text-anchor="middle" font-size="7" fill="#5a6b7a" font-weight="700">d) Schaltkreis erstellen</text>
+        </svg>
+        <svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg" style="max-width:210px;">
+          <rect width="210" height="150" fill="#fff"/>
+          <rect x="8" y="8" width="194" height="20" fill="#f4f6f8" stroke="#dbe6ee"/>
+          <circle cx="18" cy="18" r="3" fill="#e6483f"/><circle cx="28" cy="18" r="3" fill="#eec22c"/><circle cx="38" cy="18" r="3" fill="#3fae6a"/>
+          <text x="105" y="21" text-anchor="middle" font-size="6.5" fill="#5a6b7a">Circuit design Terrific Sensor</text>
+          <rect x="30" y="60" width="150" height="30" rx="5" fill="#fff" stroke="#3a7dff" stroke-width="1.6"/>
+          <text x="40" y="79" font-size="10" font-weight="700" fill="#1a2733">Ampelschaltung</text>
+          <line x1="150" y1="70" x2="150" y2="80" stroke="#3a7dff" stroke-width="1.6"/>
+          <text x="105" y="112" text-anchor="middle" font-size="7" fill="#5a6b7a" font-weight="700">e) Projekt „Ampelschaltung"</text>
+          <text x="105" y="122" text-anchor="middle" font-size="7" fill="#5a6b7a">benennen, Enter-Taste drücken</text>
+        </svg>
+      </div>
     </div>
   </div>
 
@@ -307,24 +413,68 @@
     <div class="step-num red">II</div>
     <div class="step-body">
       <h3>Ampelschaltung aufbauen</h3>
-      <p>Konstruiert eine Ampelschaltung mit drei LED-Lampen (rot, gelb, grün) und jeweils einem 220-Ω-Schutzwiderstand.</p>
+      <p>Konstruiert eine Ampelschaltung mit drei LED-Lampen (rot, gelb, grün) und jeweils einem 220-Ω-Schutzwiderstand. Verbindet die Bauteile in Tinkercad einfach durch Anklicken der Anschlüsse.</p>
       <div class="step-media">
-        <svg viewBox="0 0 440 220" xmlns="http://www.w3.org/2000/svg">
-          <rect width="440" height="220" fill="#0c0f13" rx="8"/>
-          <rect x="30" y="70" width="180" height="120" rx="6" fill="#171d25" stroke="#2b3542"/>
-          <g stroke="#3a4552" stroke-width="1"><line x1="30" y1="95" x2="210" y2="95"/><line x1="30" y1="165" x2="210" y2="165"/></g>
-          <rect x="260" y="60" width="120" height="140" rx="8" fill="#12161c" stroke="#2b3542" stroke-width="1.5"/>
-          <circle cx="320" cy="85" r="12" fill="#e6483f"/>
-          <circle cx="320" cy="120" r="12" fill="#eec22c"/>
-          <circle cx="320" cy="155" r="12" fill="#3fae6a"/>
-          <rect x="60" y="30" width="24" height="30" rx="4" fill="#12161c"/>
-          <text x="72" y="50" text-anchor="middle" font-size="7" fill="#8b98a8">UNO</text>
-          <path d="M84,40 C160,40 260,60 308,80" stroke="#e6483f" stroke-width="2" fill="none"/>
-          <path d="M84,45 C170,55 260,90 308,115" stroke="#eec22c" stroke-width="2" fill="none"/>
-          <path d="M84,50 C180,80 260,130 308,150" stroke="#3fae6a" stroke-width="2" fill="none"/>
-          <rect x="215" y="80" width="14" height="6" fill="#d69e4a"/>
-          <rect x="215" y="115" width="14" height="6" fill="#d69e4a"/>
-          <rect x="215" y="150" width="14" height="6" fill="#d69e4a"/>
+        <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="480" height="300" fill="#1c222b" rx="8"/>
+          <!-- Toolbar -->
+          <rect x="0" y="0" width="480" height="22" fill="#262d38"/>
+          <rect x="10" y="5" width="90" height="12" rx="2" fill="#2c333e"/>
+          <text x="20" y="14" font-size="6.5" fill="#c7d1db">Name</text>
+          <rect x="60" y="5" width="30" height="12" rx="2" fill="#2c333e"/>
+          <text x="65" y="14" font-size="6.5" fill="#eec22c">220</text>
+          <text x="98" y="14" font-size="6.5" fill="#c7d1db">Ω ▾</text>
+          <!-- Breadboard -->
+          <rect x="20" y="40" width="240" height="90" rx="6" fill="#e9ecef" stroke="#b9c2cb"/>
+          <g stroke="#c3ccd6" stroke-width="0.6">
+            <line x1="30" y1="55" x2="250" y2="55"/><line x1="30" y1="65" x2="250" y2="65"/>
+            <line x1="30" y1="105" x2="250" y2="105"/><line x1="30" y1="115" x2="250" y2="115"/>
+          </g>
+          <!-- 3 LEDs on breadboard -->
+          <circle cx="80" cy="85" r="9" fill="#e6483f"/>
+          <circle cx="140" cy="85" r="9" fill="#eec22c"/>
+          <circle cx="200" cy="85" r="9" fill="#3fae6a"/>
+          <rect x="75" y="94" width="10" height="4" fill="#d69e4a"/>
+          <rect x="135" y="94" width="10" height="4" fill="#d69e4a"/>
+          <rect x="195" y="94" width="10" height="4" fill="#d69e4a"/>
+          <!-- callout -->
+          <text x="30" y="150" font-size="8" fill="#e6483f" font-weight="700">Verbinden durch Klicken</text>
+          <path d="M30,144 L70,110" stroke="#e6483f" stroke-width="1.4" fill="none" marker-end="url(#arrII)"/>
+          <defs><marker id="arrII" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#e6483f"/></marker></defs>
+          <!-- wires fanning down -->
+          <path d="M80,94 C90,160 140,190 175,205" stroke="#e6483f" stroke-width="1.6" fill="none"/>
+          <path d="M140,98 C150,165 165,190 195,208" stroke="#eec22c" stroke-width="1.6" fill="none"/>
+          <path d="M200,94 C210,160 220,190 215,210" stroke="#3fae6a" stroke-width="1.6" fill="none"/>
+          <!-- Arduino -->
+          <rect x="130" y="205" width="130" height="70" rx="6" fill="#12587a"/>
+          <text x="195" y="245" text-anchor="middle" font-size="9" fill="#cfe7f2" font-weight="700">ARDUINO</text>
+          <text x="195" y="256" text-anchor="middle" font-size="6.5" fill="#a8c8d8">UNO</text>
+          <rect x="90" y="230" width="40" height="16" rx="2" fill="#e8ecef"/>
+          <rect x="65" y="235" width="28" height="10" fill="#c7c7c7"/>
+          <!-- component panel right -->
+          <rect x="330" y="30" width="140" height="250" rx="6" fill="#f4f6f8"/>
+          <rect x="342" y="42" width="116" height="16" rx="3" fill="#fff" stroke="#c7c7c7"/>
+          <text x="350" y="53" font-size="6.5" fill="#9aa5ad">Search</text>
+          <g font-size="6.2" fill="#5a6b7a" text-anchor="middle">
+            <rect x="342" y="68" width="52" height="40" rx="4" fill="#fff" stroke="#e0e4e8"/>
+            <rect x="358" y="78" width="18" height="6" fill="#d69e4a"/>
+            <text x="368" y="103" text-anchor="middle">Resistor</text>
+            <rect x="402" y="68" width="52" height="40" rx="4" fill="#fff" stroke="#e0e4e8"/>
+            <circle cx="428" cy="86" r="8" fill="#eec22c"/>
+            <text x="428" y="103" text-anchor="middle">LED</text>
+            <rect x="342" y="116" width="52" height="40" rx="4" fill="#fff" stroke="#e0e4e8"/>
+            <rect x="358" y="130" width="18" height="10" fill="#2c333e"/>
+            <text x="368" y="151" text-anchor="middle">Pushbutton</text>
+            <rect x="402" y="116" width="52" height="40" rx="4" fill="#fff" stroke="#e0e4e8"/>
+            <circle cx="428" cy="136" r="8" fill="#1a1a1a"/>
+            <text x="428" y="151" text-anchor="middle">Potentiometer</text>
+            <rect x="342" y="164" width="52" height="40" rx="4" fill="#fff" stroke="#e0e4e8"/>
+            <rect x="358" y="176" width="18" height="14" rx="2" fill="#eec22c"/>
+            <text x="368" y="199" text-anchor="middle">9V Battery</text>
+            <rect x="402" y="164" width="52" height="40" rx="4" fill="#fff" stroke="#e0e4e8"/>
+            <rect x="410" y="178" width="36" height="14" rx="3" fill="#12161c"/>
+            <text x="428" y="199" text-anchor="middle">Arduino Uno</text>
+          </g>
         </svg>
       </div>
     </div>
@@ -371,7 +521,7 @@
 
   <div class="callout">
     <span class="ic">🎥</span>
-    <div><strong>Dokumentiert euer Ergebnis!</strong> Nehmt am Ende ein kurzes Video eurer funktionierenden Ampelschaltung auf. Vergesst nicht, eine E-Mail-Adresse anzugeben, damit ihr euer Ergebnis später wieder abrufen könnt – zum Beispiel für Präsentationen oder weitere Experimente.</div>
+    <div><strong>Dokumentiert euer Ergebnis!</strong> Nehmt am Ende ein kurzes Video eurer funktionierenden Ampelschaltung auf. <a href="#ergebnis-mail">→ Jetzt Bestätigungs-E-Mail vorbereiten</a>, damit ihr euer Ergebnis später wieder griffbereit habt – zum Beispiel für Präsentationen oder weitere Experimente.</div>
   </div>
 
   <!-- VERTIEFUNG -->
@@ -404,7 +554,40 @@
 
   <div class="callout">
     <span class="ic">🎥</span>
-    <div><strong>Aufgabe:</strong> Gebt ein Video einer Simulation der gefährlichen Kreuzung ab, in dem zwei Wege eines Fahrzeugs und eines:r Fußgänger:in sich kreuzen und die Notwendigkeit eines Ampelsystems deutlich wird. Wenn ihr schon weiter seid, könnt ihr auch euer implementiertes Ampelsystem aufnehmen, das ein sicheres Überqueren an dieser Kreuzung ermöglicht.</div>
+    <div><strong>Aufgabe:</strong> Gebt ein Video einer Simulation der gefährlichen Kreuzung ab, in dem zwei Wege eines Fahrzeugs und eines:r Fußgänger:in sich kreuzen und die Notwendigkeit eines Ampelsystems deutlich wird. Wenn ihr schon weiter seid, könnt ihr auch euer implementiertes Ampelsystem aufnehmen. <a href="#ergebnis-mail">→ Jetzt Bestätigungs-E-Mail vorbereiten</a></div>
+  </div>
+
+  <!-- ERGEBNIS PER E-MAIL -->
+  <h2 class="section-title bar-yellow" id="ergebnis-mail">📧 Ergebnis per E-Mail sichern</h2>
+  <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">Diese Seite ist eine reine HTML-Datei ohne eigenen Server – sie kann daher kein Video automatisch verschicken oder anhängen. Was sie aber kann: euch eine fertig formulierte, gratulierende E-Mail an euer eigenes Postfach vorbereiten. Ihr müsst euer Video nur noch manuell anhängen, bevor ihr sendet.</p>
+
+  <div class="mail-box">
+    <div class="field">
+      <label for="mailName">Spitzname (optional)</label>
+      <input type="text" id="mailName" placeholder="z. B. Rosa">
+    </div>
+    <div class="field">
+      <label for="mailAddress">Eure E-Mail-Adresse (dorthin geht die Bestätigung)</label>
+      <input type="email" id="mailAddress" placeholder="deine.adresse@beispiel.de" required>
+    </div>
+    <div class="field">
+      <label>Was habt ihr geschafft?</label>
+      <div class="check-row">
+        <label><input type="checkbox" id="mailExperiment" checked> Experiment: Ampelschaltung gebaut &amp; programmiert</label>
+        <label><input type="checkbox" id="mailVertiefung"> Vertiefung: Gefährliche Kreuzung mit OOP durchdacht</label>
+      </div>
+    </div>
+    <div class="field">
+      <label for="mailVideo">Video auswählen <em>(nur zur Erinnerung an den Dateinamen – wird nicht hochgeladen oder automatisch angehängt!)</em></label>
+      <div class="file-row">
+        <input type="file" id="mailVideo" accept="video/*">
+        <div class="file-status" id="fileStatus"></div>
+      </div>
+    </div>
+    <button class="btn" id="prepareMail" type="button">✉️ Bestätigungs-E-Mail vorbereiten</button>
+    <div class="mail-hint">
+      Beim Klick öffnet sich euer normales E-Mail-Programm mit einer vorausgefüllten, an euch selbst adressierten Nachricht. Bevor ihr sie absendet: Hängt euer Video manuell an – haltet es dafür bewusst „datenklein" (wenige Sekunden, ggf. komprimiert), damit der Versand reibungslos klappt.
+    </div>
   </div>
 
   <!-- SACHKOMPETENZ QUIZ -->
@@ -494,6 +677,138 @@
 <footer>
   Hacker der Straße – Knacke den Ampelcode! · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
 </footer>
+
+<script>
+  // ── Bauteile-Check: mischen, anklicken, auswerten ──
+  (function () {
+    var grid = document.getElementById('partsGrid');
+    var checkBtn = document.getElementById('checkParts');
+    var resetBtn = document.getElementById('resetParts');
+    var resultBox = document.getElementById('partsResult');
+    var checked = false;
+
+    function shuffle() {
+      var cards = Array.prototype.slice.call(grid.children);
+      for (var i = cards.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = cards[i]; cards[i] = cards[j]; cards[j] = tmp;
+      }
+      cards.forEach(function (c) { grid.appendChild(c); });
+    }
+
+    function resetState() {
+      checked = false;
+      resultBox.textContent = '';
+      resultBox.className = 'parts-result';
+      Array.prototype.forEach.call(grid.children, function (card) {
+        card.classList.remove('selected', 'checked', 'correct', 'wrong');
+        var badge = card.querySelector('.part-badge');
+        badge.textContent = '';
+        badge.classList.remove('yes', 'no');
+      });
+      checkBtn.textContent = 'Auswertung anzeigen';
+      shuffle();
+    }
+
+    grid.addEventListener('click', function (e) {
+      var card = e.target.closest('.part-card');
+      if (!card || checked) return;
+      card.classList.toggle('selected');
+    });
+
+    checkBtn.addEventListener('click', function () {
+      if (checked) { resetState(); return; }
+      checked = true;
+      var total = grid.children.length;
+      var correctCount = 0;
+      Array.prototype.forEach.call(grid.children, function (card) {
+        var isCorrect = card.dataset.correct === 'true';
+        var isSelected = card.classList.contains('selected');
+        var badge = card.querySelector('.part-badge');
+        card.classList.add('checked');
+        var hit = isCorrect === isSelected;
+        card.classList.add(hit ? 'correct' : 'wrong');
+        badge.textContent = hit ? '✓' : '✗';
+        badge.classList.add(hit ? 'yes' : 'no');
+        if (hit) correctCount++;
+      });
+      checkBtn.textContent = 'Neue Runde';
+      if (correctCount === total) {
+        resultBox.textContent = '🎉 Volle Punktzahl! Ihr habt alle ' + total + ' Bauteile richtig erkannt – logisch gedacht und clever entschieden!';
+        resultBox.className = 'parts-result success';
+      } else if (correctCount >= total - 2) {
+        resultBox.textContent = '👍 Sehr gut! ' + correctCount + ' von ' + total + ' richtig. Schaut euch die rot markierten Karten nochmal genauer an.';
+        resultBox.className = 'parts-result partial';
+      } else {
+        resultBox.textContent = correctCount + ' von ' + total + ' richtig. Kein Problem – schaut euch die rot markierten Karten an und versucht es gleich nochmal!';
+        resultBox.className = 'parts-result partial';
+      }
+    });
+
+    resetBtn.addEventListener('click', resetState);
+
+    shuffle();
+  })();
+
+  // ── Ergebnis-E-Mail vorbereiten ──
+  (function () {
+    var fileInput = document.getElementById('mailVideo');
+    var fileStatus = document.getElementById('fileStatus');
+
+    fileInput.addEventListener('change', function () {
+      var f = fileInput.files[0];
+      if (!f) { fileStatus.textContent = ''; return; }
+      var mb = f.size / (1024 * 1024);
+      if (mb > 15) {
+        fileStatus.className = 'file-status warn';
+        fileStatus.textContent = '⚠️ "' + f.name + '" ist ' + mb.toFixed(1) + ' MB groß. Für eine „datenkleine" E-Mail: Video auf wenige Sekunden kürzen oder stärker komprimieren.';
+      } else {
+        fileStatus.className = 'file-status ok';
+        fileStatus.textContent = '✓ "' + f.name + '" (' + mb.toFixed(1) + ' MB) – daran denken, es gleich manuell anzuhängen!';
+      }
+    });
+
+    document.getElementById('prepareMail').addEventListener('click', function () {
+      var addressField = document.getElementById('mailAddress');
+      var address = addressField.value.trim();
+      if (!address || address.indexOf('@') === -1) {
+        addressField.focus();
+        addressField.style.borderColor = 'var(--red)';
+        return;
+      }
+      addressField.style.borderColor = '';
+
+      var name = document.getElementById('mailName').value.trim() || 'Ampel-Hacker:in';
+      var didExperiment = document.getElementById('mailExperiment').checked;
+      var didVertiefung = document.getElementById('mailVertiefung').checked;
+      var videoFile = fileInput.files[0];
+
+      var lines = [];
+      lines.push('Hallo ' + name + ',');
+      lines.push('');
+      lines.push('🎉 Glückwunsch – du hast den Ampelcode geknackt!');
+      lines.push('');
+      lines.push('Zusammenfassung deines Ergebnisses:');
+      if (didExperiment) lines.push('✅ Experiment: Ampelschaltung mit Arduino und drei LEDs gebaut und programmiert');
+      if (didVertiefung) lines.push('✅ Vertiefung: Gefährliche Kreuzung mit objektorientierter Programmierung durchdacht');
+      if (!didExperiment && !didVertiefung) lines.push('(Noch nichts angehakt – trag oben ein, was du geschafft hast, bevor du sendest.)');
+      lines.push('');
+      lines.push('📎 WICHTIG: Häng jetzt dein kurzes Video an diese E-Mail an' + (videoFile ? ' (' + videoFile.name + ')' : '') + ' – wenige Sekunden, klein komprimiert – bevor du sie an dich selbst sendest. So hast du dein Ergebnis später griffbereit, z. B. für Präsentationen oder weitere Experimente.');
+      lines.push('');
+      lines.push('Weiter geht’s: Fußgängerampel mit Taster und Countdown? Miniatur-Verkehrssystem mit mehreren Fahrzeugen? Deiner Kreativität sind keine Grenzen gesetzt!');
+      lines.push('');
+      lines.push('Lernpfad: Hacker der Straße – Knacke den Ampelcode!');
+      lines.push('Jugend forscht · Rosa-Luxemburg-Gymnasium');
+
+      var subject = '🚦 Ampelcode geknackt! Mein Ergebnis – Hacker der Straße';
+      var body = lines.join('\n');
+      var mailtoUrl = 'mailto:' + encodeURIComponent(address) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+      window.location.href = mailtoUrl;
+    });
+  })();
+</script>
 
 </body>
 </html>
