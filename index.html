@@ -338,11 +338,9 @@
     margin-top: auto;
   }
 
-  /* ── WETTBEWERB-KARTEN ── */
+  /* ── WETTBEWERB-KARTE ── */
   .competition-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    display: block;
   }
 
   .comp-card {
@@ -353,7 +351,8 @@
     text-decoration: none;
     color: var(--text);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: stretch;
     transition: box-shadow 0.2s, transform 0.2s;
   }
 
@@ -372,48 +371,49 @@
 
   .comp-card-img-placeholder {
     background: linear-gradient(135deg, var(--teal) 0%, var(--green) 100%);
-    height: 120px;
+    flex: 0 0 200px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 3.4rem;
   }
 
   .comp-card-body {
-    padding: 20px 20px 18px;
+    padding: 30px 34px 28px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     flex: 1;
+    min-width: 0;
   }
 
   .comp-card-eyebrow {
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--teal-d);
   }
 
   .comp-card h3 {
     font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     font-weight: 800;
-    line-height: 1.2;
+    line-height: 1.25;
     color: var(--text);
   }
 
   .comp-card p {
-    font-size: 0.855rem;
+    font-size: 0.9rem;
     color: var(--muted);
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   .comp-cta {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    margin-top: 12px;
+    margin-top: 10px;
     padding: 9px 18px;
     border-radius: 10px;
     font-size: 0.875rem;
@@ -428,194 +428,78 @@
   .cta-teal   { background: var(--teal);   color: #fff; }
   .cta-orange { background: var(--orange); color: #fff; }
 
-  /* ── NETZWERK-LOGO-STREIFEN ── */
-  .network-strip {
+  /* ── BEWERBUNGSFRISTEN ── */
+  .deadline-block {
     margin-top: 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px 26px;
   }
 
-  .network-strip .ns-label {
+  .deadline-label {
     font-size: 0.82rem;
     color: var(--muted);
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
-  .network-logos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
-    align-items: center;
-  }
-
-  .network-logos a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    width: 96px;
-    text-decoration: none;
-    padding: 6px;
-    border-radius: 10px;
-    transition: background 0.15s, transform 0.15s;
-  }
-
-  .network-logos a:hover {
-    background: rgba(26,181,168,0.08);
-    transform: translateY(-2px);
-  }
-
-  .network-logos img {
-    max-width: 64px;
-    max-height: 64px;
-    object-fit: contain;
-  }
-
-  .network-logos span {
-    font-size: 0.7rem;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.3;
-  }
-
-  /* ── SUMMERSCHOOL POSTER CARD ── */
-  .summer-card {
+  .deadline-grid {
     display: grid;
-    grid-template-columns: 1fr 1.3fr;
-    gap: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 0;
-  }
-
-  .summer-poster {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
-    display: block;
-    min-height: 320px;
-  }
-
-  .summer-poster-placeholder {
-    background: linear-gradient(160deg, #1ab5a8, #7dc243);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4rem;
-    min-height: 320px;
-  }
-
-  .summer-body {
-    padding: 32px 28px 28px;
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 14px;
   }
 
-  .summer-eyebrow {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--teal-d);
-  }
-
-  .summer-body h3 {
-    font-family: var(--font-display);
-    font-size: 1.6rem;
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  .summer-body h3 span { color: var(--teal); }
-
-  .summer-body p {
-    font-size: 0.9rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .summer-details {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 4px;
-  }
-
-  .sd-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: 0.875rem;
-    color: var(--text);
-  }
-
-  .sd-item .sd-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-  .sd-item strong { color: var(--teal-d); }
-
-  .summer-contact {
-    margin-top: 4px;
-    padding: 12px 14px;
-    background: rgba(26,181,168,0.07);
-    border: 1px solid rgba(26,181,168,0.2);
-    border-radius: 10px;
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .summer-contact a {
-    color: var(--teal-d);
-    font-weight: 600;
-  }
-
-  .summer-signup {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    justify-content: space-between;
-  }
-
-  .summer-signup-text { flex: 1; min-width: 160px; }
-
-  .summer-signup-btn {
-    display: inline-flex;
-    margin-top: 8px;
-    padding: 7px 14px;
-    font-size: 0.8rem;
-  }
-
-  .summer-signup-qr {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .summer-signup-qr img {
-    width: 84px;
-    height: 84px;
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 6px;
+  .deadline-card {
+    background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
   }
 
-  .summer-signup-qr span {
-    font-size: 0.7rem;
+  .deadline-card:hover {
+    box-shadow: 0 6px 20px rgba(26,181,168,0.13);
+    transform: translateY(-2px);
+    border-color: var(--teal);
+  }
+
+  .deadline-card .dl-logo {
+    max-width: 44px;
+    max-height: 44px;
+    object-fit: contain;
+    margin-bottom: 2px;
+  }
+
+  .dl-status {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    padding: 3px 8px;
+    order: -1;
+  }
+
+  .dl-open    { background: rgba(125,194,67,0.15); color: var(--green-d); }
+  .dl-running { background: rgba(26,181,168,0.12); color: var(--teal-d); }
+  .dl-soon    { background: rgba(244,121,32,0.12); color: var(--orange); }
+  .dl-info    { background: rgba(123,79,160,0.1);  color: var(--purple); }
+
+  .dl-name {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text);
+  }
+
+  .dl-deadline {
+    font-size: 0.8rem;
     color: var(--muted);
-  }
-
-  @media (max-width: 480px) {
-    .summer-signup { flex-direction: column; align-items: flex-start; }
+    line-height: 1.5;
   }
 
   /* ── FOOTER ── */
@@ -637,8 +521,9 @@
     main { padding: 40px 16px 60px; }
     .info-bar { flex-direction: column; }
     .info-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .summer-card { grid-template-columns: 1fr; }
-    .summer-poster, .summer-poster-placeholder { min-height: 220px; }
+    .comp-card { flex-direction: column; }
+    .comp-card-img-placeholder { flex-basis: auto; height: 100px; }
+    .comp-card-body { padding: 22px 22px 22px; }
   }
 </style>
 </head>
@@ -653,11 +538,11 @@
   <div class="hero-content">
     <span class="hero-eyebrow">Rosa-Luxemburg-Gymnasium · Jugend Forscht</span>
     <h1>Jugend <em>forscht</em></h1>
-    <p class="hero-sub">Unsere Forschungs-AG erkundet Wissenschaft und Technik – von KI bis DNA-Extraktion. Hier findest du alle Projekte, Lernpfade und Infos zur MINT-Summerschool.</p>
+    <p class="hero-sub">Unsere Forschungs-AG erkundet Wissenschaft und Technik – von KI bis DNA-Extraktion. Hier findest du alle Projekte, Lernpfade und Wettbewerbstermine.</p>
     <div class="hero-pills">
       <span class="hero-pill">🔬 Forschungsprojekte</span>
       <span class="hero-pill">🤖 Lernpfade</span>
-      <span class="hero-pill">☀️ MINT-Summerschule 2026</span>
+      <span class="hero-pill">🏆 Wettbewerbe</span>
     </div>
   </div>
 </div>
@@ -824,70 +709,58 @@
         <div class="comp-card-eyebrow">Offizielle Website</div>
         <h3>Jugend forscht</h3>
         <p>Deutschlands bekanntester Nachwuchswettbewerb für Naturwissenschaft und Technik – mit „Schüler experimentieren" für alle unter 15 Jahren und „Jugend forscht" bis 21 Jahre.</p>
-        <a class="comp-cta cta-teal" href="https://www.jugend-forscht.de" target="_blank">Mehr erfahren →</a>
+        <span class="comp-cta cta-teal">Mehr erfahren →</span>
       </div>
     </a>
 
   </div>
 
-  <div class="network-strip">
-    <div class="ns-label">Weitere Wettbewerbe und Olympiaden, an denen unsere AG interessiert ist:</div>
-    <div class="network-logos">
-      <a href="https://www.scienceolympiaden.de/buw" target="_blank" rel="noopener"><img src="assets/bilder/logos/bundesumweltwettbewerb.png" alt="Logo Bundesumweltwettbewerb"><span>Bundesumweltwettbewerb</span></a>
-      <a href="https://www.scienceolympiaden.de/ijso" target="_blank" rel="noopener"><img src="assets/bilder/logos/jso.png" alt="Logo Junior Science Olympiade"><span>Junior-Science-Olympiade</span></a>
-      <a href="https://www.chemkids.de/" target="_blank" rel="noopener"><img src="assets/bilder/logos/chemkids.png" alt="Logo ChemKids"><span>ChemKids</span></a>
-      <a href="https://www.scienceolympiaden.de/ibo" target="_blank" rel="noopener"><img src="assets/bilder/logos/internationale-biologie-olympiade.png" alt="Logo Internationale Biologie-Olympiade"><span>Internationale Biologie-Olympiade</span></a>
-      <a href="https://www.scienceolympiaden.de/icho" target="_blank" rel="noopener"><img src="assets/bilder/logos/internationale-chemie-olympiade.png" alt="Logo Internationale Chemie-Olympiade"><span>Internationale Chemie-Olympiade</span></a>
-      <a href="https://www.scienceolympiaden.de/eoes" target="_blank" rel="noopener"><img src="assets/bilder/logos/european-olympiad-of-experimental-science.png" alt="Logo European Olympiad of Experimental Science"><span>European Olympiad of Experimental Science</span></a>
-    </div>
-  </div>
+  <div class="deadline-block">
+    <div class="deadline-label">Bewerbungsfristen für die aktuelle bzw. nächste Runde weiterer Wettbewerbe und Olympiaden, an denen unsere AG interessiert ist:</div>
+    <div class="deadline-grid">
 
-  <!-- MINT-SUMMERSCHOOL -->
-  <div class="sec-head">
-    <div class="sec-icon si-green">☀️</div>
-    <div>
-      <h2>MINT-Summerschool 2026</h2>
-      <div class="sec-sub">17.–19. August 2026</div>
-    </div>
-  </div>
-  <hr class="sec-rule">
+      <a class="deadline-card" href="https://www.scienceolympiaden.de/ibo" target="_blank" rel="noopener">
+        <span class="dl-status dl-open">Jetzt offen</span>
+        <img class="dl-logo" src="assets/bilder/logos/internationale-biologie-olympiade.png" alt="Logo Internationale Biologie-Olympiade">
+        <div class="dl-name">Internationale Biologie-Olympiade</div>
+        <div class="dl-deadline">1. Runde läuft – Anmeldung bis 25. September 2026</div>
+      </a>
 
-  <div class="summer-card">
-    <img class="summer-poster"
-         src="assets/bilder/mint-summerschool-2026.jpg"
-         alt="MINT-Summerschool 2026 Poster">
-    <div class="summer-body">
-      <div class="summer-eyebrow">Anmeldestart bald</div>
-      <h3>Drei Tage <span>Wissenschaft</span> pur</h3>
-      <p>Bei der MINT-Summerschool erwartet euch ein intensives Programm aus Workshops, Experimenten und Vorträgen rund um Mathematik, Informatik, Naturwissenschaften und Technik.</p>
-      <div class="summer-details">
-        <div class="sd-item">
-          <span class="sd-icon">📅</span>
-          <span><strong>Datum:</strong> 17. bis 19. August 2026</span>
-        </div>
-        <div class="sd-item">
-          <span class="sd-icon">🏫</span>
-          <span><strong>Ort:</strong> Rosa-Luxemburg-Gymnasium</span>
-        </div>
-        <div class="sd-item">
-          <span class="sd-icon">🎯</span>
-          <span><strong>Zielgruppe:</strong> Schülerinnen und Schüler ab Klasse 7</span>
-        </div>
-        <div class="sd-item">
-          <span class="sd-icon">💰</span>
-          <span><strong>Kosten:</strong> Kostenlos</span>
-        </div>
-      </div>
-      <div class="summer-contact summer-signup">
-        <div class="summer-signup-text">
-          <strong>Interesse?</strong> Meldet euch bis zum 06.07. per E-Mail an.
-          <a class="comp-cta cta-teal summer-signup-btn" href="mailto:horchemer@wista.de?subject=Anmeldung%20MINT%20Summerschool">Jetzt anmelden →</a>
-        </div>
-        <div class="summer-signup-qr">
-          <img src="assets/bilder/summerschool-anmeldung-qr.png" alt="QR-Code zur Anmeldung der MINT-Summerschool">
-          <span>oder einscannen</span>
-        </div>
-      </div>
+      <a class="deadline-card" href="https://www.scienceolympiaden.de/icho" target="_blank" rel="noopener">
+        <span class="dl-status dl-open">Jetzt offen</span>
+        <img class="dl-logo" src="assets/bilder/logos/internationale-chemie-olympiade.png" alt="Logo Internationale Chemie-Olympiade">
+        <div class="dl-name">Internationale Chemie-Olympiade</div>
+        <div class="dl-deadline">1. Runde läuft – Anmeldung bis 7. September 2026</div>
+      </a>
+
+      <a class="deadline-card" href="https://www.chemkids.de/" target="_blank" rel="noopener">
+        <span class="dl-status dl-running">Läuft</span>
+        <img class="dl-logo" src="assets/bilder/logos/chemkids.png" alt="Logo ChemKids">
+        <div class="dl-name">ChemKids</div>
+        <div class="dl-deadline">Zwei Runden pro Schuljahr – nächste Runde im Herbst 2026, genaue Termine auf chemkids.de</div>
+      </a>
+
+      <a class="deadline-card" href="https://www.scienceolympiaden.de/ijso" target="_blank" rel="noopener">
+        <span class="dl-status dl-soon">Ab November</span>
+        <img class="dl-logo" src="assets/bilder/logos/jso.png" alt="Logo Junior Science Olympiade">
+        <div class="dl-name">Junior-Science-Olympiade</div>
+        <div class="dl-deadline">Anmeldung 1. November bis 15. Januar</div>
+      </a>
+
+      <a class="deadline-card" href="https://www.scienceolympiaden.de/buw" target="_blank" rel="noopener">
+        <span class="dl-status dl-soon">15. März 2027</span>
+        <img class="dl-logo" src="assets/bilder/logos/bundesumweltwettbewerb.png" alt="Logo Bundesumweltwettbewerb">
+        <div class="dl-name">Bundesumweltwettbewerb</div>
+        <div class="dl-deadline">Einsendeschluss jährlich am 15. März</div>
+      </a>
+
+      <a class="deadline-card" href="https://www.scienceolympiaden.de/eoes" target="_blank" rel="noopener">
+        <span class="dl-status dl-info">Über Landesrunden</span>
+        <img class="dl-logo" src="assets/bilder/logos/european-olympiad-of-experimental-science.png" alt="Logo European Olympiad of Experimental Science">
+        <div class="dl-name">European Olympiad of Experimental Science</div>
+        <div class="dl-deadline">Qualifikation über die Runden von IBO, IChO und IPhO – kein separates Anmeldedatum</div>
+      </a>
+
     </div>
   </div>
 
