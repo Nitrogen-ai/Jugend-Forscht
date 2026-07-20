@@ -145,6 +145,18 @@
   .info-item .ii-icon { font-size: 1.1rem; }
   .info-item strong { color: #ffffff; }
 
+  .ii-logo-badge {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 3px;
+  }
+  .ii-logo-badge img { width: 100%; height: 100%; object-fit: contain; }
+
   /* ── HAUPT-LAYOUT ── */
   main {
     max-width: 960px;
@@ -438,12 +450,21 @@
     align-items: center;
   }
 
-  .network-logos div {
+  .network-logos a {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
     width: 96px;
+    text-decoration: none;
+    padding: 6px;
+    border-radius: 10px;
+    transition: background 0.15s, transform 0.15s;
+  }
+
+  .network-logos a:hover {
+    background: rgba(26,181,168,0.08);
+    transform: translateY(-2px);
   }
 
   .network-logos img {
@@ -555,6 +576,48 @@
     font-weight: 600;
   }
 
+  .summer-signup {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: space-between;
+  }
+
+  .summer-signup-text { flex: 1; min-width: 160px; }
+
+  .summer-signup-btn {
+    display: inline-flex;
+    margin-top: 8px;
+    padding: 7px 14px;
+    font-size: 0.8rem;
+  }
+
+  .summer-signup-qr {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .summer-signup-qr img {
+    width: 84px;
+    height: 84px;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .summer-signup-qr span {
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 480px) {
+    .summer-signup { flex-direction: column; align-items: flex-start; }
+  }
+
   /* ── FOOTER ── */
   footer {
     background: var(--teal-d);
@@ -602,20 +665,8 @@
 <!-- INFOLEISTE -->
 <div class="info-bar">
   <div class="info-item">
-    <span class="ii-icon">📅</span>
-    <span><strong>Schuljahr</strong> 2025/26</span>
-  </div>
-  <div class="info-item">
-    <span class="ii-icon">🏫</span>
-    <span><strong>Rosa-Luxemburg-Gymnasium</span>
-  </div>
-  <div class="info-item">
-    <span class="ii-icon">🧪</span>
-    <span><strong>Fach</strong> Informatik & MINT</span>
-  </div>
-  <div class="info-item">
-    <span class="ii-icon">🌟</span>
-    <span><strong>Wettbewerb</strong> Jugend forscht</span>
+    <span class="ii-logo-badge"><img src="assets/bilder/rlg-logo.png" alt="Logo Rosa-Luxemburg-Gymnasium"></span>
+    <span><strong>Rosa-Luxemburg-Gymnasium</strong></span>
   </div>
 </div>
 
@@ -725,13 +776,6 @@
       <div class="pc-arrow pc-arrow orange">→ zum Lernpfad</div>
     </a>
 
-    <div class="project-card pc-placeholder placeholder">
-      <span class="pc-label pc-label-placeholder">🐸 Natur</span>
-      <div class="pc-title">Rette Väri!</div>
-      <p class="pc-desc">Ein Experimentierabenteuer rund um Amphibien und ihren Lebensraum.</p>
-      <span class="placeholder-badge">Lernpfad folgt</span>
-    </div>
-
     <a class="project-card pc-purple" href="experimente/seife.html">
       <span class="pc-label pc-label-purple">🧼 Chemie</span>
       <div class="pc-title">Seife selber machen</div>
@@ -753,6 +797,13 @@
       <div class="pc-arrow pc-arrow orange">→ zum Lernpfad</div>
     </a>
 
+    <div class="project-card pc-placeholder placeholder">
+      <span class="pc-label pc-label-placeholder">🔧 In Arbeit</span>
+      <div class="pc-title">Weiteres Experiment</div>
+      <p class="pc-desc">Weitere Experimente folgen demnächst.</p>
+      <span class="placeholder-badge">Demnächst</span>
+    </div>
+
   </div>
 
   <!-- WETTBEWERBE & WEITERE ANGEBOTE -->
@@ -772,32 +823,22 @@
       <div class="comp-card-body">
         <div class="comp-card-eyebrow">Offizielle Website</div>
         <h3>Jugend forscht</h3>
-        <p>Deutschlands bekanntester Nachwuchswettbewerb für Naturwissenschaft und Technik – für alle bis 21 Jahre.</p>
+        <p>Deutschlands bekanntester Nachwuchswettbewerb für Naturwissenschaft und Technik – mit „Schüler experimentieren" für alle unter 15 Jahren und „Jugend forscht" bis 21 Jahre.</p>
         <a class="comp-cta cta-teal" href="https://www.jugend-forscht.de" target="_blank">Mehr erfahren →</a>
-      </div>
-    </a>
-
-    <a class="comp-card" href="https://www.schueler-experimentieren.de" target="_blank" rel="noopener">
-      <div class="comp-card-img-placeholder">🧫</div>
-      <div class="comp-card-body">
-        <div class="comp-card-eyebrow">Für Jüngere</div>
-        <h3>Schüler experimentieren</h3>
-        <p>Der Einstiegswettbewerb für Kinder und Jugendliche unter 15 Jahren – Experimentieren und Forschen auf Augenhöhe.</p>
-        <a class="comp-cta cta-teal" href="https://www.schueler-experimentieren.de" target="_blank">Mehr erfahren →</a>
       </div>
     </a>
 
   </div>
 
   <div class="network-strip">
-    <div class="ns-label">Weitere Wettbewerbe, Olympiaden und Angebote, an denen unsere AG interessiert ist – fragt eure Lehrkraft nach den aktuellen Links und Terminen:</div>
+    <div class="ns-label">Weitere Wettbewerbe und Olympiaden, an denen unsere AG interessiert ist:</div>
     <div class="network-logos">
-      <div><img src="assets/bilder/logos/bundesumweltwettbewerb.png" alt="Logo Bundesumweltwettbewerb"><span>Bundesumweltwettbewerb</span></div>
-      <div><img src="assets/bilder/logos/jso.png" alt="Logo Junior Science Olympiade"><span>Junior-Science-Olympiade</span></div>
-      <div><img src="assets/bilder/logos/chemkids.png" alt="Logo ChemKids"><span>ChemKids</span></div>
-      <div><img src="assets/bilder/logos/internationale-biologie-olympiade.png" alt="Logo Internationale Biologie-Olympiade"><span>Internationale Biologie-Olympiade</span></div>
-      <div><img src="assets/bilder/logos/internationale-chemie-olympiade.png" alt="Logo Internationale Chemie-Olympiade"><span>Internationale Chemie-Olympiade</span></div>
-      <div><img src="assets/bilder/logos/european-olympiad-of-experimental-science.png" alt="Logo European Olympiad of Experimental Science"><span>European Olympiad of Experimental Science</span></div>
+      <a href="https://www.scienceolympiaden.de/buw" target="_blank" rel="noopener"><img src="assets/bilder/logos/bundesumweltwettbewerb.png" alt="Logo Bundesumweltwettbewerb"><span>Bundesumweltwettbewerb</span></a>
+      <a href="https://www.scienceolympiaden.de/ijso" target="_blank" rel="noopener"><img src="assets/bilder/logos/jso.png" alt="Logo Junior Science Olympiade"><span>Junior-Science-Olympiade</span></a>
+      <a href="https://www.chemkids.de/" target="_blank" rel="noopener"><img src="assets/bilder/logos/chemkids.png" alt="Logo ChemKids"><span>ChemKids</span></a>
+      <a href="https://www.scienceolympiaden.de/ibo" target="_blank" rel="noopener"><img src="assets/bilder/logos/internationale-biologie-olympiade.png" alt="Logo Internationale Biologie-Olympiade"><span>Internationale Biologie-Olympiade</span></a>
+      <a href="https://www.scienceolympiaden.de/icho" target="_blank" rel="noopener"><img src="assets/bilder/logos/internationale-chemie-olympiade.png" alt="Logo Internationale Chemie-Olympiade"><span>Internationale Chemie-Olympiade</span></a>
+      <a href="https://www.scienceolympiaden.de/eoes" target="_blank" rel="noopener"><img src="assets/bilder/logos/european-olympiad-of-experimental-science.png" alt="Logo European Olympiad of Experimental Science"><span>European Olympiad of Experimental Science</span></a>
     </div>
   </div>
 
@@ -837,8 +878,15 @@
           <span><strong>Kosten:</strong> Kostenlos</span>
         </div>
       </div>
-      <div class="summer-contact">
-        Interesse? Melde dich bei der Informatik-AG oder schreib uns eine E-Mail.
+      <div class="summer-contact summer-signup">
+        <div class="summer-signup-text">
+          <strong>Interesse?</strong> Meldet euch bis zum 06.07. per E-Mail an.
+          <a class="comp-cta cta-teal summer-signup-btn" href="mailto:horchemer@wista.de?subject=Anmeldung%20MINT%20Summerschool">Jetzt anmelden →</a>
+        </div>
+        <div class="summer-signup-qr">
+          <img src="assets/bilder/summerschool-anmeldung-qr.png" alt="QR-Code zur Anmeldung der MINT-Summerschool">
+          <span>oder einscannen</span>
+        </div>
       </div>
     </div>
   </div>
@@ -847,9 +895,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <strong>Forschungs-AG</strong> · Rosa-Luxemburg-Gymnasium<br>
-  Jugend forscht Schuljahr 2025/26 ·
-  <a href="https://nitrogen-ai.github.io/Informatik/">← Zurück zur Informatik-Übersicht</a>
+  <strong>Entwicklungs- und Forschungs-AG</strong> · Rosa-Luxemburg-Gymnasium
 </footer>
 
 </body>
