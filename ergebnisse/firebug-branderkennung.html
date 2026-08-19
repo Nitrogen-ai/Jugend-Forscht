@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ergebnis: FireBug – Bionischer Infrarotsensor zur Branderkennung</title>
+<style>
+  :root {
+    --bg: #10151c;
+    --card: #1a212b;
+    --border: #2a3441;
+    --text: #e7edf3;
+    --muted: #94a3b3;
+    --blue: #3aa0e0;
+    --gold: #e0b23a;
+    --purple: #9b6ee0;
+    --green: #4fbf8f;
+    --orange: #e08a3a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+  header {
+    padding: 3.4rem 2rem 3rem;
+    text-align: center;
+    background: linear-gradient(120deg, #4a1e14, #522a2a 45%, #4a3a14 75%, #123a30);
+    border-bottom: 1px solid var(--border);
+  }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #f0d8cf; opacity: 0.85; margin-bottom: 0.7rem; }
+  header h1 { font-size: 2.1rem; margin-bottom: 0.7rem; }
+  header p { max-width: 640px; margin: 0 auto; color: #ecdcd8; opacity: 0.9; }
+
+  .prize-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+    background: rgba(224,178,58,0.16);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+  }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--gold); }
+
+  main { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
+
+  h2.section-title {
+    font-size: 1.35rem;
+    margin: 2.6rem 0 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    color: #f2f6fa;
+  }
+  h2.section-title:first-of-type { margin-top: 0; }
+
+  .qa-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+  }
+  .qa-card h3 { font-size: 1rem; color: var(--orange); margin-bottom: 0.4rem; }
+  .qa-card p { font-size: 0.92rem; color: var(--muted); }
+  .qa-card ul { margin: 0.4rem 0 0 1.1rem; font-size: 0.92rem; color: var(--muted); }
+  .qa-card li { margin-bottom: 0.3rem; }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+    font-size: 0.82rem;
+  }
+  table.data-table th, table.data-table td {
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    color: var(--muted);
+  }
+  table.data-table th { color: var(--text); font-weight: 700; background: rgba(255,255,255,0.03); }
+  table.data-table tr:last-child td { border-bottom: none; }
+
+  .observation {
+    margin-top: 2.2rem;
+    background: linear-gradient(120deg, rgba(224,138,58,0.15), rgba(224,178,58,0.15), rgba(79,191,143,0.15));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.7rem;
+  }
+  .observation h3 { margin-bottom: 0.5rem; color: #f2f6fa; }
+  .observation p { color: var(--muted); font-size: 0.94rem; margin-bottom: 0.6rem; }
+  .observation p:last-child { margin-bottom: 0; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Ergebnis · Wettbewerbsprojekt 2025/26 · Technik</div>
+  <h1>FireBug – Bionischer Infrarotsensor zur intelligenten Branderkennung</h1>
+  <p>Kann das Wirkprinzip der infrarotempfindlichen Organe des Käfers Melanophila acuminata technisch auf ein Sensorsystem zur frühzeitigen Branderkennung übertragen werden?</p>
+  <div class="prize-badge">🏆 1. Preis · Fachgebiet Technik · Regionalwettbewerb Berlin Buch 2026 (Preisstifter: VDI e.V.)</div>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <h2 class="section-title">Motivation &amp; Ziel</h2>
+  <div class="qa-card">
+    <p>Waldbrände haben in den letzten Jahrzehnten deutlich an Häufigkeit und Intensität zugenommen und stellen eine wachsende Bedrohung für Ökosysteme, Klima und Gesellschaft dar. Ziel des Projekts war es, zu untersuchen, ob sich das Wirkprinzip der infrarotempfindlichen Organe des Käfers Melanophila acuminata technisch auf ein neuartiges Sensorsystem zur frühzeitigen Branderkennung übertragen lässt.</p>
+  </div>
+
+  <div class="qa-card">
+    <h3>Zentrale Frage</h3>
+    <p>Lässt sich das bionische Wirkprinzip der Organe von Melanophila acuminata technisch auf ein thermisch arbeitendes Sensorsystem zur Branderkennung übertragen?</p>
+    <h3 style="margin-top:0.9rem;">Teil- und Nebenfragen</h3>
+    <ul>
+      <li>Welche physikalischen Parameter bestimmen die Sensitivität des Systems maßgeblich?</li>
+      <li>Inwieweit lassen sich die theoretisch erwarteten Effekte experimentell nachweisen?</li>
+      <li>Welche Limitierungen ergeben sich für eine praktische Anwendung?</li>
+    </ul>
+  </div>
+
+  <h2 class="section-title">Der Käfer als Vorbild</h2>
+  <div class="qa-card">
+    <p>Der Käfer Melanophila acuminata besitzt Organe, mit denen er Wärmestrahlung von Waldbränden aus bis zu 130&nbsp;km Entfernung wahrnehmen kann. Dieses biologische Prinzip beruht auf einer Umwandlung von Wärmestrahlung in mechanische Effekte im Sensorium des Insekts &mdash; genau dieses Prinzip diente als Vorbild für den technischen Sensor.</p>
+  </div>
+
+  <h2 class="section-title">Vorgehen &amp; Methoden</h2>
+  <div class="qa-card">
+    <p>Über mehrere Iterationsstufen wurden Prototypen des Sensors entwickelt und schrittweise verbessert. Ein Flowchart beschreibt einen möglichen Ansatz für die Datenverarbeitung, mit einem &bdquo;Brandentscheider&ldquo; und einem &bdquo;Brandorter&ldquo; als zentralen Bausteinen. Als Distanzmesser wurde zusätzlich der Time-of-Flight-Sensor VL53L0X getestet. Aus den theoretischen Überlegungen wurde außerdem eine integrierte Formel entwickelt, die den Pegelanstieg des Sensors mit den entscheidenden physikalischen Parametern korreliert.</p>
+  </div>
+
+  <h2 class="section-title">Experimente</h2>
+  <div class="qa-card">
+    <p>Es wurden insgesamt fünf Experimente durchgeführt:</p>
+    <ul>
+      <li>Qualitative Untersuchung der Funktionsweise</li>
+      <li>Variation der Wärmequelle</li>
+      <li>Variation des Abstandes</li>
+      <li>Variation des Intervalls zwischen Wärmezuführungen</li>
+      <li>Funktionsweise des Distanzmessers unter verschiedenen Bedingungen</li>
+    </ul>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Eigenschaft</th><th>Stufe 1</th><th>Stufe 2</th><th>Stufe 3</th><th>Stufe 4</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Innenradius Steigrohr</td><td>0,5&nbsp;cm</td><td>0,4–0,1&nbsp;cm</td><td>0,003&nbsp;cm</td><td>0,004&nbsp;cm</td></tr>
+      <tr><td>Material Gehäuse</td><td>PLA+ (Polymilchsäure)</td><td>PETG</td><td>Keramik</td><td>Glas</td></tr>
+      <tr><td>Dichtung</td><td>Alleskleber, modularer Aufbau</td><td>Kein modularer Aufbau, Knete</td><td>Stopfen + Dichtungsmaterial</td><td>Stopfen + Dichtungsmaterial</td></tr>
+      <tr><td>Absorption</td><td>Mattes Gehäuse</td><td>Transparent</td><td>Glänzend + mattes Tape</td><td>Transparent + mattes Tape</td></tr>
+      <tr><td>Material Steigrohr</td><td>PLA+</td><td>PLA+</td><td>Edelstahl</td><td>Edelstahl</td></tr>
+      <tr><td>Tropfen nach &lt;3&nbsp;Min.?</td><td>Nein</td><td>Nein</td><td>Ja</td><td>Ja</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">Ergebnisse &amp; Bedeutung</h2>
+  <div class="qa-card">
+    <p>Die Ergebnisse der Experimente zeigen: Das Sensorprinzip funktioniert grundlegend und ist auch qualitativ vielversprechend &mdash; bei relativ geringen Intensitäten wurden Reichweiten von rund 8&nbsp;cm erreicht. Gleichzeitig zeigen sich hohe Anforderungen an Materialien, Präzision und Verarbeitung.</p>
+  </div>
+
+  <div class="observation">
+    <h3>🐞 Fazit &amp; Ausblick</h3>
+    <p>Anhand der Experimente und theoretischen Berechnungen konnte gezeigt werden, dass das in FireBug untersuchte Sensorprinzip als Grundlage für ein neuartiges Branderkennungssystem tauglich ist. Künftige Forschung könnte Feldtests, eine Erweiterung der Sensoroberfläche, die Klärung von Fragen zur Datenübertragung (z.&nbsp;B. mit LoRaWAN), verbesserte Distanzmesser und geometrische Optimierung beinhalten.</p>
+    <p>Bei weiterführender Entwicklung könnte FireBug bestehende Systeme durch mehrere zentrale Vorteile sinnvoll ergänzen: sehr hohe Sensitivität, geringe Kosten, niedriger Energieverbrauch, einfache Installation und Wartung sowie der Verzicht auf aufwendige Infrastruktur. Langfristig ließe sich FireBug als hochsensibles, bodennahes System in ein engmaschiges Überwachungsnetz integrieren und damit satelliten- oder drohnengestützte Verfahren komplementär unterstützen.</p>
+  </div>
+
+</main>
+
+<footer>
+  FireBug &middot; Rosa-Luxemburg-Gymnasium &middot; Jugend forscht &middot; <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>

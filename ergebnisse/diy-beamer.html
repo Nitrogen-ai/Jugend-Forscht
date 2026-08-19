@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ergebnis: Kostengünstige Beamer-Alternative</title>
+<style>
+  :root {
+    --bg: #10151c;
+    --card: #1a212b;
+    --border: #2a3441;
+    --text: #e7edf3;
+    --muted: #94a3b3;
+    --blue: #3aa0e0;
+    --gold: #e0b23a;
+    --purple: #9b6ee0;
+    --green: #4fbf8f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+
+  header {
+    padding: 3.4rem 2rem 3rem;
+    text-align: center;
+    background: linear-gradient(120deg, #14243a, #1a2e4a 45%, #2a3a52 75%, #123044);
+    border-bottom: 1px solid var(--border);
+  }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #cfe0f0; opacity: 0.85; margin-bottom: 0.7rem; }
+  header h1 { font-size: 2.1rem; margin-bottom: 0.7rem; }
+  header p { max-width: 640px; margin: 0 auto; color: #d8e2ec; opacity: 0.9; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--gold); }
+
+  main { max-width: 880px; margin: 0 auto; padding: 2.2rem 1.5rem 4rem; }
+
+  h2.section-title {
+    font-size: 1.35rem;
+    margin: 2.6rem 0 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    color: #f2f6fa;
+  }
+  h2.section-title:first-of-type { margin-top: 0; }
+
+  .qa-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+  }
+  .qa-card h3 { font-size: 1rem; color: var(--blue); margin-bottom: 0.4rem; }
+  .qa-card p { font-size: 0.92rem; color: var(--muted); }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1.4rem;
+    font-size: 0.86rem;
+  }
+  table.data-table th, table.data-table td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    color: var(--muted);
+  }
+  table.data-table th { color: var(--text); font-weight: 700; background: rgba(255,255,255,0.03); }
+  table.data-table tr:last-child td { border-bottom: none; }
+
+  .step {
+    display: flex;
+    gap: 1.1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+  }
+  .step .step-num {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+  }
+  .step p { font-size: 0.92rem; color: var(--muted); }
+
+  .observation {
+    margin-top: 2.2rem;
+    background: linear-gradient(120deg, rgba(58,160,224,0.15), rgba(155,110,224,0.15), rgba(224,178,58,0.15));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 1.7rem;
+  }
+  .observation h3 { margin-bottom: 0.5rem; color: #f2f6fa; }
+  .observation p { color: var(--muted); font-size: 0.94rem; margin-bottom: 0.6rem; }
+  .observation p:last-child { margin-bottom: 0; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    font-size: 0.88rem;
+  }
+  footer a { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Ergebnis · Wettbewerbsprojekt 2025/26 · Technik</div>
+  <h1>Entwicklung einer kostengünstigen Beamer-Alternative</h1>
+  <p>Ein selbstgebauter Beamer mit hoher Bildauflösung, großem Projektionsbild und geringen Kosten &mdash; als Weg, Elektronik und Optik praktisch zu verstehen.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <h2 class="section-title">Ziel</h2>
+  <div class="qa-card">
+    <p>Ziel des Projekts war die Entwicklung eines kostengünstigen, selbstgebauten Beamers, der gekaufte Beamer ersetzen kann. Der Fokus lag auf einer hohen Bildauflösung, zuverlässiger Funktion und einem großen Projektionsbild von mindestens 100&nbsp;Zoll bei möglichst geringen Kosten. Gleichzeitig sollte das Projekt dazu dienen, grundlegende Kenntnisse in Elektronik, Optik und technischer Problemlösung in der Praxis zu erlernen und anzuwenden.</p>
+  </div>
+
+  <h2 class="section-title">Methodik</h2>
+  <div class="step">
+    <div class="step-num">1</div>
+    <p>Geeignete Bauteile recherchiert und ausgewählt.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <p>Bauteile praktisch getestet, Probleme analysiert und den Aufbau schrittweise verbessert.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <p>Durch dieses iterative Vorgehen ein fundiertes technisches Verständnis in Elektronik und Optik erarbeitet.</p>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <p>Auf dieser Grundlage technische Übersichten erstellt und den Beamer systematisch aufgebaut.</p>
+  </div>
+
+  <h2 class="section-title">Ergebnisse</h2>
+  <div class="qa-card">
+    <p>Als Ergebnis ist ein vollständig funktionsfähiger DIY-Beamer entstanden, der über HDMI betrieben werden kann und eine Auflösung von 2560&nbsp;&times;&nbsp;1440&nbsp;Pixeln erreicht. In einem vollständig abgedunkelten Raum projiziert er ein Bild von bis zu etwa 120&nbsp;Zoll mit guter Schärfe in der Bildmitte, ordentlichem Kontrast und solider Farbdarstellung.</p>
+  </div>
+
+  <table class="data-table">
+    <thead><tr><th>Kategorie</th><th>Wert / Beschreibung</th></tr></thead>
+    <tbody>
+      <tr><td>Native Auflösung</td><td>2560 &times; 1440p</td></tr>
+      <tr><td>Geschätzte Helligkeit</td><td>150&ndash;200 ANSI-Lumen</td></tr>
+      <tr><td>Typ</td><td>LCD-Beamer</td></tr>
+      <tr><td>Netzteil</td><td>120&nbsp;W</td></tr>
+      <tr><td>LED</td><td>100&nbsp;W</td></tr>
+    </tbody>
+  </table>
+
+  <div class="observation">
+    <h3>📽️ Fazit &amp; Ausblick</h3>
+    <p>Der Beamer arbeitet zuverlässig und konnte bereits mehrere Stunden im praktischen Einsatz zum Filmeschauen genutzt werden. Die Kühlung funktioniert stabil, sodass die 100-W-LED sicher betrieben werden kann.</p>
+    <p>In Zukunft soll das Gehäuse mithilfe eines 3D-Druckers präziser gebaut werden, um die Bildschärfe weiter zu verbessern und das Design kompakter zu gestalten &mdash; mit dem Ziel, eine optimierte Version zu entwickeln, die mit hochwertigen Beamern im mittleren Preissegment vergleichbar ist.</p>
+  </div>
+
+</main>
+
+<footer>
+  DIY-Beamer &middot; Rosa-Luxemburg-Gymnasium &middot; Jugend forscht &middot; <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>

@@ -211,6 +211,65 @@
     margin-top: -4px;
   }
 
+  /* ── UNTERABSCHNITTE (z.B. innerhalb "Ergebnisse") ── */
+  .subsec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 36px 0 16px;
+  }
+  .subsec-head:first-of-type { margin-top: 0; }
+  .subsec-head h3 {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .subsec-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .subsec-badge-gold   { background: rgba(224,178,58,0.15); color: #b5842a; }
+  .subsec-badge-teal   { background: rgba(26,181,168,0.12); color: var(--teal-d); }
+
+  /* ── AUFRUF-KARTE (z.B. "Projekte 2026/27") ── */
+  .invite-card {
+    background: linear-gradient(120deg, rgba(26,181,168,0.08), rgba(125,194,67,0.1));
+    border: 1px dashed var(--teal);
+    border-radius: 16px;
+    padding: 28px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .invite-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+  .invite-card p { font-size: 0.92rem; color: var(--muted); max-width: 640px; }
+  .invite-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-decoration: none;
+    align-self: flex-start;
+    background: var(--teal);
+    color: #fff;
+    transition: filter 0.15s;
+  }
+  .invite-cta:hover { filter: brightness(1.08); }
+
   /* ── PROJEKT-KARTEN ── */
   .project-grid {
     display: grid;
@@ -568,6 +627,41 @@
   </div>
   <hr class="sec-rule">
 
+  <div class="subsec-head">
+    <h3>🏆 Wettbewerbsprojekte 2025/26</h3>
+    <span class="subsec-badge subsec-badge-gold">Regionalwettbewerb Berlin Buch</span>
+  </div>
+
+  <div class="project-grid">
+
+    <a class="project-card pc-orange" href="ergebnisse/firebug-branderkennung.html">
+      <span class="pc-label pc-label-orange">🐞 Technik</span>
+      <div class="pc-title">FireBug – Bionischer Infrarotsensor zur Branderkennung</div>
+      <p class="pc-desc">Wie das Wärme-Sensorprinzip des Käfers Melanophila acuminata zu einem Sensor für die frühzeitige Erkennung von Waldbränden wird.</p>
+      <div class="pc-arrow pc-arrow orange">→ Ergebnis ansehen</div>
+    </a>
+
+    <a class="project-card pc-green" href="ergebnisse/kaffeesatz-tierfutter.html">
+      <span class="pc-label pc-label-green">☕ Biotechnologie</span>
+      <div class="pc-title">Kaffeesatz als hochwertiges Tierfutter</div>
+      <p class="pc-desc">Rückführung organischer Abfälle durch Biotechnologie am Beispiel von Kaffeesatz aus Cafés.</p>
+      <div class="pc-arrow">→ Ergebnis ansehen</div>
+    </a>
+
+    <a class="project-card pc-teal" href="ergebnisse/diy-beamer.html">
+      <span class="pc-label">📽️ Technik</span>
+      <div class="pc-title">Kostengünstige Beamer-Alternative</div>
+      <p class="pc-desc">Ein selbstgebauter Beamer mit hoher Auflösung und großem Projektionsbild bei geringen Kosten.</p>
+      <div class="pc-arrow">→ Ergebnis ansehen</div>
+    </a>
+
+  </div>
+
+  <div class="subsec-head">
+    <h3>Weitere AG-Projekte</h3>
+    <span class="subsec-badge subsec-badge-teal">Lernpfade &amp; Ergebnisse</span>
+  </div>
+
   <div class="project-grid">
 
     <a class="project-card pc-teal" href="lernpfade/dna-extraktion-erdbeeren.html">
@@ -612,6 +706,22 @@
       <span class="placeholder-badge">Demnächst</span>
     </div>
 
+  </div>
+
+  <!-- PROJEKTE 2026/27 -->
+  <div class="sec-head">
+    <div class="sec-icon si-green">🚀</div>
+    <div>
+      <h2>Projekte 2026/27</h2>
+      <div class="sec-sub">Die nächste Wettbewerbsrunde steht an – Themen und Teams werden gerade gesucht</div>
+    </div>
+  </div>
+  <hr class="sec-rule">
+
+  <div class="invite-card">
+    <h3>Dein Forschungsprojekt für 2026/27 gesucht!</h3>
+    <p>Für die kommende Jugend-forscht-Runde 2026/27 sind noch keine Projekte festgelegt – und genau deshalb suchen wir jetzt Schülerinnen und Schüler mit eigenen Ideen und Forschungsfragen. Egal ob Technik, Chemie, Biologie oder Informatik: Wenn du Lust hast, ein eigenes Projekt bis zum Wettbewerb zu entwickeln, ist deine Teilnahme herzlich willkommen und ausdrücklich erwünscht.</p>
+    <a class="invite-cta" href="https://www.jugend-forscht.de" target="_blank" rel="noopener">🔭 Mehr über die Teilnahme erfahren →</a>
   </div>
 
   <!-- EXPERIMENTE -->
