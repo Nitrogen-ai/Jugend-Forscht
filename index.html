@@ -384,6 +384,31 @@
   .pc-arrow.orange { color: var(--orange); }
   .pc-arrow.purple { color: var(--purple); }
 
+  .pc-arrow.toggle { cursor: pointer; user-select: none; }
+
+  .pc-idea-list {
+    list-style: none;
+    margin: 2px 0 0;
+    padding: 0;
+  }
+  .pc-idea-list li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .pc-idea-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 7px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .pc-idea-list li:last-child { margin-bottom: 0; }
+
   .placeholder-badge {
     display: inline-block;
     font-size: 10px;
@@ -718,6 +743,30 @@
   </div>
   <hr class="sec-rule">
 
+  <div class="subsec-head">
+    <h3>🏆 Wettbewerbsprojekte 2026/27</h3>
+    <span class="subsec-badge subsec-badge-teal">In Entwicklung</span>
+  </div>
+
+  <div class="project-grid">
+
+    <div class="project-card pc-green">
+      <span class="pc-label pc-label-green">⚽ Sport &amp; Informatik</span>
+      <div class="pc-title">Adaptiver Trainingsplaner für den Fußballsport</div>
+      <p class="pc-desc">Eine Web-App erstellt aus Spielposition, Alter, Leistungsniveau und Saisonphase automatisch einen individuellen Trainingsplan – mit Kalenderfunktion für Spiel- und Trainingstage.</p>
+      <ul class="pc-idea-list" id="fc2027Ideas" style="display:none;">
+        <li>Trainingspläne passen sich an Position, Alter und Leistungsniveau an – vom Anfänger bis zum Leistungsbereich</li>
+        <li>Kalender zum Markieren von Trainings- und Spieltagen, Regenerationstage werden automatisch verteilt</li>
+        <li>Übungen skalieren mit der Gruppengröße – allein, zu zweit oder im Team</li>
+        <li>Berücksichtigt vorhandenes Trainingsmaterial bei der Übungsauswahl</li>
+        <li>Eigener Return-to-Play-Modus für die Zeit nach einer Verletzung</li>
+      </ul>
+      <div class="pc-arrow toggle" onclick="toggleIdeas(this, 'fc2027Ideas')">→ Ideen ansehen</div>
+    </div>
+
+  </div>
+  <p style="font-size:0.82rem;color:var(--muted);margin-top:4px;">Das Projekt ist noch in der Entwicklung und bleibt bis zum Wettbewerb anonym – ein öffentlicher Link folgt erst später.</p>
+
   <div class="invite-card">
     <h3>Dein Forschungsprojekt für 2026/27 gesucht!</h3>
     <p>Für die kommende Jugend-forscht-Runde 2026/27 sind noch keine Projekte festgelegt – und genau deshalb suchen wir jetzt Schülerinnen und Schüler mit eigenen Ideen und Forschungsfragen. Egal ob Technik, Chemie, Biologie oder Informatik: Wenn du Lust hast, ein eigenes Projekt bis zum Wettbewerb zu entwickeln, ist deine Teilnahme herzlich willkommen und ausdrücklich erwünscht.</p>
@@ -880,6 +929,15 @@
 <footer>
   <strong>Entwicklungs- und Forschungs-AG</strong> · Rosa-Luxemburg-Gymnasium
 </footer>
+
+<script>
+function toggleIdeas(el, listId) {
+  var list = document.getElementById(listId);
+  var open = list.style.display !== 'none';
+  list.style.display = open ? 'none' : 'block';
+  el.textContent = open ? '→ Ideen ansehen' : '↑ Ideen ausblenden';
+}
+</script>
 
 </body>
 </html>
