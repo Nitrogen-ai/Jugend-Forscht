@@ -1,0 +1,5 @@
+#!/bin/bash
+sleep 6
+if systemctl is-active --quiet spectrometer-webapp.service; then
+  chromium --kiosk --noerrdialogs --disable-infobars --no-first-run http://localhost:8080 &
+fi

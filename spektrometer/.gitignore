@@ -1,0 +1,4 @@
+pi/spectrometer_web/settings.json
+pi/spectrometer_web/reference.json
+__pycache__/
+*.pyc

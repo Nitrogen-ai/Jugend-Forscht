@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Web-Spektrometer (Vollbild an/aus)
+Comment=Startet oder beendet die Kiosk-Ansicht des Web-Spektrometers
+Exec=/usr/local/bin/toggle-kiosk
+Icon=chromium
+Terminal=false

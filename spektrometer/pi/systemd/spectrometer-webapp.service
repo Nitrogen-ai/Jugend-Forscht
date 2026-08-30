@@ -1,0 +1,14 @@
+[Unit]
+Description=Web-Spektrometer (MVP)
+After=network.target
+
+[Service]
+Type=simple
+User=nitrogen
+WorkingDirectory=/home/nitrogen/spectrometer_web
+ExecStart=/usr/bin/python3 /home/nitrogen/spectrometer_web/app.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

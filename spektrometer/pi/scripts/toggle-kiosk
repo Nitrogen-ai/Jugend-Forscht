@@ -1,0 +1,8 @@
+#!/bin/bash
+# Startet oder beendet den Kiosk-Chromium des Web-Spektrometers.
+# Aufrufbar per Desktop-Icon (Web-Spektrometer-Kiosk.desktop) oder Hotkey (Strg+Alt+K, siehe rc.xml).
+if pgrep -f "chromium.*8080" > /dev/null; then
+  pkill -f "chromium.*8080"
+else
+  chromium --kiosk --noerrdialogs --disable-infobars --no-first-run http://localhost:8080 &
+fi
