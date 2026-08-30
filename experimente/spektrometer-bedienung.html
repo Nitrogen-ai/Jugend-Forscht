@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bedienungsanleitung: Web-Spektrometer</title>
+<style>
+  :root {
+    --teal:    #1ab5a8;
+    --teal-d:  #0e8a7f;
+    --green:   #7dc243;
+    --green-d: #5a9a2a;
+    --orange:  #f47920;
+    --purple:  #7b4fa0;
+    --bg:      #f4fbfa;
+    --surface: #ffffff;
+    --text:    #1a2e2b;
+    --muted:   #5a7570;
+    --border:  #d0ebe8;
+    --red:     #d9695a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header { padding: 3rem 2rem 2.6rem; text-align: center; background: linear-gradient(135deg, var(--teal), var(--green) 115%); border-bottom: 1px solid var(--border); }
+  header .eyebrow { font-size: 0.78rem; letter-spacing: 0.16em; text-transform: uppercase; color: #fff; opacity: 0.9; margin-bottom: 0.8rem; }
+  header h1 { font-size: 1.9rem; margin-bottom: 0.7rem; color: #fff; }
+  header p { max-width: 640px; margin: 0 auto; color: #fff; opacity: 0.95; font-size: 0.98rem; }
+
+  a.back-link { display: inline-block; margin: 1rem 0 0 1.5rem; color: var(--muted); text-decoration: none; font-size: 0.9rem; }
+  a.back-link:hover { color: var(--teal-d); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  .intro-box { background: var(--surface); border-left: 5px solid var(--teal); padding: 1.4rem 1.6rem; border-radius: 6px; margin-bottom: 1.6rem; font-size: 0.95rem; color: var(--muted); box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .intro-box strong { color: var(--text); }
+  .intro-box a { color: var(--teal-d); font-weight: 600; text-decoration: none; }
+  .intro-box a:hover { text-decoration: underline; }
+
+  h2.section-title { display: flex; align-items: center; gap: 10px; font-size: 1.25rem; margin: 2.6rem 0 0.4rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+  h2.section-title:first-of-type { margin-top: 0; }
+
+  .step { display: flex; gap: 1.2rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.3rem 1.5rem; margin-bottom: 1rem; align-items: flex-start; flex-wrap: wrap; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; background: var(--teal); }
+  .step-body { flex: 1; min-width: 240px; }
+  .step-body h3 { font-size: 1.02rem; margin-bottom: 0.4rem; }
+  .step-body p { font-size: 0.92rem; color: var(--muted); }
+  .step-body ul { margin: 0.5rem 0 0 1.1rem; font-size: 0.9rem; color: var(--muted); }
+  .step-body li { margin-bottom: 0.25rem; }
+  .step-media { margin-top: 0.8rem; }
+  .step-media svg { width: 100%; max-width: 420px; height: auto; border-radius: 8px; border: 1px solid var(--border); background: #fbfffe; display: block; }
+
+  .warn-box { display: flex; gap: 12px; background: #fdf1ee; border: 1px solid #f3d4cb; border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1.2rem; font-size: 0.9rem; color: #8a4636; }
+  .warn-box .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .warn-box strong { color: #6b3223; }
+
+  .callout { display: flex; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
+  .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
+  .callout strong { color: var(--text); }
+  .callout a { color: var(--teal-d); }
+  .callout code { background: #eef8f6; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+
+  .troubleshoot { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0; overflow: hidden; margin-bottom: 0.8rem; }
+  .troubleshoot summary { cursor: pointer; padding: 0.85rem 1.2rem; font-weight: 600; font-size: 0.92rem; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .troubleshoot summary::-webkit-details-marker { display: none; }
+  .troubleshoot summary::after { content: '+'; font-size: 1.2rem; color: var(--teal-d); flex-shrink: 0; transition: transform 0.2s; }
+  .troubleshoot[open] summary::after { transform: rotate(45deg); }
+  .troubleshoot .a { padding: 0 1.2rem 1rem; color: var(--muted); font-size: 0.88rem; }
+
+  footer { text-align: center; padding: 2rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 3rem; font-size: 0.88rem; }
+  footer a { color: var(--teal-d); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Anleitung · Web-Spektrometer</div>
+  <h1>🔬 Vis-Spektrometer bedienen – Gerät &amp; Websoftware</h1>
+  <p>Schritt für Schritt von der Probe bis zum fertigen Extinktionsspektrum. Funktioniert mit jeder durchsichtigen, gefärbten Lösung – die Farbe in den Bildern ist nur ein Platzhalter.</p>
+</header>
+
+<a class="back-link" href="../index.html">&larr; Zurück zur Jugend-forscht-Übersicht</a>
+
+<main>
+
+  <div class="intro-box">
+    <strong>Was du hier lernst:</strong> Wie du eine Probe für das Vis-Spektrometer vorbereitest, sie korrekt einsetzt und in der Web-App ein Absorptionsspektrum aufnimmst und exportierst. Die Live-App läuft, sobald du im selben WLAN wie der Pi bist, unter <a href="http://nitrogen.local:8080" target="_blank" rel="noopener">nitrogen.local:8080</a>.
+  </div>
+
+  <div class="warn-box">
+    <span class="ic">⚠️</span>
+    <div><strong>Kurz zur Sicherheit:</strong> Nicht direkt in die eingeschaltete Beleuchtungs-LED schauen. Verschüttete Flüssigkeit sofort aufwischen (Elektronik!). Bei ätzenden oder reizenden Farbstoffen/Chemikalien die für den jeweiligen Stoff geltenden Schutzmaßnahmen (Handschuhe, Schutzbrille) eurer Lehrkraft befolgen.</div>
+  </div>
+
+  <h2 class="section-title">🧪 Probe vorbereiten</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <h3>Probe mit Substanz präparieren</h3>
+      <p>Löse die Substanz, die du untersuchen willst, in Wasser oder einem anderen durchsichtigen Lösemittel auf – z.&nbsp;B. Fruchtsaft, Lebensmittelfarbe, Tee oder einen Pflanzenfarbstoff. Wichtig: Die Lösung muss klar bleiben, nicht trüb oder milchig – trübe Flüssigkeiten streuen das Licht und verfälschen die Messung.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="170" fill="#fbfffe" rx="8"/>
+          <ellipse cx="90" cy="120" rx="55" ry="18" fill="#e7f4f2"/>
+          <path d="M45,120 Q45,70 90,65 Q135,70 135,120 Z" fill="#ffffff" stroke="#b7ddd8" stroke-width="2"/>
+          <circle cx="75" cy="95" r="6" fill="var(--orange)"/>
+          <circle cx="95" cy="85" r="5" fill="var(--purple)"/>
+          <circle cx="105" cy="100" r="5.5" fill="var(--orange)"/>
+          <circle cx="80" cy="108" r="4.5" fill="var(--purple)"/>
+          <path d="M150,110 L200,110" stroke="#8fb8b3" stroke-width="2.5" fill="none" marker-end="url(#arrow1)"/>
+          <defs>
+            <marker id="arrow1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#8fb8b3"/>
+            </marker>
+          </defs>
+          <rect x="215" y="80" width="90" height="70" rx="4" fill="none" stroke="#8fb8b3" stroke-width="2"/>
+          <path d="M215,150 L215,110 L225,80 L295,80 L305,110 L305,150 Z" fill="none" stroke="#b7ddd8" stroke-width="2"/>
+          <path d="M218,148 L302,148 L302,115 L218,115 Z" fill="var(--orange)" opacity="0.75"/>
+          <text x="260" y="163" text-anchor="middle" font-size="10" fill="#5a7570">gelöste Substanz</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <h3>Küvetten zum Befüllen vorbereiten</h3>
+      <p>Du brauchst zwei gleiche Küvetten: eine für die spätere Blindprobe (reines Lösemittel) und eine für deine gefärbte Probe. Prüfe, dass beide innen und außen sauber und trocken sind – Fingerabdrücke oder Rückstände auf den glatten Seiten verfälschen die Messung.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="170" fill="#fbfffe" rx="8"/>
+          <rect x="90" y="45" width="46" height="95" rx="4" fill="none" stroke="#5a7570" stroke-width="2.5"/>
+          <rect x="190" y="45" width="46" height="95" rx="4" fill="none" stroke="#5a7570" stroke-width="2.5"/>
+          <text x="113" y="158" text-anchor="middle" font-size="10" fill="#5a7570">für Blindprobe</text>
+          <text x="213" y="158" text-anchor="middle" font-size="10" fill="#5a7570">für Probe</text>
+          <g transform="translate(300,40) rotate(20)">
+            <rect x="0" y="0" width="10" height="70" rx="3" fill="none" stroke="var(--teal-d)" stroke-width="2.5"/>
+            <rect x="2" y="20" width="6" height="45" fill="var(--teal)" opacity="0.5"/>
+            <rect x="-3" y="-14" width="16" height="16" rx="2" fill="var(--teal-d)"/>
+          </g>
+          <text x="330" y="150" text-anchor="middle" font-size="10" fill="#5a7570">Pipette / Spritze</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <h3>Küvetten mit gelöstem Stoff befüllen</h3>
+      <p>Fülle mit der Pipette oder Spritze etwa 3/4 einer Küvette mit deiner gelösten Probe. Fasse die Küvette dabei nur an den mattierten/geriffelten Seiten an, nie an den beiden glatten, durchsichtigen Flächen – dort würden Fingerabdrücke das Licht streuen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="170" fill="#fbfffe" rx="8"/>
+          <g transform="translate(150,15) rotate(25)">
+            <rect x="0" y="0" width="10" height="70" rx="3" fill="none" stroke="var(--teal-d)" stroke-width="2.5"/>
+            <rect x="2" y="20" width="6" height="45" fill="var(--teal)" opacity="0.5"/>
+            <rect x="-3" y="-14" width="16" height="16" rx="2" fill="var(--teal-d)"/>
+          </g>
+          <circle cx="205" cy="95" r="3" fill="var(--orange)"/>
+          <circle cx="210" cy="105" r="2.5" fill="var(--orange)"/>
+          <rect x="185" y="60" width="50" height="90" rx="4" fill="none" stroke="#5a7570" stroke-width="2.5"/>
+          <rect x="188" y="115" width="44" height="32" fill="var(--orange)" opacity="0.8"/>
+          <path d="M188,115 Q210,110 232,115" stroke="var(--orange)" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <text x="210" y="163" text-anchor="middle" font-size="10" fill="#5a7570">~3/4 gefüllt</text>
+          <g transform="translate(300,90)">
+            <circle r="20" fill="none" stroke="var(--red)" stroke-width="2"/>
+            <path d="M-10,-10 L10,10 M10,-10 L-10,10" stroke="var(--red)" stroke-width="2.5"/>
+          </g>
+          <text x="300" y="122" text-anchor="middle" font-size="9" fill="#8a4636">nicht anfassen</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <h3>Lösemittel als Blindprobe vorlegen</h3>
+      <p>Fülle die zweite Küvette auf die gleiche Höhe nur mit reinem Lösemittel (z.&nbsp;B. Wasser) – ohne deinen Farbstoff. Das ist die Blindprobe/Referenz: Sie zeigt der Software, wie viel Licht ganz ohne die gefärbte Probe ankommt, damit später nur die Farbe deiner Probe gemessen wird.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="170" fill="#fbfffe" rx="8"/>
+          <rect x="90" y="55" width="46" height="90" rx="4" fill="none" stroke="#5a7570" stroke-width="2.5"/>
+          <rect x="93" y="105" width="40" height="37" fill="#bfe0dc" opacity="0.8"/>
+          <text x="113" y="158" text-anchor="middle" font-size="10" fill="#5a7570">Blindprobe (Lösemittel)</text>
+          <text x="240" y="100" text-anchor="middle" font-size="16" fill="#8fb8b3">=</text>
+          <rect x="270" y="55" width="46" height="90" rx="4" fill="none" stroke="#5a7570" stroke-width="2.5"/>
+          <rect x="273" y="105" width="40" height="37" fill="var(--orange)" opacity="0.8"/>
+          <text x="293" y="158" text-anchor="middle" font-size="10" fill="#5a7570">Probe (gleiche Füllhöhe)</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">📦 Gerät bedienen</h2>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <h3>Küvette einsetzen</h3>
+      <p>Öffne den Deckel des Spektrometers und stelle zunächst die Blindprobe in die Halterung. Die beiden glatten, durchsichtigen Seiten müssen genau im Strahlengang zwischen Lichtquelle und Kamera/Gitter stehen.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="170" fill="#fbfffe" rx="8"/>
+          <rect x="60" y="70" width="300" height="70" rx="10" fill="none" stroke="#2a3134" stroke-width="3"/>
+          <rect x="180" y="55" width="40" height="20" fill="#fbfffe" stroke="#2a3134" stroke-width="3"/>
+          <circle cx="330" cy="105" r="12" fill="none" stroke="var(--teal-d)" stroke-width="2"/>
+          <circle cx="330" cy="105" r="4" fill="var(--teal-d)"/>
+          <path d="M90,105 L318,105" stroke="var(--orange)" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.7"/>
+          <g transform="translate(185,20)">
+            <rect x="0" y="0" width="30" height="55" rx="3" fill="none" stroke="#5a7570" stroke-width="2.5"/>
+            <rect x="3" y="30" width="24" height="22" fill="#bfe0dc" opacity="0.85"/>
+          </g>
+          <path d="M200,78 L200,58" stroke="#5a7570" stroke-width="2" marker-end="url(#arrow2)"/>
+          <defs>
+            <marker id="arrow2" markerWidth="8" markerHeight="8" refX="4" refY="6" orient="auto">
+              <path d="M0,8 L4,0 L8,8 Z" fill="#5a7570"/>
+            </marker>
+          </defs>
+          <text x="210" y="160" text-anchor="middle" font-size="10" fill="#5a7570">Halterung / Spalt oben</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-body">
+      <h3>Deckel schließen</h3>
+      <p>Schließe den Deckel vollständig. Das ist wichtig: Auch kleine Lichtritzen von außen überstrahlen das schwache, gebeugte Spektrum im Inneren und machen die Messung unbrauchbar.</p>
+      <div class="step-media">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="170" fill="#fbfffe" rx="8"/>
+          <rect x="80" y="90" width="260" height="55" rx="8" fill="none" stroke="#2a3134" stroke-width="3"/>
+          <path d="M80,90 L340,90 L320,55 L100,55 Z" fill="none" stroke="#2a3134" stroke-width="2.5" stroke-dasharray="5 4" opacity="0.55"/>
+          <path d="M100,55 Q210,35 320,55" stroke="var(--teal-d)" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+          <defs>
+            <marker id="arrow3" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="var(--teal-d)"/>
+            </marker>
+          </defs>
+          <g transform="translate(360,40)">
+            <circle r="16" fill="none" stroke="var(--orange)" stroke-width="2"/>
+            <g stroke="var(--orange)" stroke-width="2">
+              <line x1="0" y1="-24" x2="0" y2="-18"/>
+              <line x1="0" y1="18" x2="0" y2="24"/>
+              <line x1="-24" y1="0" x2="-18" y2="0"/>
+              <line x1="18" y1="0" x2="24" y2="0"/>
+            </g>
+            <line x1="-16" y1="16" x2="16" y2="-16" stroke="var(--red)" stroke-width="2.5"/>
+          </g>
+          <text x="210" y="160" text-anchor="middle" font-size="10" fill="#5a7570">fest zu – kein Streulicht</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">💻 Websoftware bedienen</h2>
+
+  <div class="step">
+    <div class="step-num">7</div>
+    <div class="step-body">
+      <h3>Messung durchführen</h3>
+      <p>Öffne im Browser eines Geräts im selben WLAN <code>nitrogen.local:8080</code>. Dann in dieser Reihenfolge:</p>
+      <ul>
+        <li>Modus <strong>„Absorption"</strong> oben auswählen</li>
+        <li><strong>Blindprobe</strong> ist eingesetzt, Deckel zu → auf <strong>„Referenz aufnehmen"</strong> klicken</li>
+        <li>Deckel öffnen, Blindprobe gegen deine <strong>Probe</strong> tauschen, Deckel wieder schließen</li>
+        <li>Das Live-Spektrum (Extinktion) aktualisiert sich jetzt laufend automatisch</li>
+        <li>Wenn die Kurve gut aussieht: <strong>„Messung sichern"</strong> klicken, um den aktuellen Stand einzufrieren</li>
+        <li>Ergebnis als <strong>CSV</strong> (Rohdaten), <strong>PNG</strong> oder <strong>SVG</strong> (Diagramm) herunterladen</li>
+      </ul>
+      <div class="step-media">
+        <svg viewBox="0 0 420 190" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="190" fill="#fbfffe" rx="8"/>
+          <rect x="40" y="20" width="230" height="130" rx="8" fill="#14181a"/>
+          <rect x="55" y="35" width="200" height="90" rx="4" fill="#fff"/>
+          <path d="M65,110 Q90,45 110,50 T140,90 Q160,105 200,100 T245,60" stroke="var(--teal-d)" stroke-width="2" fill="none"/>
+          <rect x="290" y="55" width="110" height="26" rx="6" fill="var(--teal)"/>
+          <text x="345" y="72" text-anchor="middle" font-size="10" fill="#fff">Referenz aufnehmen</text>
+          <rect x="290" y="90" width="110" height="26" rx="6" fill="var(--green)"/>
+          <text x="345" y="107" text-anchor="middle" font-size="10" fill="#fff">Messung sichern</text>
+          <rect x="290" y="125" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+          <text x="307" y="141" text-anchor="middle" font-size="8.5" fill="#5a7570">CSV</text>
+          <rect x="330" y="125" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+          <text x="347" y="141" text-anchor="middle" font-size="8.5" fill="#5a7570">PNG</text>
+          <rect x="370" y="125" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
+          <text x="387" y="141" text-anchor="middle" font-size="8.5" fill="#5a7570">SVG</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="ic">💡</span>
+    <div><strong>Tipp:</strong> Ihr könnt mehrere Proben (z.&nbsp;B. verschiedene Konzentrationen) nacheinander messen und über <strong>„Zur Messreihe hinzufügen"</strong> sammeln – der gemeinsame Export überlagert alle Kurven in einem Diagramm.</div>
+  </div>
+
+  <h2 class="section-title">🛠️ Wenn's nicht klappt</h2>
+
+  <details class="troubleshoot">
+    <summary>Das Live-Bild bzw. Spektrum ist komplett schwarz/leer</summary>
+    <div class="a">Meist fehlt Licht: Deckel richtig zu, aber Beleuchtungs-LED auch eingeschaltet? Über den Button <strong>„Licht an/aus"</strong> in der Web-App prüfen. Falls eine externe Lichtquelle genutzt wird, steht sie im richtigen Winkel zum Spalt?</div>
+  </details>
+
+  <details class="troubleshoot">
+    <summary>Das Spektrum sieht komisch/verrauscht/abgeschnitten aus</summary>
+    <div class="a">Küvette an den optischen (glatten) Flächen berührt oder Flüssigkeit daran verschmiert? Vorsichtig mit einem fusselfreien Tuch abwischen. Auch prüfen, ob die Küvette wirklich bis zum Anschlag in der Halterung sitzt.</div>
+  </details>
+
+  <details class="troubleshoot">
+    <summary>Die Extinktion ist überall nahe 0, egal wie stark gefärbt die Probe ist</summary>
+    <div class="a">Wurde „Referenz aufnehmen" versehentlich mit der Probe statt der Blindprobe geklickt? Dann vergleicht die Software die Probe mit sich selbst. Blindprobe erneut einsetzen und „Referenz aufnehmen" wiederholen.</div>
+  </details>
+
+  <details class="troubleshoot">
+    <summary>Die App unter nitrogen.local:8080 öffnet sich nicht</summary>
+    <div class="a">Ist das eigene Gerät wirklich im selben WLAN/Hotspot wie der Pi? Die App ist absichtlich nur lokal erreichbar, nicht über das Internet.</div>
+  </details>
+
+</main>
+
+<footer>
+  Bedienungsanleitung Web-Spektrometer · Jugend forscht · <a href="../index.html">Zurück zur Übersicht</a>
+</footer>
+
+</body>
+</html>
