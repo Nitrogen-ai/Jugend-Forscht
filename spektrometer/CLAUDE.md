@@ -212,6 +212,25 @@ Original-Aufbau vorgesehen) sinnvoll, um Nichtlinearitäten zu erkennen.
     Peak-Wellenlänge (391,2nm) der verbauten weißen LED aus deren Datenblatt, siehe Abschnitt
     "Wellenlängen-Kalibrierung" oben — die x-Achsen-Werte der Testspektren sind damit nicht
     mehr nur grob geschätzt.
+  - ⏳ **Robustheit der Einzelmessung (gefunden 2026-08-30, noch nicht umgesetzt):** Eine
+    einzelne "Messung sichern"-Aufnahme kann stark rauschen — vor allem bei hoher Extinktion
+    (wenig durchgelassenes Licht) schlägt Rauschen im Nenner von `-log10(I/I_ref)` massiv durch,
+    einzelne Wellenlängen können bis zur Diagrammobergrenze (y=3) ausschlagen. Dadurch kann der
+    Export (CSV/PNG/SVG) sichtbar anders aussehen als das Live-Bild, das man im Moment davor
+    betrachtet hat (bei einer Roten-Bete-Probe am 2026-08-30 vom Nutzer beobachtet: Live-Ansicht
+    glatt, `messung (4).svg`-Export stark verrauscht — beide korrekt für den jeweiligen
+    Aufnahmezeitpunkt, aber deutlich unterschiedlich).
+    **Geplanter Fix:** In `app.py` beim Einfrieren (`freeze_measurement`, ggf. auch
+    `series_add`) mehrere (z.B. 5–10) aufeinanderfolgende Frames aufnehmen und **auf
+    Intensitätsebene** mitteln (Mittelwert oder Median), erst danach `compute_extinction`
+    aufrufen — Mittelung nach der Extinktionsberechnung würde die Rausch-Spitzen kaum dämpfen,
+    da `-log10` das Rauschen bereits verstärkt hat. Für die alle 1,5s aktualisierte Live-Ansicht
+    (`/live_plot.svg`) lohnt sich das nicht (würde die App spürbar verlangsamen) — nur beim
+    bewussten Klick auf "Messung sichern" (und in der Messreihe), wo ein paar hundert ms bis
+    Sekunden zusätzliche Aufnahmezeit unproblematisch sind. Bis zur Umsetzung ist der
+    Export-Bereich in der Bedienungsanleitung (`experimente/spektrometer-bedienung.html`)
+    bewusst als "noch in Entwicklung" gekennzeichnet — didaktischer Fokus liegt auf dem
+    qualitativ bereits verlässlichen Live-Bild, nicht auf robusten Exportwerten.
   - ⏳ `spectrum_angle_deg` (Winkelkorrektur) ist noch nicht kalibriert (Default `0.0`), und
     ein zweiter unabhängiger Referenzpunkt (z.B. schmalbandige Referenz-LED) würde die
     Kalibrierung gegen Nichtlinearitäten absichern.
