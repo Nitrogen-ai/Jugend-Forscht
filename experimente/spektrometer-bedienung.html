@@ -55,6 +55,14 @@
   .warn-box .ic { font-size: 1.3rem; flex-shrink: 0; }
   .warn-box strong { color: #6b3223; }
 
+  .dev-box { background: #eef1f0; border: 1px dashed #a9bab5; border-radius: 10px; padding: 1.2rem 1.4rem; margin-bottom: 1rem; font-size: 0.9rem; color: #52625d; }
+  .dev-box p { margin-bottom: 0.6rem; }
+  .dev-box p:last-of-type { margin-bottom: 0; }
+  .dev-box strong { color: #3a4842; }
+  .dev-box ul { margin: 0.6rem 0 0.2rem 1.1rem; }
+  .dev-box li { margin-bottom: 0.25rem; }
+  .dev-badge { display: inline-block; background: #dbe3e0; color: #52625d; font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.7rem; border-radius: 20px; margin-bottom: 0.7rem; }
+
   .callout { display: flex; gap: 12px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
   .callout .ic { font-size: 1.3rem; flex-shrink: 0; }
   .callout strong { color: var(--text); }
@@ -269,35 +277,48 @@
       <ul>
         <li>Modus <strong>„Absorption"</strong> oben auswählen</li>
         <li><strong>Blindprobe</strong> ist eingesetzt, Deckel zu → auf <strong>„Referenz aufnehmen"</strong> klicken</li>
-        <li>Deckel öffnen, Blindprobe gegen deine <strong>Probe</strong> tauschen, Deckel wieder schließen</li>
+        <li>Küvette an der <strong>geschliffenen (matten) Seite</strong> anfassen und direkt herausnehmen – der Deckel muss dafür <strong>nicht</strong> geöffnet werden, die Küvette ragt weit genug aus dem Gehäuse. Gegen deine <strong>Probe</strong> tauschen, wieder einsetzen</li>
         <li>Das Live-Spektrum (Extinktion) aktualisiert sich jetzt laufend automatisch</li>
-        <li>Wenn die Kurve gut aussieht: <strong>„Messung sichern"</strong> klicken, um den aktuellen Stand einzufrieren</li>
-        <li>Ergebnis als <strong>CSV</strong> (Rohdaten), <strong>PNG</strong> oder <strong>SVG</strong> (Diagramm) herunterladen</li>
       </ul>
       <div class="step-media">
-        <svg viewBox="0 0 420 190" xmlns="http://www.w3.org/2000/svg">
-          <rect width="420" height="190" fill="#fbfffe" rx="8"/>
-          <rect x="40" y="20" width="230" height="130" rx="8" fill="#14181a"/>
-          <rect x="55" y="35" width="200" height="90" rx="4" fill="#fff"/>
-          <path d="M65,110 Q90,45 110,50 T140,90 Q160,105 200,100 T245,60" stroke="var(--teal-d)" stroke-width="2" fill="none"/>
-          <rect x="290" y="55" width="110" height="26" rx="6" fill="var(--teal)"/>
-          <text x="345" y="72" text-anchor="middle" font-size="10" fill="#fff">Referenz aufnehmen</text>
-          <rect x="290" y="90" width="110" height="26" rx="6" fill="var(--green)"/>
-          <text x="345" y="107" text-anchor="middle" font-size="10" fill="#fff">Messung sichern</text>
-          <rect x="290" y="125" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
-          <text x="307" y="141" text-anchor="middle" font-size="8.5" fill="#5a7570">CSV</text>
-          <rect x="330" y="125" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
-          <text x="347" y="141" text-anchor="middle" font-size="8.5" fill="#5a7570">PNG</text>
-          <rect x="370" y="125" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5"/>
-          <text x="387" y="141" text-anchor="middle" font-size="8.5" fill="#5a7570">SVG</text>
+        <svg viewBox="0 0 420 150" xmlns="http://www.w3.org/2000/svg">
+          <rect width="420" height="150" fill="#fbfffe" rx="8"/>
+          <rect x="40" y="10" width="230" height="130" rx="8" fill="#14181a"/>
+          <rect x="55" y="25" width="200" height="90" rx="4" fill="#fff"/>
+          <path d="M65,100 Q90,35 110,40 T140,80 Q160,95 200,90 T245,50" stroke="var(--teal-d)" stroke-width="2" fill="none"/>
+          <rect x="290" y="45" width="110" height="26" rx="6" fill="var(--teal)"/>
+          <text x="345" y="62" text-anchor="middle" font-size="10" fill="#fff">Referenz aufnehmen</text>
         </svg>
       </div>
     </div>
   </div>
 
+  <div class="dev-box">
+    <div class="dev-badge">🚧 Noch in Entwicklung</div>
+    <p>Das qualitative Live-Bild oben (Kamerabild + Farbverlauf) zeigt schon zuverlässig, wo Licht durchgelassen und wo es absorbiert wird – genau das steht hier im Vordergrund: <strong>verstehen, wie die real eintreffenden Photonen pro Wellenlänge die Farbwahrnehmung ergeben.</strong></p>
+    <p>Das <strong>Einfrieren und Exportieren</strong> einer Messung ist dagegen noch nicht robust: Einzelne Aufnahmen können deutlich rauschen, sodass der Export gelegentlich anders aussieht als das, was ihr gerade im Live-Bild seht. <strong>Testweise exportieren geht trotzdem</strong> – nur die Zahlenwerte im Export noch nicht ungeprüft für Auswertungen verwenden.</p>
+    <ul>
+      <li>Wenn die Live-Kurve gut aussieht: <strong>„Messung sichern"</strong> klicken, um den aktuellen Stand einzufrieren (am besten direkt danach exportieren, bevor sich das Bild weiter ändert)</li>
+      <li>Ergebnis zum Testen als <strong>CSV</strong> (Rohdaten), <strong>PNG</strong> oder <strong>SVG</strong> (Diagramm) herunterladen</li>
+    </ul>
+    <div class="step-media">
+      <svg viewBox="0 0 420 70" xmlns="http://www.w3.org/2000/svg">
+        <rect width="420" height="70" fill="#fbfffe" rx="8"/>
+        <rect x="10" y="15" width="130" height="26" rx="6" fill="var(--green)" opacity="0.55"/>
+        <text x="75" y="32" text-anchor="middle" font-size="10" fill="#fff">Messung sichern</text>
+        <rect x="150" y="15" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.7"/>
+        <text x="167" y="31" text-anchor="middle" font-size="8.5" fill="#5a7570">CSV</text>
+        <rect x="190" y="15" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.7"/>
+        <text x="207" y="31" text-anchor="middle" font-size="8.5" fill="#5a7570">PNG</text>
+        <rect x="230" y="15" width="34" height="24" rx="5" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 2" opacity="0.7"/>
+        <text x="247" y="31" text-anchor="middle" font-size="8.5" fill="#5a7570">SVG</text>
+      </svg>
+    </div>
+  </div>
+
   <div class="callout">
     <span class="ic">💡</span>
-    <div><strong>Tipp:</strong> Ihr könnt mehrere Proben (z.&nbsp;B. verschiedene Konzentrationen) nacheinander messen und über <strong>„Zur Messreihe hinzufügen"</strong> sammeln – der gemeinsame Export überlagert alle Kurven in einem Diagramm.</div>
+    <div><strong>Tipp:</strong> Ihr könnt mehrere Proben (z.&nbsp;B. verschiedene Konzentrationen) nacheinander messen und über <strong>„Zur Messreihe hinzufügen"</strong> sammeln – der gemeinsame Export überlagert alle Kurven in einem Diagramm (ebenfalls testweise, siehe oben).</div>
   </div>
 
   <h2 class="section-title">🛠️ Wenn's nicht klappt</h2>
