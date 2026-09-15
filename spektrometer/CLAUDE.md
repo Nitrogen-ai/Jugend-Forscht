@@ -314,10 +314,17 @@ Original-Aufbau vorgesehen) sinnvoll, um Nichtlinearitäten zu erkennen.
   dem Pi ist der sicherste erste Schritt nach einer Pause.
 - Reale Messungen mit dem Nutzer (Farbstofflösungen, Lichtquellen, Kalibrierfaktor validieren)
   sind der nächste inhaltliche Schritt.
-- **2026-09-15:** Rot/Blau-Vertauschung gefunden und per `spectrum_direction_reversed` behoben
-  (siehe Abschnitt "Wellenlängen-Richtung" oben), remote per SSH auf dem Pi getestet und
-  deployt, dann hier committet. Reale Farbstoff-Messungen mit dem Nutzer stehen als
-  Bestätigung noch aus (siehe "Offen/unsicher" im selben Abschnitt).
+- **2026-09-15, aktueller Stand:** Rot/Blau-Vertauschung gefunden und in zwei Anläufen behoben
+  (siehe Abschnitt "Wellenlängen-Richtung" oben — Version 1 spiegelte dynamisch, fixte Rot aber
+  nicht Blau; Version 2 mit festem `SPECTRUM_MAX_NM`-Anker fixt beide). Beide Male remote per SSH
+  auf dem Pi deployt, getestet (LED, `/frame.jpg`, Live-Plot) und hier committet (`d097204`,
+  `f1c0724`) — Version 2 ist der aktuelle Stand auf dem Pi UND in diesem Repo, beide synchron.
+  **Naechster Schritt:** der Nutzer hat Version 1 mit einer echten blauen Probe getestet
+  (daraufhin Version 2 entstanden) — Version 2 wurde nur mit der eingebauten LED verifiziert,
+  noch nicht mit einer echten Probe vom Nutzer bestätigt. Das ist der Bestätigungsschritt, mit
+  dem "weiter mit dem Spektrometer" sinnvollerweise anfängt. Falls Blau/Rot immer noch leicht
+  daneben liegen: `SPECTRUM_MAX_NM` in `spectro.py` nachjustieren, siehe "Bleibt unsicher" im
+  selben Abschnitt oben — kein Rätselraten mehr nötig, die Stellschraube ist bekannt.
 - **Ungemergte Mittelungs-Idee liegt noch in iCloud, nicht in diesem Repo:** unter
   `Unterricht/Allgemeine Materialien/Chemie/laufende Projekte/Spektrometer/pi/spectrometer_web/`
   liegen `app.py`/`spectro.py` mit einer bereits fertig implementierten zeitlichen Mittelung
