@@ -99,28 +99,37 @@ def extract_spectrum(frame, wavelength_factor, spectrum_angle_deg, direction_rev
     half_h = aperture_h / 2.0
     angle = math.radians(spectrum_angle_deg)
 
-    xs = np.arange(0, max(int(aperture_x * 7 / 8), 1))
-    wavelengths = (aperture_x - xs) * wavelength_factor
-    mask = (wavelengths >= SPECTRUM_MIN_NM) & (wavelengths <= SPECTRUM_MAX_NM)
-    xs = xs[mask]
-    wavelengths = wavelengths[mask]
-    if direction_reversed and len(wavelengths):
+    xs_all = np.arange(0, max(int(aperture_x * 7 / 8), 1))
+    distance_nm = (aperture_x - xs_all) * wavelength_factor
+    if direction_reversed:
         # Nimmt an, dass langwelliges (rotes) statt kurzwelliges (violettes) Licht
-        # naeher an der erkannten Apertur liegt -- am 2026-09-15 an diesem Aufbau
-        # direkt an den Kamera-Farbkanaelen bestaetigt (rotes Pixel bei berechneten
-        # ~406nm, blaues bei ~529nm, ohne diese Korrektur). Eigentlich Gitterphysik-
-        # widrig (kurzwelliges Licht beugt naeher am 0. Ordnung), daher vermutlich
-        # eine seit der letzten Kalibrierung (2026-08-29, siehe CLAUDE.md) verschobene
-        # Optik (Umlenkprisma/Kuevette) statt ein Software-Fehler. Spiegelt die Achse
-        # innerhalb des tatsaechlich fuer dieses Bild erreichten [min,max]-Bereichs
-        # (nicht des festen [SPECTRUM_MIN_NM, SPECTRUM_MAX_NM]-Fensters -- welcher
-        # Ausschnitt davon je Aufnahme erreicht wird, haengt von aperture_x/der
-        # Bildbreite ab, ein Spiegeln am festen Fenster wuerde reale Daten in einen
-        # Bereich ohne jede Messung verschieben). Ruehrt wavelength_factor (die
-        # Skala) nicht an -- rein einstellungsgesteuert (spectrum_direction_reversed
-        # in settings.json), damit eine kuenftige Neujustage der Optik das nur per
-        # /settings zurueckschalten muss, nicht per Code-Deploy.
-        wavelengths = wavelengths.min() + wavelengths.max() - wavelengths
+        # naeher an der erkannten Apertur liegt -- an diesem Aufbau direkt an den
+        # Kamera-Farbkanaelen bestaetigt (2026-09-15: rotes Pixel bei unkorrigiert
+        # berechneten ~406nm, gruenes bei ~476nm, blaues bei ~529nm).
+        # image_rotation_deg/image_flip koennen das nicht beheben (Isometrien,
+        # aendern nie welche Farbe der Apertur am naechsten liegt, siehe CLAUDE.md
+        # "Wellenlaengen-Richtung").
+        #
+        # SPECTRUM_MAX_NM - distance_nm spiegelt an einem FESTEN Bezugspunkt, nicht
+        # am tatsaechlich je Aufnahme erreichten Bereich (fruehere Version bis
+        # 2026-09-15: wavelengths.min()+wavelengths.max()-wavelengths, dynamisch pro
+        # Bild) -- diese fruehere Version verschob zwar Rot korrekt in den roten
+        # Bereich, aber Blau nur auf ~511nm (Gruen-Label), weil der Ankerpunkt vom
+        # jeweils erreichten Pixelbereich abhing statt fix zu sein. Gegen die drei
+        # obigen Farbkanal-Werte geprueft: SPECTRUM_MAX_NM als Anker ergibt Rot
+        # ~594nm, Gruen ~524nm, Blau ~471nm -- alle drei in ihrem jeweils
+        # plausiblen sichtbaren Bereich (getestet mit einer Handvoll ueblicher
+        # Kamera-Bayerfilter-Peakwerten R~600/G~530/B~460nm als Vergleich, nicht
+        # narrowband-kalibriert). wavelength_factor (die Skala) bleibt unangetastet.
+        # Falls nach einer echten Schmalband-Kalibrierung (siehe "Wellenlaengen-
+        # Kalibrierung" unten) weiterhin leicht daneben: SPECTRUM_MAX_NM ist der
+        # einzige Ankerpunkt, an dem gedreht werden muesste, nicht wavelength_factor.
+        wavelengths_all = SPECTRUM_MAX_NM - distance_nm
+    else:
+        wavelengths_all = distance_nm
+    mask = (wavelengths_all >= SPECTRUM_MIN_NM) & (wavelengths_all <= SPECTRUM_MAX_NM)
+    xs = xs_all[mask]
+    wavelengths = wavelengths_all[mask]
 
     h, w, _ = frame.shape
     intensities = np.zeros(len(xs))

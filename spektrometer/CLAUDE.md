@@ -131,8 +131,9 @@ rechts sein, direkt daneben eine plausible Farbreihenfolge zum langwelligen Ende
 ein roter Farbstoff zeigt sein Signal im violett/blau-Bereich des Diagramms statt im roten, und
 umgekehrt bei Blau (Signal erscheint im grün/roten Bereich). Der Code war zu diesem Zeitpunkt
 byte-identisch mit dem letzten bekannt-guten Stand vom 2026-08-29 (diffed, keine Abweichung) —
-also keine Software-Regression, sondern vermutlich eine seither verschobene Optik
-(Umlenkprisma/Küvette, siehe "Bildausrichtung" oben zur selben Fehlerklasse).
+also keine Software-Regression im Sinne einer versehentlichen Codeänderung, sondern ein bis dahin
+nie korrekt kalibrierter Aspekt (siehe "Nutzer-Feedback" weiter unten: laut Nutzer keine
+verstellte Optik, sondern eine wiederkehrende Eigenheit).
 
 **Direkt am Kamerabild bestätigt** (LED an, `/frame.jpg` mit Rohbild-Farbkanälen ausgewertet,
 nicht nur visuell beurteilt): bei aktuellem Aufbau liegt das **rote** Pixel bei einem
@@ -150,24 +151,38 @@ Bildschirmpositionen). Nur `image_rotation_deg=90`+`image_flip=true` bringt den 
 Referenzpunkt zuverlässig in die rechte Bildhälfte, wo `find_aperture` sucht — das bleibt also
 weiterhin nötig und richtig, löst aber ein anderes Problem als die Wellenlängen-Richtung.
 
-**Fix:** neue Einstellung `spectrum_direction_reversed` (Default `False`, für diesen Aufbau seit
-2026-09-15 auf `True` gesetzt). Wenn aktiv, spiegelt `extract_spectrum` die berechneten
-Wellenlängen innerhalb des für die jeweilige Aufnahme tatsächlich erreichten `[min, max]`-Bereichs
-(nicht am festen `[380, 1000]`-Fenster — welcher Ausschnitt davon pro Aufnahme erreicht wird,
-hängt von `aperture_x`/der Bildbreite ab; am festen Fenster gespiegelt würden reale Messwerte in
-einen Bereich ohne jede Aufnahme verschoben). `wavelength_factor` (die Skala) bleibt unangetastet,
-geändert wird nur die Richtung. Rein einstellungsgesteuert (Checkbox auf `/settings`), damit eine
-künftige Neujustage der Optik das nur per `/settings` zurückschalten muss, nicht per Code-Deploy.
+**Fix, Version 1 (2026-09-15, überholt — Fehler siehe Version 2):** `spectrum_direction_reversed`
+spiegelte die Wellenlängen zunächst innerhalb des für die jeweilige Aufnahme tatsächlich
+erreichten `[min, max]`-Bereichs (dynamisch pro Bild). Vom Nutzer nach echtem Test mit einer
+blauen Probe verworfen: Rot landete richtig im roten Bereich, aber Blau nur bei ~511nm
+(Grün-Label statt Blau) — der Ankerpunkt dieser Spiegelung hing vom jeweils erreichten
+Pixelbereich ab statt an einem festen physikalischen Bezugspunkt zu liegen, und war damit für
+Rot zufällig ungefähr richtig, für Blau aber falsch.
 
-**Offen/unsicher:** ob die Ursache wirklich die Optik ist (Umlenkprisma/Küvette verstellt seit
-2026-08-29) oder etwas anderes, konnte aus der Ferne nicht abschließend geklärt werden — das
-Rohbild zeigt neben dem eigentlichen Spektrum einen zweiten, deutlich diffuseren/unscharfen
-warmen Lichtfleck weiter vom Spektrum entfernt als der helle Referenzpunkt, der eher nach
-Streulicht (z.B. Umgebungslicht bei geöffnetem Gehäuse während der Fernwartung) aussieht als nach
-einer sauberen 0. Ordnung. Falls das Problem nach einer Neujustage der Optik weiterhin (oder
-umgekehrt) auftritt: `spectrum_direction_reversed` einfach auf `/settings` umschalten, kein
-Code-Fix nötig. Vor jeder Neujustage `/frame.jpg` bei eingeschalteter Testlichtquelle mit
-geschlossenem Gehäuse ansehen, um Streulicht auszuschließen.
+**Fix, Version 2 (2026-09-15, aktuell):** `wavelengths = SPECTRUM_MAX_NM - distance_nm` — fester
+Ankerpunkt (`SPECTRUM_MAX_NM = 1000`) statt dynamischem `[min,max]`. Hergeleitet aus genau den
+drei Farbkanal-Messwerten oben (Rot bei unkorrigiert ~406nm, Grün ~476nm, Blau ~529nm
+Apertur-Abstand) gegen grobe, nicht sensorspezifische Vergleichswerte typischer
+Kamera-Bayerfilter-Peaks (R~600/G~530/B~460nm) geprüft: ergibt Rot ~594nm, Grün ~524nm,
+Blau ~471nm — alle drei in ihrem jeweils plausiblen sichtbaren Bereich, live am Gerät mit
+eingeschalteter LED bestätigt (Kurvenform danach ein plausibler durchgehender Verlauf über
+400–650nm statt wie in Version 1 fast nur am kurzwelligen Ende). `wavelength_factor` (die Skala)
+bleibt unangetastet, nur der Ankerpunkt der Richtungs-Umkehr ändert sich. Weiterhin rein
+einstellungsgesteuert (`spectrum_direction_reversed`-Checkbox auf `/settings`).
+
+**Nutzer-Feedback (2026-09-15) zur Ursache:** eine verstellte Optik (Umlenkprisma/Küvette) wurde
+vom Nutzer ausdrücklich ausgeschlossen — laut Nutzer waren die Farben "schon mal invertiert",
+spricht also für eine wiederkehrende Software-/Kalibrierungs-Eigenheit dieses Aufbaus statt für
+ein einmaliges mechanisches Verrutschen. Die frühere Vermutung in diesem Abschnitt (Version 1),
+es könne an der Optik liegen, ist entsprechend nicht mehr die Arbeitshypothese.
+
+**Bleibt unsicher:** `SPECTRUM_MAX_NM=1000` als Ankerpunkt beruht auf drei Farbkanal-Maxima aus
+einer LED-Aufnahme, keiner echten schmalbandigen Wellenlängen-Kalibrierung (siehe "Wellenlängen-
+Kalibrierung" unten für die Methode, die für `wavelength_factor` verwendet wurde). Falls bei
+weiteren echten Farbstoff-Proben immer noch ein systematischer Versatz auffällt: `SPECTRUM_MAX_NM`
+in `spectro.py` ist der einzige Wert, an dem dann gedreht werden müsste (z.B. via derselben
+Referenz-LED-Methode wie bei `wavelength_factor`, nur eben für den Ankerpunkt statt die Skala),
+nicht `wavelength_factor` selbst und nicht `image_rotation_deg`/`image_flip`.
 
 ## Wellenlängen-Kalibrierung (`wavelength_factor`)
 **Kalibriert am 2026-08-29 auf `0.5381` nm/Pixel** (vorher unvalidierter Default `0.6`).
