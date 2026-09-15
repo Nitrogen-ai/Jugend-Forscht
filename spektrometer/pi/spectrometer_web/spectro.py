@@ -18,7 +18,14 @@ DEFAULT_SETTINGS = {
     "csv_german": True,
     "image_rotation_deg": 0,
     "image_flip": False,
+    "spectrum_direction_reversed": False,
 }
+
+# Sichtbares Fenster, das extract_spectrum akzeptiert. Auch als Bezugspunkt fuer
+# spectrum_direction_reversed genutzt (siehe dort), deshalb hier benannt statt als
+# Magic Numbers direkt in der Maskierung.
+SPECTRUM_MIN_NM = 380.0
+SPECTRUM_MAX_NM = 1000.0
 
 
 def apply_rotation(frame, settings):
@@ -87,16 +94,33 @@ def grating_efficiency(wavelength):
     return max(eff, 0.3)
 
 
-def extract_spectrum(frame, wavelength_factor, spectrum_angle_deg):
+def extract_spectrum(frame, wavelength_factor, spectrum_angle_deg, direction_reversed=False):
     aperture_x, aperture_y, aperture_h = find_aperture(frame)
     half_h = aperture_h / 2.0
     angle = math.radians(spectrum_angle_deg)
 
     xs = np.arange(0, max(int(aperture_x * 7 / 8), 1))
     wavelengths = (aperture_x - xs) * wavelength_factor
-    mask = (wavelengths >= 380) & (wavelengths <= 1000)
+    mask = (wavelengths >= SPECTRUM_MIN_NM) & (wavelengths <= SPECTRUM_MAX_NM)
     xs = xs[mask]
     wavelengths = wavelengths[mask]
+    if direction_reversed and len(wavelengths):
+        # Nimmt an, dass langwelliges (rotes) statt kurzwelliges (violettes) Licht
+        # naeher an der erkannten Apertur liegt -- am 2026-09-15 an diesem Aufbau
+        # direkt an den Kamera-Farbkanaelen bestaetigt (rotes Pixel bei berechneten
+        # ~406nm, blaues bei ~529nm, ohne diese Korrektur). Eigentlich Gitterphysik-
+        # widrig (kurzwelliges Licht beugt naeher am 0. Ordnung), daher vermutlich
+        # eine seit der letzten Kalibrierung (2026-08-29, siehe CLAUDE.md) verschobene
+        # Optik (Umlenkprisma/Kuevette) statt ein Software-Fehler. Spiegelt die Achse
+        # innerhalb des tatsaechlich fuer dieses Bild erreichten [min,max]-Bereichs
+        # (nicht des festen [SPECTRUM_MIN_NM, SPECTRUM_MAX_NM]-Fensters -- welcher
+        # Ausschnitt davon je Aufnahme erreicht wird, haengt von aperture_x/der
+        # Bildbreite ab, ein Spiegeln am festen Fenster wuerde reale Daten in einen
+        # Bereich ohne jede Messung verschieben). Ruehrt wavelength_factor (die
+        # Skala) nicht an -- rein einstellungsgesteuert (spectrum_direction_reversed
+        # in settings.json), damit eine kuenftige Neujustage der Optik das nur per
+        # /settings zurueckschalten muss, nicht per Code-Deploy.
+        wavelengths = wavelengths.min() + wavelengths.max() - wavelengths
 
     h, w, _ = frame.shape
     intensities = np.zeros(len(xs))

@@ -4,5 +4,6 @@
   "led_brightness": 100,
   "csv_german": true,
   "image_rotation_deg": 90,
-  "image_flip": true
+  "image_flip": true,
+  "spectrum_direction_reversed": true
 }

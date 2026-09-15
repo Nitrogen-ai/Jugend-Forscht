@@ -41,7 +41,8 @@ def current_spectrum():
     settings = spectro.load_settings()
     frame = capture_frame()
     wavelengths, intensities, *_ = spectro.extract_spectrum(
-        frame, settings["wavelength_factor"], settings["spectrum_angle_deg"]
+        frame, settings["wavelength_factor"], settings["spectrum_angle_deg"],
+        settings.get("spectrum_direction_reversed", False),
     )
     if state["mode"] == "absorption":
         ref = spectro.load_reference()
@@ -91,7 +92,8 @@ def capture_reference():
     settings = spectro.load_settings()
     frame = capture_frame()
     wavelengths, intensities, *_ = spectro.extract_spectrum(
-        frame, settings["wavelength_factor"], settings["spectrum_angle_deg"]
+        frame, settings["wavelength_factor"], settings["spectrum_angle_deg"],
+        settings.get("spectrum_direction_reversed", False),
     )
     spectro.save_reference(wavelengths, intensities)
     return jsonify({"status": "ok"})
@@ -196,6 +198,7 @@ def settings_page():
         s["csv_german"] = request.form.get("csv_mode") == "german"
         s["image_rotation_deg"] = int(request.form["image_rotation_deg"])
         s["image_flip"] = request.form.get("image_flip") == "on"
+        s["spectrum_direction_reversed"] = request.form.get("spectrum_direction_reversed") == "on"
         spectro.save_settings(s)
         led.set_brightness(s["led_brightness"])
     s = spectro.load_settings()
@@ -358,6 +361,11 @@ a{color:#9aa39b;}
   <label style="display:flex; align-items:center; gap:8px;">
     <input type="checkbox" name="image_flip" style="width:auto;" {{ "checked" if settings.image_flip else "" }}>
     Bild horizontal spiegeln (nach der Drehung)
+  </label>
+  <label style="display:flex; align-items:center; gap:8px;">
+    <input type="checkbox" name="spectrum_direction_reversed" style="width:auto;" {{ "checked" if settings.spectrum_direction_reversed else "" }}>
+    Wellenlaengen-Richtung umkehren (aktivieren, wenn im Live-Bild Rot naeher am hellen
+    Referenzpunkt liegt als Blau -- z.B. nach Verstellen von Kuevette/Umlenkprisma)
   </label>
   <label>CSV-Stil
     <select name="csv_mode">

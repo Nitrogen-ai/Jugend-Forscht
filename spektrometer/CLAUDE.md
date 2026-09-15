@@ -126,6 +126,49 @@ Diese Werte sind jetzt der Default in `settings.example.json`, sollten aber bei 
 Neuaufbau/jeder Kamerademontage neu überprüft werden (`/frame.jpg` ansehen: heller Punkt muss
 rechts sein, direkt daneben eine plausible Farbreihenfolge zum langwelligen Ende hin).
 
+## Wellenlängen-Richtung (`spectrum_direction_reversed`, seit 2026-09-15)
+**Symptom (vom Nutzer gemeldet, 2026-09-15):** grüne Farbstoffe absorbieren wie erwartet, aber
+ein roter Farbstoff zeigt sein Signal im violett/blau-Bereich des Diagramms statt im roten, und
+umgekehrt bei Blau (Signal erscheint im grün/roten Bereich). Der Code war zu diesem Zeitpunkt
+byte-identisch mit dem letzten bekannt-guten Stand vom 2026-08-29 (diffed, keine Abweichung) —
+also keine Software-Regression, sondern vermutlich eine seither verschobene Optik
+(Umlenkprisma/Küvette, siehe "Bildausrichtung" oben zur selben Fehlerklasse).
+
+**Direkt am Kamerabild bestätigt** (LED an, `/frame.jpg` mit Rohbild-Farbkanälen ausgewertet,
+nicht nur visuell beurteilt): bei aktuellem Aufbau liegt das **rote** Pixel bei einem
+Apertur-Abstand, den `extract_spectrum` als ~406nm (violett) berechnet, das **blaue** Pixel bei
+~529nm (grün) — also systematisch vertauscht gegenüber der Gitterphysik (kurzwelliges Licht
+beugt näher an der 0. Ordnung als langwelliges, Blau muss also näher an der Apertur liegen als
+Rot, nicht umgekehrt).
+
+**Wichtig: `image_rotation_deg`/`image_flip` können das NICHT beheben.** Rotation und Spiegelung
+sind Isometrien — sie erhalten alle Abstände im Bild, insbesondere den Abstand jeder Farbe zur
+Apertur. Welche Farbe der Apertur am nächsten liegt, ist demnach unter jeder Kombination dieser
+beiden Einstellungen identisch (durchprobiert: alle 8 Kombinationen aus 0/90/180/270° und
+Spiegeln ja/nein liefern dieselbe Rot-nah/Blau-fern-Beziehung, nur an unterschiedlichen
+Bildschirmpositionen). Nur `image_rotation_deg=90`+`image_flip=true` bringt den hellen
+Referenzpunkt zuverlässig in die rechte Bildhälfte, wo `find_aperture` sucht — das bleibt also
+weiterhin nötig und richtig, löst aber ein anderes Problem als die Wellenlängen-Richtung.
+
+**Fix:** neue Einstellung `spectrum_direction_reversed` (Default `False`, für diesen Aufbau seit
+2026-09-15 auf `True` gesetzt). Wenn aktiv, spiegelt `extract_spectrum` die berechneten
+Wellenlängen innerhalb des für die jeweilige Aufnahme tatsächlich erreichten `[min, max]`-Bereichs
+(nicht am festen `[380, 1000]`-Fenster — welcher Ausschnitt davon pro Aufnahme erreicht wird,
+hängt von `aperture_x`/der Bildbreite ab; am festen Fenster gespiegelt würden reale Messwerte in
+einen Bereich ohne jede Aufnahme verschoben). `wavelength_factor` (die Skala) bleibt unangetastet,
+geändert wird nur die Richtung. Rein einstellungsgesteuert (Checkbox auf `/settings`), damit eine
+künftige Neujustage der Optik das nur per `/settings` zurückschalten muss, nicht per Code-Deploy.
+
+**Offen/unsicher:** ob die Ursache wirklich die Optik ist (Umlenkprisma/Küvette verstellt seit
+2026-08-29) oder etwas anderes, konnte aus der Ferne nicht abschließend geklärt werden — das
+Rohbild zeigt neben dem eigentlichen Spektrum einen zweiten, deutlich diffuseren/unscharfen
+warmen Lichtfleck weiter vom Spektrum entfernt als der helle Referenzpunkt, der eher nach
+Streulicht (z.B. Umgebungslicht bei geöffnetem Gehäuse während der Fernwartung) aussieht als nach
+einer sauberen 0. Ordnung. Falls das Problem nach einer Neujustage der Optik weiterhin (oder
+umgekehrt) auftritt: `spectrum_direction_reversed` einfach auf `/settings` umschalten, kein
+Code-Fix nötig. Vor jeder Neujustage `/frame.jpg` bei eingeschalteter Testlichtquelle mit
+geschlossenem Gehäuse ansehen, um Streulicht auszuschließen.
+
 ## Wellenlängen-Kalibrierung (`wavelength_factor`)
 **Kalibriert am 2026-08-29 auf `0.5381` nm/Pixel** (vorher unvalidierter Default `0.6`).
 
@@ -256,3 +299,16 @@ Original-Aufbau vorgesehen) sinnvoll, um Nichtlinearitäten zu erkennen.
   dem Pi ist der sicherste erste Schritt nach einer Pause.
 - Reale Messungen mit dem Nutzer (Farbstofflösungen, Lichtquellen, Kalibrierfaktor validieren)
   sind der nächste inhaltliche Schritt.
+- **2026-09-15:** Rot/Blau-Vertauschung gefunden und per `spectrum_direction_reversed` behoben
+  (siehe Abschnitt "Wellenlängen-Richtung" oben), remote per SSH auf dem Pi getestet und
+  deployt, dann hier committet. Reale Farbstoff-Messungen mit dem Nutzer stehen als
+  Bestätigung noch aus (siehe "Offen/unsicher" im selben Abschnitt).
+- **Ungemergte Mittelungs-Idee liegt noch in iCloud, nicht in diesem Repo:** unter
+  `Unterricht/Allgemeine Materialien/Chemie/laufende Projekte/Spektrometer/pi/spectrometer_web/`
+  liegen `app.py`/`spectro.py` mit einer bereits fertig implementierten zeitlichen Mittelung
+  (`average_frames_over_time`, mehrere Frames pro "Referenz aufnehmen"/"Messung sichern"
+  gemittelt) — genau die Lösung für das oben unter Phase 4 dokumentierte Rauschproblem bei
+  Einzelmessungen. Nie gemergt (Basis war ein älterer Stand ohne `apply_rotation`,
+  `wavelength_to_color`, LED, Messreihe). Beim nächsten Mal explizit fragen, ob das jetzt
+  nachgezogen werden soll, dann von dort übernehmen statt neu zu bauen. Nach dem Mergen kann
+  der iCloud-Ordner gelöscht werden (siehe `README.txt` dort).
